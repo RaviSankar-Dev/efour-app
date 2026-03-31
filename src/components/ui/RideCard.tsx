@@ -38,9 +38,10 @@ export const RideCard = ({ id, title, category, description, price, image, tag }
       {/* Floating Plus Button */}
       <Pressable 
         onPress={handleAdd} 
-        className="absolute top-3 right-3 z-20 w-8 h-8 bg-indigo-600/90 rounded-full items-center justify-center shadow-lg shadow-indigo-500/40 active:bg-indigo-700"
+        className="absolute top-4 right-4 z-20 w-10 h-10 bg-black/60 border border-yellow-400/30 rounded-full items-center justify-center shadow-lg active:bg-black/80"
+        style={{ shadowColor: '#fbbf24', shadowOffset: { width: 0, height: 0 }, shadowOpacity: 0.6, shadowRadius: 15 }}
       >
-        <Plus size={16} color="white" />
+        <Plus size={20} color="#fbbf24" strokeWidth={3} />
       </Pressable>
 
       {/* Image Section */}
@@ -50,11 +51,6 @@ export const RideCard = ({ id, title, category, description, price, image, tag }
           colors={['transparent', 'rgba(11, 14, 20, 0.9)']}
           className="absolute inset-x-0 bottom-0 h-16"
         />
-        {tag && (
-          <View className="absolute top-4 left-4 bg-indigo-600/95 px-2.5 py-1 rounded-lg">
-            <Typography weight="black" className="text-[8px] text-white tracking-[1.5px] uppercase font-black">{tag}</Typography>
-          </View>
-        )}
       </View>
 
       {/* Content Section */}
@@ -86,8 +82,8 @@ export const RideCard = ({ id, title, category, description, price, image, tag }
           </View>
 
           <View className="flex-row items-center space-x-2.5">
-            <Pressable onPress={handleBook} className="bg-indigo-600 px-6 py-2.5 rounded-xl shadow-lg shadow-indigo-500/20 active:bg-indigo-700">
-              <Typography weight="black" className="text-[10px] text-white uppercase tracking-[1.5px] font-black">BOOK</Typography>
+            <Pressable onPress={handleBook} className="bg-yellow-400 px-6 py-2.5 rounded-xl shadow-lg shadow-yellow-400/20 active:bg-yellow-500">
+              <Typography weight="black" className="text-[10px] text-black uppercase tracking-[1.5px] font-black">BOOK</Typography>
             </Pressable>
           </View>
         </View>

@@ -112,9 +112,22 @@ export default function YourTickets() {
   const [ticketsLoadingFor, setTicketsLoadingFor] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      fetchOrders();
-    }
+    const init = async () => {
+      if (isAuthenticated) {
+        setLoading(true);
+        setError(null);
+        try {
+          await fetchOrders();
+        } catch (e: any) {
+          setError(e.message || "Failed to parse transaction logs");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+      }
+    };
+    init();
   }, [isAuthenticated]);
 
   const onRefresh = async () => {
@@ -155,24 +168,24 @@ export default function YourTickets() {
     const rides: any[] = [];
     const events: any[] = [];
 
-    orders.forEach(order => {
-      const isEvent = (order.items || []).some((item: any) => {
-        const name = (item.name || '').toLowerCase();
-        return name.includes('dome') || name.includes('booking') || name.includes('event') || item.stall === 'DOME';
+    (orders || []).forEach(order => {
+      const isEvent = (order?.items || []).some((item: any) => {
+        const name = (item?.name || '').toLowerCase();
+        return name.includes('dome') || name.includes('booking') || name.includes('event') || item?.stall === 'DOME';
       });
 
       // Map raw items to virtual tickets for instant preview before expansion fetch
-      const virtualTickets = (order.items || []).filter((item: any) => {
-         const name = (item.name || '').toLowerCase();
-         return !name.includes('gst') && item.id !== 'tax-gst';
+      const virtualTickets = (order?.items || []).filter((item: any) => {
+         const name = (item?.name || '').toLowerCase();
+         return !name.includes('gst') && item?.id !== 'tax-gst';
       }).flatMap((item: any) => {
-         const isCombo = (item.name || '').toLowerCase().includes('combo') || item.rideCount > 1;
-         const count = isCombo ? (item.rideCount || 5) : 1;
-         const total = (item.quantity || 1) * count;
+         const isCombo = (item?.name || '').toLowerCase().includes('combo') || (item?.rideCount || 0) > 1;
+         const count = isCombo ? (item?.rideCount || 5) : 1;
+         const total = (item?.quantity || 1) * count;
          
          return Array.from({ length: total }).map((_, i) => ({
             ...item,
-            qrData: `${order._id}-${item.id}-${i}`,
+            qrData: `${order?._id}-${item?.id}-${i}`,
             isVirtual: true
          }));
       });
@@ -256,22 +269,31 @@ export default function YourTickets() {
 
         {/* MAIN LIST */}
         <View className="px-6">
-           {loading && !isRefreshing ? (
-             <View className="py-20 items-center justify-center">
-                <ActivityIndicator color={THEME.purple} size="large" />
-                <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-6 font-black">PARSING TRANSACTION LOGS...</Typography>
-             </View>
-           ) : activeOrders.length === 0 ? (
-             <View className="py-20 items-center justify-center">
-                <View className="w-20 h-20 bg-white/5 rounded-full items-center justify-center mb-8 border border-white/5 opacity-40">
-                   <TicketIcon size={28} color="white" />
-                </View>
-                <Typography weight="black" className="text-xl text-white/20 text-center uppercase tracking-tighter">NO VALID PASSES FOUND</Typography>
-                <Pressable onPress={() => router.push('/')} className="mt-10 px-8 py-4 bg-white/5 rounded-full border border-white/10">
-                   <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[3px] uppercase italic">EXPLORE EXPERIENCES</Typography>
-                </Pressable>
-             </View>
-           ) : (
+            {loading && !isRefreshing ? (
+              <View className="py-20 items-center justify-center">
+                 <ActivityIndicator color={THEME.purple} size="large" />
+                 <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-6 font-black">PARSING TRANSACTION LOGS...</Typography>
+              </View>
+            ) : error ? (
+              <View className="py-20 items-center justify-center">
+                 <X size={28} color="#ef4444" />
+                 <Typography weight="black" className="text-xl text-white/50 text-center uppercase tracking-tighter mt-4">FETCH PROTOCOL FAILED</Typography>
+                 <Typography weight="bold" className="text-[9px] text-red-500/50 uppercase mt-2">{error}</Typography>
+                 <Pressable onPress={onRefresh} className="mt-10 px-8 py-4 bg-red-500/10 rounded-full border border-red-500/20">
+                    <Typography weight="black" className="text-[10px] text-red-500 tracking-[3px] uppercase italic">RETRY CONNECTION</Typography>
+                 </Pressable>
+              </View>
+            ) : activeOrders.length === 0 ? (
+              <View className="py-20 items-center justify-center">
+                 <View className="w-20 h-20 bg-white/5 rounded-full items-center justify-center mb-8 border border-white/5 opacity-40">
+                    <TicketIcon size={28} color="white" />
+                 </View>
+                 <Typography weight="black" className="text-xl text-white/20 text-center uppercase tracking-tighter">NO VALID PASSES FOUND</Typography>
+                 <Pressable onPress={() => router.push('/')} className="mt-10 px-8 py-4 bg-white/5 rounded-full border border-white/10">
+                    <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[3px] uppercase italic">EXPLORE EXPERIENCES</Typography>
+                 </Pressable>
+              </View>
+            ) : (
              activeOrders.map((order) => {
                const isExpanded = expandedOrder === order._id;
                const date = new Date(order.createdAt);

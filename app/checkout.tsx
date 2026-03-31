@@ -258,7 +258,6 @@ export default function CheckoutScreen() {
    if (step === 0) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
-            <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
             <SafeAreaView className="flex-1">
                <View className="px-8 pt-6 pb-12 flex-row justify-between items-center bg-white/[0.01] border-b border-white/5">
                   <Pressable onPress={() => router.back()} className="w-12 h-12 bg-white/5 rounded-2xl border border-white/10 items-center justify-center">
@@ -280,7 +279,7 @@ export default function CheckoutScreen() {
                         <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-white/20 uppercase mt-8 text-center">PLEASE LOGIN TO SECURE YOUR RESERVATIONS</Typography>
                      </Animated.View>
 
-                     <View className="bg-black/40 border border-white/10 p-10 rounded-[40px] shadow-2xl backdrop-blur-3xl">
+                     <View className="bg-black/40 border border-white/10 p-10 rounded-[40px] shadow-2xl">
                         <View className="items-center mb-12">
                            <Typography weight="black" className="text-3xl italic text-white mb-2 tracking-tight uppercase font-black">{authStep === 0 ? "MOBILE" : "VERIFY"}</Typography>
                            <Typography weight="black" style={{ fontSize: 8, letterSpacing: 5 }} className="text-indigo-400 uppercase">STEP {authStep + 1} OF 2</Typography>
@@ -333,7 +332,6 @@ export default function CheckoutScreen() {
    if (step === 3) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
-            <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
             <SafeAreaView className="flex-1 items-center justify-center px-10">
                <Animated.View entering={FadeIn.duration(1000)} className="w-40 h-40 bg-emerald-500/10 border border-emerald-500/20 rounded-full items-center justify-center mb-12 shadow-2xl shadow-emerald-500/10">
                   <CheckCircle2 size={72} color="#10b981" strokeWidth={1.5} />
@@ -351,7 +349,6 @@ export default function CheckoutScreen() {
    if (isProcessing) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
-            <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
             <SafeAreaView className="flex-1 items-center justify-center px-10">
                <Animated.View style={[spinnerStyle]} className="mb-12">
                   <RefreshCw size={52} color={THEME.orange} strokeWidth={3} />
@@ -378,7 +375,6 @@ export default function CheckoutScreen() {
 
    return (
       <View style={{ flex: 1, backgroundColor: THEME.bg }}>
-         <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
          <SafeAreaView className="flex-1">
             <ScrollView showsVerticalScrollIndicator={false}>
                <View className="px-8 pt-6 pb-12 flex-row justify-between items-center bg-white/[0.01] border-b border-white/5">
@@ -451,14 +447,14 @@ export default function CheckoutScreen() {
                   <Pressable
                      disabled={isProcessing}
                      onPress={handlePayment}
-                     className={`bg-indigo-600 h-24 rounded-[32px] flex-row items-center justify-center space-x-8 shadow-2xl shadow-indigo-600/60 ${isProcessing ? 'opacity-50' : ''} active:scale-95`}
+                     className={`bg-yellow-400 h-24 rounded-[32px] flex-row items-center justify-center space-x-8 shadow-2xl shadow-yellow-400/40 ${isProcessing ? 'opacity-50' : ''} active:scale-95`}
                   >
-                     {loading ? <ActivityIndicator size="small" color="white" /> : (
+                     {loading ? <ActivityIndicator size="small" color="black" /> : (
                         <>
-                           <Typography weight="black" style={{ fontSize: 14, letterSpacing: 6 }} className="text-white tracking-[6px] uppercase font-black italic">
+                           <Typography weight="black" style={{ fontSize: 14, letterSpacing: 6 }} className="text-black tracking-[6px] uppercase font-black italic">
                               {isProcessing ? 'PROCESSING...' : `CONFIRM ₹${finalTotal}`}
                            </Typography>
-                           {!isProcessing && <ArrowRight size={24} color="white" strokeWidth={4} />}
+                           {!isProcessing && <ArrowRight size={24} color="black" strokeWidth={4} />}
                         </>
                      )}
                   </Pressable>

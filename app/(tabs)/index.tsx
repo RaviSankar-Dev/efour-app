@@ -76,12 +76,7 @@ const OurVisionSection = ({ onBookRide }: { onBookRide?: () => void }) => {
         </Typography>
       </View>
 
-      <View className="flex-row items-center space-x-3 mb-8">
-        <View className="w-10 h-10 bg-indigo-500/10 rounded-xl items-center justify-center border border-indigo-500/20">
-          <Globe size={18} color="#6366f1" />
-        </View>
-        <Typography weight="black" className="text-[11px] text-indigo-400 font-black tracking-[4px] uppercase italic">ABOUT US</Typography>
-      </View>
+
 
       <View className="flex-col items-start px-2">
         {/* LEFT CONTENT */}
@@ -95,10 +90,10 @@ const OurVisionSection = ({ onBookRide }: { onBookRide?: () => void }) => {
 
           <Pressable
             onPress={onBookRide}
-            className="bg-indigo-600 self-start px-10 py-5 rounded-2xl flex-row items-center shadow-2xl shadow-indigo-500/40 active:bg-indigo-700"
+            className="bg-yellow-400 self-start px-10 py-5 rounded-2xl flex-row items-center shadow-2xl shadow-yellow-400/20 active:bg-yellow-500"
           >
-            <Typography weight="black" className="text-[12px] text-white font-black uppercase tracking-[3px]">BOOK YOUR RIDE</Typography>
-            <ArrowUp size={16} color="white" className="ml-4" />
+            <Typography weight="black" className="text-[12px] text-black font-black uppercase tracking-[3px]">BOOK YOUR RIDE</Typography>
+            <ArrowUp size={16} color="black" className="ml-4" />
           </Pressable>
         </View>
 
@@ -218,10 +213,15 @@ export default function HomeScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#000000" }}>
-      <Navbar />
-      <ScrollView ref={scrollRef} style={{ flex: 1 }} className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
+      <ScrollView 
+        ref={scrollRef} 
+        style={{ flex: 1 }} 
+        className="flex-1" 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingBottom: 160 }}
+      >
         {/* SECTION 1: HERO */}
-        <View style={{ height: height * 0.88, width }}>
+        <View style={{ height: height * 0.70, width }}>
           <View style={StyleSheet.absoluteFill}>
             <View style={[StyleSheet.absoluteFill, { backgroundColor: '#000000' }]} />
             <AnimatedOrb color="#e65100" size={width * 0.9} initialPos={{ x: -width * 0.35, y: height * 0.05 }} delay={0} />
@@ -229,21 +229,20 @@ export default function HomeScreen() {
             <AnimatedOrb color="#283593" size={width * 0.8} initialPos={{ x: width * 0.1, y: height * 0.45 }} delay={1000} />
             <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)', '#000000']} style={StyleSheet.absoluteFill} />
           </View>
-          <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 200, alignItems: 'center' }}>
-            <Animated.View className="flex-row items-center bg-white/5 self-center px-5 py-2.5 rounded-full border border-white/10 mb-12" style={badgeStyle}>
+          <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 180, alignItems: 'center' }}>
+            <Animated.View className="flex-row items-center bg-white/5 self-center px-5 py-2.5 rounded-full border border-white/10 mb-4" style={badgeStyle}>
               <View className="w-2 h-2 rounded-full bg-[#52caff] mr-3" />
               <Typography weight="black" className="text-[11px] text-gray-100 font-black tracking-[3px] uppercase italic">ELURU'S PREMIER HUB</Typography>
             </Animated.View>
 
             <View className="items-center">
-              <Animated.View style={eatStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">EAT.</Typography></Animated.View>
-              <Animated.View style={enjoyStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">ENJOY.</Typography></Animated.View>
+              <Animated.View style={enjoyStyle}><Typography weight="black" adjustsFontSizeToFit numberOfLines={1} className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">EAT. ENJOY.</Typography></Animated.View>
               <Animated.View style={[entertainStyle, { height: 72, width: width - 64 }]}>
                 <MaskedView style={{ flex: 1 }} maskElement={<Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[72px] italic font-black leading-[72px] tracking-[-4px] text-center">ENTERTAIN.</Typography>}>
                   <LinearGradient colors={['#ff8533', '#8a2be2']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }} />
                 </MaskedView>
               </Animated.View>
-              <Animated.View style={eluruStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">ELURU.</Typography></Animated.View>
+              <Animated.View style={eluruStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">@ELURU.</Typography></Animated.View>
             </View>
 
             <View className="mt-auto mb-4 items-center w-full">
@@ -315,6 +314,9 @@ export default function HomeScreen() {
         {/* FOOTER SECTION */}
         <Footer onBackToTop={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />
       </ScrollView>
+
+      {/* FIXED HEADER - PLACED AT THE END FOR NATURAL Z-ORDER STACKING */}
+      <Navbar />
     </View>
   );
 }

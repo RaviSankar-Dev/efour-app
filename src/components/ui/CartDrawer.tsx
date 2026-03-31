@@ -47,10 +47,8 @@ export default function CartDrawer() {
   return (
     <Modal visible={isCartOpen} transparent animationType="slide">
       <View style={{ flex: 1, backgroundColor: THEME.bg }}>
-        <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
-
         {/* HEADER: PREMIUM BRANDING */}
-        <View style={{ paddingTop: insets.top + 24 }} className="px-8 flex-row items-center justify-between pb-10 border-b border-white/5 bg-white/[0.01]">
+        <View style={{ paddingTop: insets.top + 24 }} className="px-8 flex-row items-center justify-between pb-10 border-b border-white/5 bg-black">
            <View className="flex-row items-center space-x-6">
               <View className="relative">
                  <View style={{ backgroundColor: `${THEME.orange}30` }} className="absolute -inset-2 rounded-2xl blur-xl opacity-40" />
@@ -104,7 +102,7 @@ export default function CartDrawer() {
                        key={`${item.id}-${idx}`} 
                        entering={FadeInRight.delay(idx * 100)}
                        layout={Layout.springify()}
-                       className="mb-6 relative bg-[#0F172A]/40 border border-white/5 rounded-[32px] p-5 shadow-2xl overflow-hidden"
+                       className="mb-6 relative bg-white/[0.02] border border-white/5 rounded-[32px] p-5 shadow-2xl overflow-hidden"
                     >
                        <View style={{ backgroundColor: THEME.orange }} className="absolute top-0 left-0 w-1 h-full opacity-60" />
                        
@@ -192,11 +190,11 @@ export default function CartDrawer() {
                           setCartOpen(false);
                           router.push('/checkout');
                        }}
-                       style={{ shadowColor: THEME.orange, shadowOffset: { width: 0, height: 20 }, shadowOpacity: 0.3, shadowRadius: 40 }}
-                       className="bg-[#6C5CE7] h-20 rounded-[28px] flex-row items-center justify-center space-x-6 shadow-2xl mt-12 active:scale-95"
+                       style={{ shadowColor: '#fbbf24', shadowOffset: { width: 0, height: 20 }, shadowOpacity: 0.3, shadowRadius: 40 }}
+                       className="bg-yellow-400 h-20 rounded-[32px] flex-row items-center justify-center space-x-6 shadow-2xl mt-12 active:scale-95"
                     >
-                       <Typography weight="black" style={{ fontSize: 13, letterSpacing: 6 }} className="text-white uppercase italic">GO TO PAYMENT</Typography>
-                       <ArrowRight size={22} color="white" strokeWidth={4} />
+                       <Typography weight="black" style={{ fontSize: 13, letterSpacing: 6 }} className="text-black uppercase italic">GO TO PAYMENT</Typography>
+                       <ArrowRight size={22} color="black" strokeWidth={4} />
                     </TouchableOpacity>
 
                     <TouchableOpacity 

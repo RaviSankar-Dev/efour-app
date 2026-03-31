@@ -56,10 +56,13 @@ export default function DineScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#020408' }}>
-      <Navbar />
-
-      <ScrollView ref={scrollRef} bounces={false} showsVerticalScrollIndicator={false}>
-        <View className="bg-[#020408] pt-40 pb-32 px-6">
+      <ScrollView 
+        ref={scrollRef} 
+        bounces={false} 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingTop: 0, paddingBottom: 160 }}
+      >
+        <View className="bg-[#020408] pt-40 pb-16 px-6">
           {/* HEADER */}
           <View className="mb-12 px-2">
             <View className="flex-row items-center space-x-3 mb-6">
@@ -84,8 +87,8 @@ export default function DineScreen() {
           <View className="h-[1px] w-full bg-white/10 mb-12" />
 
           {/* FILTER BADGE */}
-          <Pressable className="bg-indigo-600 px-10 py-5 rounded-2xl flex-row items-center self-start mb-16 shadow-2xl shadow-indigo-600/40 active:bg-indigo-700">
-            <Typography weight="black" className="text-[12px] text-white tracking-[3px] italic uppercase font-black">EXPLORE DINE</Typography>
+          <Pressable className="bg-yellow-400 px-10 py-5 rounded-2xl flex-row items-center self-start mb-16 shadow-2xl shadow-yellow-400/40 active:bg-yellow-500">
+            <Typography weight="black" className="text-[12px] text-black tracking-[3px] italic uppercase font-black">EXPLORE DINE</Typography>
           </Pressable>
 
           {/* DINE GRID */}
@@ -105,6 +108,9 @@ export default function DineScreen() {
 
         <Footer onBackToTop={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />
       </ScrollView>
+
+      {/* FIXED HEADER - PLACED AT THE END FOR NATURAL Z-ORDER STACKING */}
+      <Navbar />
     </View>
   );
 }

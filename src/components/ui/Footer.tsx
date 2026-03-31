@@ -131,17 +131,17 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
 
       <View id="footer-branding-row" className="flex-row items-center justify-between mb-4" style={{ overflow: 'visible' }}>
         <View className="bg-white/5 border border-white/10 px-3 h-10 rounded-full flex-row items-center space-x-2 shadow-2xl">
-          <Typography weight="black" className="text-[7.5px] text-white/30 tracking-[1.5px] uppercase font-black">DEVELOPED BY STACKVIL TECHNOLOGIES</Typography>
+          <Typography weight="black" className="text-[7.5px] text-white/30 tracking-[1.5px] uppercase font-black">STACKVIL TECHNOLOGIES</Typography>
           <Zap size={14} stroke="#6366f1" fill="#6366f1" />
         </View>
 
         <Pressable 
            onPress={() => onBackToTop?.()}
-           className="flex-row items-center space-x-3 bg-indigo-600/10 px-4 h-11 rounded-full border border-indigo-600/30 active:bg-indigo-600/20 shadow-2xl"
+           className="flex-row items-center space-x-3 bg-yellow-400/10 px-4 h-11 rounded-full border border-yellow-400/30 active:bg-yellow-400/20 shadow-2xl"
         >
-          <Typography weight="black" className="text-[7.5px] text-indigo-400 tracking-[1.5px] uppercase font-black">BACK TO TOP</Typography>
-          <View className="w-8 h-8 items-center justify-center bg-indigo-600 rounded-full shadow-lg shadow-indigo-600/40">
-            <ArrowUp size={14} stroke="white" strokeWidth={4} />
+          <Typography weight="black" className="text-[7.5px] text-yellow-400 tracking-[1.5px] uppercase font-black">BACK TO TOP</Typography>
+          <View className="w-8 h-8 items-center justify-center bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/40">
+            <ArrowUp size={14} stroke="black" strokeWidth={4} />
           </View>
         </Pressable>
       </View>

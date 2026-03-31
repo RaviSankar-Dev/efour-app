@@ -5,15 +5,85 @@ import { BlurView } from "expo-blur";
 import { usePathname, useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useAppStore } from "../../store/useAppStore";
+import Animated, { 
+  useAnimatedStyle, 
+  useSharedValue, 
+  withSpring, 
+  withSequence 
+} from "react-native-reanimated";
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: any) => {
+  const scale = useSharedValue(1);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }]
+  }));
+
+  const handlePressIn = () => {
+    scale.value = withSpring(0.92);
+  };
+
+  const handlePressOut = () => {
+    scale.value = withSpring(1);
+  };
+
+  return (
+    <AnimatedPressable 
+      onPress={onPress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      style={[
+        {
+          width: 48,
+          height: 48,
+          borderRadius: 16,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 1,
+        },
+        variant === "primary" ? {
+          backgroundColor: '#6366f1',
+          borderColor: '#818cf8',
+          shadowColor: '#6366f1',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.3,
+          shadowRadius: 8,
+        } : {
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          borderColor: 'rgba(255, 255, 255, 0.1)',
+        },
+        animatedStyle
+      ]}
+    >
+      <Icon size={20} stroke="white" strokeWidth={2.4} />
+      {badgeCount > 0 && (
+        <View style={{
+          position: 'absolute',
+          top: -2,
+          right: -2,
+          backgroundColor: '#6366f1',
+          minWidth: 18,
+          height: 18,
+          borderRadius: 9,
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderWidth: 2,
+          borderColor: '#000',
+        }}>
+          <Typography weight="black" style={{ fontSize: 9, lineHeight: 12 }}>{badgeCount}</Typography>
+        </View>
+      )}
+    </AnimatedPressable>
+  );
+};
 
 export const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  
-  const isHome = pathname === "/" || pathname === "/(tabs)" || pathname === "/index";
   const { setCartOpen, cart, isAuthenticated } = useAppStore();
-
 
   return (
     <View 
@@ -22,58 +92,38 @@ export const Navbar = () => {
         top: 0,
         left: 0,
         right: 0,
-        zIndex: 1000,
-        paddingTop: insets.top + 8,
+        paddingTop: insets.top + 4,
         paddingHorizontal: 20,
-        backgroundColor: 'transparent', // NO UNWANTED BLACK NAVBAR
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+        zIndex: 100,
       }}
     >
-      {/* BRAND & ACTION GROUP - LEFT */}
-      <View className="flex-row items-center">
-        <Pressable onPress={() => router.push("/")}>
-           <Image 
-             source={require('../../../assets/images/E4_LOGO_NEW.jpeg')} 
-             style={{ width: 155, height: 104, marginLeft: -10 }} 
-             resizeMode="contain" 
-           />
-        </Pressable>
-      </View>
+      {/* BRAND - LEFT */}
+      <Pressable onPress={() => router.push("/")} style={{ transform: [{ translateX: -10 }] }}>
+        <Image 
+          source={require('../../../assets/images/E4_LOGO_NEW.jpeg')} 
+          style={{ width: 140, height: 90 }} 
+          resizeMode="contain" 
+        />
+      </Pressable>
 
-      {/* ACCESS ICONS - RIGHT */}
-      <View style={{ gap: 16 }} className="flex-row items-center">
-         <Pressable 
-            onPress={() => setCartOpen(true)}
-            className="w-12 h-12 items-center justify-center bg-white/5 border border-white/10 rounded-2xl relative shadow-2xl"
-         >
-            <ShoppingCart size={20} stroke="white" strokeWidth={2.4} />
-            {cart.length > 0 && (
-              <View className="absolute -top-1 -right-1 bg-indigo-600 min-w-[18px] h-[18px] rounded-full items-center justify-center border-2 border-black">
-                <Typography weight="black" className="text-[9px] text-white leading-none font-black">{cart.length}</Typography>
-              </View>
-            )}
-         </Pressable>
-
-         {!isAuthenticated && (
-           <Pressable 
-              onPress={() => router.push("/profile")}
-              className="bg-indigo-600 w-12 h-12 rounded-2xl shadow-2xl shadow-indigo-600/30 items-center justify-center active:bg-indigo-700"
-           >
-              <User size={20} stroke="white" strokeWidth={2.8} />
-           </Pressable>
-         )}
-         
-         {isAuthenticated && (
-           <Pressable 
-              onPress={() => router.push("/profile")}
-              className="w-12 h-12 items-center justify-center bg-indigo-600 rounded-2xl shadow-premium"
-           >
-              <User size={20} stroke="white" strokeWidth={2.8} />
-           </Pressable>
-         )}
+      {/* ACTION GROUP - RIGHT */}
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+        <NavbarButton 
+          icon={ShoppingCart} 
+          onPress={() => setCartOpen(true)} 
+          badgeCount={cart.length} 
+        />
+        
+        <NavbarButton 
+          icon={User} 
+          onPress={() => router.push("/profile")} 
+          variant={isAuthenticated ? "primary" : "glass"}
+        />
       </View>
     </View>
   );
 };
+

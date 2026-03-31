@@ -52,9 +52,12 @@ export default function DomeScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#000000' }}>
-      <Navbar />
-
-      <ScrollView ref={scrollRef} bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
+      <ScrollView 
+        ref={scrollRef} 
+        bounces={false} 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingBottom: 160 }}
+      >
         {/* HERO SECTION */}
         <View style={{ height: 450 }} className="relative">
           <Image
@@ -76,7 +79,7 @@ export default function DomeScreen() {
           </View>
         </View>
 
-        <View className="bg-[#000000] px-8 pt-10 pb-32">
+        <View className="bg-[#000000] px-8 pt-6 pb-20">
           {loading ? (
             <View className="py-20 items-center">
               <ActivityIndicator color="#6366f1" size="large" />
@@ -85,7 +88,7 @@ export default function DomeScreen() {
           ) : (
             <>
               {/* BOOKING INFO CARDS */}
-              <View className="flex-row items-center justify-between mb-12 gap-5 overflow-visible">
+              <View className="flex-row items-center justify-between mb-8 gap-5 overflow-visible">
                 <View className="flex-1 bg-white/5 border border-white/10 rounded-[32px] p-6 items-center shadow-premium">
                   <View className="w-12 h-12 items-center justify-center bg-indigo-500/10 rounded-2xl mb-4 border border-indigo-500/20">
                     <Clock size={22} stroke="#6366f1" strokeWidth={2.5} />
@@ -104,18 +107,18 @@ export default function DomeScreen() {
               </View>
 
               {/* MAIN CARD */}
-              <View className="bg-[#0b0e14] border-2 border-indigo-600/20 rounded-premium overflow-hidden mb-16 shadow-premium">
+              <View className="bg-[#0b0e14] border-2 border-indigo-600/20 rounded-premium overflow-hidden mb-10 shadow-premium">
                 <View className="p-10">
                   <View className="flex-row items-center mb-6">
                     <Typography weight="black" className="text-[52px] text-white italic font-black leading-none tracking-tighter">₹{dome?.price || '500'}</Typography>
                     <Typography weight="black" className="text-lg text-indigo-400 italic font-black ml-2 uppercase tracking-[2px]">/ HOUR</Typography>
                   </View>
 
-                  <Typography weight="bold" className="text-[12px] text-gray-400 leading-[22px] italic uppercase tracking-[2px] mb-10 font-bold">
+                  <Typography weight="bold" className="text-[12px] text-gray-400 leading-[22px] italic uppercase tracking-[2px] mb-8 font-bold">
                     {dome?.description || 'EXPERIENCE THE LUXURY OF YOUR OWN PRIVATE DOME. PERFECT FOR FAMILIES, FRIENDS, OR CELEBRATIONS.'}
                   </Typography>
 
-                  <View className="space-y-6 mb-12">
+                  <View className="space-y-6 mb-10">
                     {(dome?.features || [
                       { icon: Shield, text: 'PRIVATE & SECURE ENVIRONMENT' },
                       { icon: MapPin, text: 'PREMIUM BIRD-EYE LOCATION' },
@@ -131,13 +134,12 @@ export default function DomeScreen() {
                     })}
                   </View>
 
-                  <Pressable
-                    onPress={() => router.push('/dome-booking')}
-                    className="bg-indigo-600 h-20 rounded-[28px] flex-row items-center justify-center space-x-5 shadow-2xl shadow-indigo-600/40 active:bg-indigo-700"
+                  <View
+                    className="bg-white/5 border border-white/10 h-14 rounded-2xl flex-row items-center justify-center space-x-4 shadow-2xl"
                   >
-                    <Calendar size={20} stroke="white" strokeWidth={2.5} />
-                    <Typography weight="black" className="text-[14px] text-white tracking-[5px] uppercase font-black italic">BOOK NOW</Typography>
-                  </Pressable>
+                    <Sparkles size={16} stroke="#6366f1" strokeWidth={2.5} />
+                    <Typography weight="black" className="text-[11px] text-indigo-400 tracking-[4px] uppercase font-black italic">LAUNCHING SOON</Typography>
+                  </View>
                 </View>
 
                 <View className="bg-indigo-600/10 py-5 items-center border-t border-white/10">
@@ -148,8 +150,8 @@ export default function DomeScreen() {
           )}
 
           {/* GALLERY PREVIEW */}
-          <View className="mb-12">
-            <Typography weight="black" className="text-4xl italic text-white mb-10 tracking-[-2px] uppercase font-black">PREMIUM{"\n"}ATMOSPHERE.</Typography>
+          <View className="mb-8">
+            <Typography weight="black" className="text-4xl italic text-white mb-6 tracking-[-2px] uppercase font-black">PREMIUM{"\n"}ATMOSPHERE.</Typography>
 
             <View className="h-80 rounded-[40px] overflow-hidden border border-white/10 shadow-premium relative bg-[#0b0e14]">
               <ScrollView
@@ -193,6 +195,9 @@ export default function DomeScreen() {
 
         <Footer onBackToTop={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />
       </ScrollView>
+
+      {/* FIXED HEADER - PLACED AT THE END FOR NATURAL Z-ORDER STACKING */}
+      <Navbar />
     </View>
   );
 }
