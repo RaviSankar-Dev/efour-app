@@ -1,0 +1,25 @@
+Running 17 checks on your project...
+15/17 checks passed. 2 checks failed. Possible issues detected:
+Use the --verbose flag to see more details about passed checks.
+
+??? Check that required peer dependencies are installed
+Missing peer dependency: expo-font
+Required by: @expo/vector-icons
+Advice:
+Install missing required peer dependency with "npx expo install expo-font"
+Your app may crash outside of Expo Go without this dependency. Native module peer dependencies must be installed directly.
+
+??? Check that packages match versions required by installed Expo SDK
+
+?????? Minor version mismatches
+package                expected  found    
+react-native-svg       15.12.1   15.15.4  
+react-native-worklets  0.5.1     0.8.1    
+
+
+
+2 packages out of date.
+Advice:
+Use 'npx expo install --check' to review and upgrade your dependencies.
+To ignore specific packages, add them to "expo.install.exclude" in package.json. Learn more: https://expo.fyi/dependency-validation
+
