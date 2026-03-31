@@ -18,6 +18,7 @@ const DINE_DATA: DineProps[] = [
 export default function DineScreen() {
   const [dineItems, setDineItems] = React.useState<DineProps[]>(DINE_DATA);
   const [loading, setLoading] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   useEffect(() => {
     fetchDineData();
@@ -31,17 +32,22 @@ export default function DineScreen() {
         const fetchedItems = Array.isArray(data) ? data : (data.dine || []);
         if (fetchedItems.length > 0) {
           // Map API fields to DineProps
-          const mappedItems = fetchedItems.map((item: any) => ({
-            id: item._id || item.id,
-            title: item.name || item.title || 'UNNAMED DISH',
-            description: item.description || item.desc || 'EXPERIENCE THE FINEST CULINARY DELIGHTS AT E4 ELURU.',
-            image: item.imageUrl || item.image,
-            menu: item.menu || [
-              { id: 'm1', name: 'SIGNATURE MOMOS', price: 299, desc: 'STEAMED TO PERFECTION' },
-              { id: 'm2', name: 'FIERY PERI-PERI', price: 349, desc: 'EXTRA OUD & SPICY' },
-              { id: 'm3', name: 'TRUFFLE PLATTER', price: 599, desc: 'THE CHEFS SPECIAL' }
-            ]
-          }));
+          const mappedItems = fetchedItems.map((item: any) => {
+            let parsedMenu = item.menu;
+            if (typeof parsedMenu === 'string') {
+              try { parsedMenu = JSON.parse(parsedMenu); } catch(e) { parsedMenu = []; }
+            }
+            if (!Array.isArray(parsedMenu)) {
+              parsedMenu = [];
+            }
+            return {
+              id: item._id || item.id,
+              title: item.name || item.title || 'UNNAMED DISH',
+              description: item.description || item.desc || 'EXPERIENCE THE FINEST CULINARY DELIGHTS AT E4 ELURU.',
+              image: item.imageUrl || item.image,
+              menu: parsedMenu
+            };
+          });
           setDineItems(mappedItems);
         }
       }
@@ -72,15 +78,19 @@ export default function DineScreen() {
 
             <Typography weight="black" className="text-6xl italic text-white mb-8 tracking-[-3px] uppercase font-black">OUR{"\n"}DINE.</Typography>
 
-            <View className="flex-row items-center justify-between">
-              <Typography weight="medium" className="text-[13px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] max-w-[70%] font-medium">
-                BEST FOOD IN ELURU. CHOOSE YOUR FAVORITE DISH AND ENJOY.
-              </Typography>
+            <Typography weight="medium" className="text-[13px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] font-medium mb-8">
+              BEST FOOD IN ELURU. CHOOSE YOUR FAVORITE DISH AND ENJOY.
+            </Typography>
 
-              <View className="w-[140px] bg-white/5 border border-white/10 rounded-2xl h-14 flex-row items-center px-4 shadow-2xl">
-                <Search size={16} color="rgba(255,255,255,0.3)" />
-                <Typography weight="black" className="text-[9px] text-white/30 tracking-[1.5px] uppercase ml-3 font-black">SEARCH...</Typography>
-              </View>
+            <View className="w-full bg-[#0d0f14] border border-white/10 rounded-2xl px-6 py-4 flex-row items-center shadow-2xl">
+              <Search size={16} color="rgba(255,255,255,0.5)" />
+              <TextInput 
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="SEARCH RESTAURANTS..." 
+                placeholderTextColor="rgba(255,255,255,0.3)" 
+                className="text-[10px] text-white font-black uppercase tracking-widest flex-1 p-0 m-0 ml-4" 
+              />
             </View>
           </View>
 
@@ -99,7 +109,12 @@ export default function DineScreen() {
                 <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-4 font-black">SYNCING KITCHEN CATALOG...</Typography>
               </View>
             ) : (
-              dineItems.map((item) => (
+              dineItems.filter((item) => {
+                const search = searchQuery.toLowerCase();
+                const title = (item.title || '').toLowerCase();
+                const desc = (item.description || '').toLowerCase();
+                return title.includes(search) || desc.includes(search);
+              }).map((item) => (
                 <DineCard key={item.id} item={item} />
               ))
             )}

@@ -343,38 +343,36 @@ export default function ProfileScreen() {
             </View>
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
-               <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false} className="px-6">
-                  <View className="pt-4 pb-10">
+               <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'flex-start' }} showsVerticalScrollIndicator={false} className="px-6">
+                  <View className="pt-8 pb-10">
                      {/* BRANDING HEADER - CENTERED FOCUS */}
-                     <View className="items-center mb-16">
-                        <View className="bg-yellow-500/10 border border-yellow-500/20 px-6 py-3 rounded-2xl mb-10 shadow-2xl shadow-yellow-500/20">
-                           <Typography weight="black" className="text-[32px] text-yellow-500 italic font-black leading-none tracking-tighter">E4</Typography>
+                     <View className="items-center mb-8">
+                        <View className="w-48 h-48 mb-6 items-center justify-center">
+                           <Image source={require('../../assets/images/E4_LOGO_NEW.jpeg')} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                         </View>
-                        <Typography weight="black" className="text-7xl leading-[65px] italic text-white text-center tracking-[-4px] uppercase font-black">EFOUR{"\n"}ELURU.</Typography>
-                        <View className="w-12 h-1 bg-indigo-500 my-10 rounded-full" />
                         <Typography weight="medium" className="text-[11px] text-gray-400 leading-[20px] text-center italic uppercase tracking-[2px] font-medium px-10">
                            PREMIUM ENTERTAINMENT PORTAL.{"\n"}LOGIN TO CONTINUE YOUR EXPERIENCE.
                         </Typography>
                      </View>
 
                      {/* LOGIN UNIT - GLASSMORPHIC CARD */}
-                     <View className="bg-black/60 border border-white/10 p-10 rounded-[48px] shadow-premium backdrop-blur-3xl">
-                        <View className="items-center mb-12">
-                           <View className="w-16 h-16 items-center justify-center bg-white/5 border border-white/10 rounded-2xl mb-8 shadow-2xl shadow-indigo-500/10">
-                              <Key size={26} color="#6366f1" strokeWidth={2.5} />
+                     <View className="bg-black/60 border border-white/10 p-6 rounded-[32px] shadow-premium backdrop-blur-3xl mx-2">
+                        <View className="items-center mb-6">
+                           <View className="w-14 h-14 items-center justify-center bg-white/5 border border-white/10 rounded-2xl mb-4 shadow-2xl shadow-indigo-500/10">
+                              <Key size={22} color="#6366f1" strokeWidth={2.5} />
                            </View>
-                           <Typography weight="black" className="text-[44px] leading-[44px] italic text-white mb-3 tracking-tighter uppercase text-center font-black">{step === 0 ? "LOGIN" : "VERIFY"}</Typography>
-                           <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[5px] uppercase font-black text-center">{step === 0 ? "E4 SECURE ACCOUNT" : "OTP SESSION TOKEN"}</Typography>
+                           <Typography weight="black" className="text-4xl leading-[40px] italic text-white mb-2 tracking-tighter uppercase text-center font-black">{step === 0 ? "LOGIN" : "VERIFY"}</Typography>
+                           <Typography weight="black" className="text-[9px] text-indigo-400 tracking-[4px] uppercase font-black text-center">{step === 0 ? "E4 SECURE ACCOUNT" : "OTP SESSION TOKEN"}</Typography>
                         </View>
 
-                        <View className="gap-8">
+                        <View className="gap-5">
                            {step === 0 ? (
-                              <View className="bg-black/40 border border-white/10 rounded-2xl px-8 h-20 flex-row items-center shadow-inner">
-                                 <Phone size={20} color="#6366f1" strokeWidth={2} className="mr-6" />
+                              <View className="bg-black/40 border border-white/10 rounded-2xl px-5 h-16 flex-row items-center shadow-inner">
+                                 <Phone size={18} color="#6366f1" strokeWidth={2} className="mr-5" />
                                  <TextInput
                                     placeholder="PHONE NUMBER"
                                     placeholderTextColor="rgba(255,255,255,0.25)"
-                                    className="text-white text-lg font-black italic tracking-[2px] flex-1"
+                                    className="text-white text-[15px] font-black italic tracking-[2px] flex-1 pt-1"
                                     keyboardType="numeric"
                                     returnKeyType="done"
                                     value={phone}
@@ -385,12 +383,12 @@ export default function ProfileScreen() {
                                  />
                               </View>
                            ) : (
-                              <View className="bg-black/40 border border-white/10 rounded-2xl px-8 h-20 flex-row items-center shadow-inner">
-                                 <ShieldCheck size={20} color="#6366f1" strokeWidth={2} className="mr-6" />
+                              <View className="bg-black/40 border border-white/10 rounded-2xl px-5 h-16 flex-row items-center shadow-inner">
+                                 <ShieldCheck size={18} color="#6366f1" strokeWidth={2} className="mr-5" />
                                  <TextInput
                                     placeholder="XXXX"
                                     placeholderTextColor="rgba(255,255,255,0.25)"
-                                    className="text-white text-3xl font-black tracking-[8px] flex-1 text-center"
+                                    className="text-white text-2xl font-black tracking-[6px] flex-1 text-center pt-1"
                                     keyboardType="numeric"
                                     returnKeyType="done"
                                     maxLength={6}
@@ -406,14 +404,14 @@ export default function ProfileScreen() {
                            <Pressable
                               onPress={step === 0 ? handleSendOTP : handleVerifyOTP}
                               disabled={loading}
-                              className={`h-24 rounded-[32px] flex-row items-center justify-center space-x-6 shadow-2xl transition-all ${loading ? 'bg-indigo-600/50' : 'bg-indigo-600 shadow-indigo-600/60 active:bg-indigo-700 active:scale-[0.95]'}`}
+                              className={`h-[72px] rounded-3xl flex-row items-center justify-center space-x-4 shadow-2xl transition-all ${loading ? 'bg-[#FFD700]/50' : 'bg-[#FFD700] shadow-[#FFD700]/40 active:bg-yellow-500 active:scale-[0.95]'}`}
                            >
                               {loading ? (
-                                 <ActivityIndicator color="white" />
+                                 <ActivityIndicator color="black" />
                               ) : (
                                  <>
-                                    <Typography weight="black" className="text-[14px] text-white tracking-[5px] uppercase font-black italic">{step === 0 ? "SEND OTP" : "VERIFY NOW"}</Typography>
-                                    <ArrowRight size={22} color="white" strokeWidth={4} />
+                                    <Typography weight="black" className="text-[12px] text-black tracking-[5px] uppercase font-black italic">{step === 0 ? "SEND OTP" : "VERIFY NOW"}</Typography>
+                                    <ArrowRight size={20} color="black" strokeWidth={4} />
                                  </>
                               )}
                            </Pressable>
