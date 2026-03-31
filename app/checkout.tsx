@@ -22,25 +22,24 @@ const THEME = {
    border: 'rgba(255,255,255,0.08)',
 };
 
-/**
- * PRODUCTION-READY PAYMENT VERIFICATION ARCHITECTURE
- * Handles deep-link returns, manual sync polling, and app-state restoration.
- */
 export default function CheckoutScreen() {
    const insets = useSafeAreaInsets();
    const router = useRouter();
-   const { cart, tokens, logout, user, isAuthenticated, setUser, setTokens, fetchMyTickets, tickets, clearCart, updateQuantity, removeFromCart, setCartOpen, addToCart } = useAppStore();
+   const { cart, tokens, user, isAuthenticated, setUser, setTokens, fetchMyTickets, fetchOrders, tickets, orders, clearCart, updateQuantity, removeFromCart, setCartOpen } = useAppStore();
 
    // --- LOCAL STATE ---
    const [isProcessing, setIsProcessing] = useState(false);
-   const [step, setStep] = useState(isAuthenticated ? 1 : 0); // 0: Auth, 1: Review, 2: Payment (via Gateway), 3: Success
-   const [authStep, setAuthStep] = useState(0); // 0: Phone, 1: OTP
+   const [step, setStep] = useState(isAuthenticated ? 1 : 0); 
+   const [authStep, setAuthStep] = useState(0); 
    const [phone, setPhone] = useState("");
    const [otp, setOtp] = useState("");
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState<string | null>(null);
+   
+   // Reference points for success detection
+   const [initialOrderCount, setInitialOrderCount] = useState(0);
    const [initialTicketCount, setInitialTicketCount] = useState(0);
-   const [reconcileTime, setReconcileTime] = useState(0); // Time spent on verification
+   const [reconcileTime, setReconcileTime] = useState(0); 
    
    const appState = useRef(AppState.currentState);
    const pollingTimer = useRef<NodeJS.Timeout | null>(null);
@@ -50,28 +49,26 @@ export default function CheckoutScreen() {
    const gst = Math.round(subtotal * 0.09);
    const finalTotal = subtotal + gst;
 
-   // --- 1. ROBUST RECONCILIATION LOOP (POLLING FALLBACK) ---
+   // --- 1. ROBUST RECONCILIATION LOOP ---
    useEffect(() => {
       if (isProcessing) {
          setReconcileTime(0);
-         // Initial sync
-         fetchMyTickets();
-
-         // Polling Logic: High-frequency initial (1s) then decay to 3s
-         const startPolling = () => {
-             pollingTimer.current = setInterval(async () => {
-                setReconcileTime(prev => prev + 2);
-                await fetchMyTickets();
-             }, 2000);
+         
+         const syncData = async () => {
+            await Promise.all([fetchOrders(), fetchMyTickets()]);
          };
 
-         startPolling();
+         syncData();
 
-         // App State Change Re-trigger (User returns from browser)
+         // Poll every 2s to check for backend updates
+         pollingTimer.current = setInterval(() => {
+            setReconcileTime(prev => prev + 2);
+            syncData();
+         }, 2000);
+
          const appStateSub = AppState.addEventListener('change', (nextState: AppStateStatus) => {
             if (appState.current.match(/inactive|background/) && nextState === 'active') {
-               console.log("[PAYMENT] User returned - Force Reconciliation Sync");
-               fetchMyTickets();
+               syncData(); // User returned from browser - Force Sync
             }
             appState.current = nextState;
          });
@@ -83,22 +80,27 @@ export default function CheckoutScreen() {
       }
    }, [isProcessing]);
 
-   // --- 2. AUTOMATIC TICKET ARRIVAL DETECTION ---
+   // --- 2. MULTI-VECTOR SUCCESS DETECTION ---
    useEffect(() => {
-      // If we are waiting and a new ticket arrives in the global store, sync immediately
-      if (isProcessing && tickets.length > initialTicketCount) {
-         console.log("[PAYMENT] AUTO-VERIFY SUCCESS: Ticket count increased from", initialTicketCount, "to", tickets.length);
-         handleVerificationSuccess();
+      // Use absolute store state to avoid closure staleness
+      const currentOrders = useAppStore.getState().orders.length;
+      const currentTickets = useAppStore.getState().tickets.length;
+
+      if (isProcessing) {
+         if (currentOrders > initialOrderCount || currentTickets > initialTicketCount) {
+            console.log("[PAYMENT] RECONCILIATION SUCCESS: Transaction detected");
+            handleVerificationSuccess();
+         }
       }
-   }, [tickets, isProcessing, initialTicketCount]);
+   }, [orders, tickets, isProcessing, initialOrderCount, initialTicketCount]);
 
    const handleVerificationSuccess = () => {
       setIsProcessing(false);
       clearCart();
-      setStep(3); // Success Screen
+      setStep(3); 
    };
 
-   // --- 3. THEME/UI: ROTATING SPINNER ANIMATION ---
+   // --- LOADING ANIMATION ---
    const spinnerStyle = useAnimatedStyle(() => ({
       transform: [{ rotate: withRepeat(withTiming('360deg', { duration: 1500 }), -1, false) }]
    }));
@@ -143,15 +145,17 @@ export default function CheckoutScreen() {
       finally { setLoading(false); }
    };
 
-   // --- 4. SECURE PAYMENT INITIATION ---
+   // --- PAYMENT ACTION ---
    const handlePayment = async () => {
       if (!user) { setStep(0); return; }
 
       setLoading(true);
-      // Ensure we have a clean baseline of current tickets
-      await fetchMyTickets();
-      const baselineCount = useAppStore.getState().tickets.length;
-      setInitialTicketCount(baselineCount);
+      
+      // Establish Baseline across all tracked models
+      await Promise.all([fetchOrders(), fetchMyTickets()]);
+      const state = useAppStore.getState();
+      setInitialOrderCount(state.orders.length);
+      setInitialTicketCount(state.tickets.length);
 
       const checkoutItems = [
          ...cart.map(item => {
@@ -168,11 +172,9 @@ export default function CheckoutScreen() {
          { id: 'tax-gst', name: 'GST (9%)', price: gst, quantity: 1, stall: 'Tax', category: 'TAX' }
       ];
 
-      // CRITICAL: Dynamic Redirect URL for Web/Android/iOS Protocol
       const redirectUrl = Linking.createURL('checkout', { queryParams: { status: 'success' } });
 
       try {
-         console.log("[PAYMENT] Initializing Secure Gateway Transaction...");
          const response = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/orders/e4/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${tokens?.accessToken || ''}` },
@@ -189,15 +191,13 @@ export default function CheckoutScreen() {
          const paymentUrl = result.payment_url || result.url;
          
          if (paymentUrl) {
-            setIsProcessing(true); // Switch to Verification Mode
-            
-            // Open Gateway in Secure Browser
+            setIsProcessing(true);
             const authResult = await WebBrowser.openAuthSessionAsync(paymentUrl, redirectUrl);
 
             if (authResult.type === 'success' || authResult.type === 'cancel') {
-               // Browser dismissed - Immediate Reconciliation trigger
-               console.log("[PAYMENT] Secure Window Closed - Reconciliation active.");
-               setTimeout(() => fetchMyTickets(), 1000);
+               setTimeout(async () => {
+                  await Promise.all([fetchOrders(), fetchMyTickets()]);
+               }, 1000);
             }
          } else {
              Alert.alert("GATEWAY ERROR", result.message || "COULD NOT OPEN SECURE CHANNEL");
@@ -211,23 +211,33 @@ export default function CheckoutScreen() {
       }
    };
 
-   // --- 5. ROBUST DEEP-LINK CALLBACK HANDLER ---
+   // --- DEEP LINK CALLBACK ---
    useEffect(() => {
       const handleDeepLink = ({ url }: { url: string }) => {
-         console.log("[PAYMENT] PROTOCOL SIGNAL DETECTED:", url);
-         // Unified success handler for various gateway protocols
-         if (url.includes('success') || url.includes('status=200') || url.includes('payment=confirmed')) {
+         if (url.includes('success') || url.includes('status=200')) {
             handleVerificationSuccess();
          }
       };
-
-      const linkSub = Linking.addEventListener('url', handleDeepLink);
+      const sub = Linking.addEventListener('url', handleDeepLink);
       Linking.getInitialURL().then(url => { if (url) handleDeepLink({ url }); });
-
-      return () => linkSub.remove();
+      return () => sub.remove();
    }, []);
 
-   // --- 6. AUTO REDIRECT POST-VERIFICATION ---
+   // --- MANUAL SYNC HANDLER ---
+   const triggerManualVerification = async () => {
+       setLoading(true);
+       await Promise.all([fetchOrders(), fetchMyTickets()]);
+       setLoading(false);
+       
+       const state = useAppStore.getState();
+       if (state.orders.length > initialOrderCount || state.tickets.length > initialTicketCount) {
+          handleVerificationSuccess();
+       } else {
+          Alert.alert("SYNC IN PROGRESS", "NO NEW RESERVATIONS LOCATED YET. PLEASE WAIT OR ENSURE PAYMENT WAS SUCCESSFUL.");
+       }
+   };
+
+   // --- AUTO REDIRECT ---
    useEffect(() => {
       if (step === 3) {
          const autoNav = setTimeout(() => {
@@ -243,23 +253,8 @@ export default function CheckoutScreen() {
       }
    }, [step]);
 
-   // --- 7. MANUAL RE-VERIFICATION HANDLER (FALLBACK) ---
-   const triggerManualVerification = async () => {
-       setLoading(true);
-       await fetchMyTickets();
-       setLoading(false);
-       
-       const { tickets: latest } = useAppStore.getState();
-       if (latest.length > initialTicketCount) {
-          handleVerificationSuccess();
-       } else if (reconcileTime > 60) {
-          Alert.alert("STILL VERIFYING", "YOUR PAYMENT IS BEING PROCESSED BY THE BANK. IT MAY TAKE A FEW MINUTES. WE WILL AUTOMATICALLY NOTIFY YOU.", [{ text: "STAY ON SCREEN" }, { text: "GO TO TICKETS", onPress: () => router.replace('/tickets') }]);
-       } else {
-          Alert.alert("SYNC IN PROGRESS", "NO NEW RESERVATIONS LOCATED YET. PLEASE WAIT UNTIL THE PAYMENT IS FULLY PROCESSED BY YOUR BANK.");
-       }
-   };
 
-   // --- VIEW: AUTH ---
+   // --- VIEWS ---
    if (step === 0) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
@@ -335,7 +330,6 @@ export default function CheckoutScreen() {
       );
    }
 
-   // --- VIEW: SUCCESS ---
    if (step === 3) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
@@ -354,7 +348,6 @@ export default function CheckoutScreen() {
       );
    }
 
-   // --- VIEW: PROCESSING FALLBACK (RECONCILIATION) ---
    if (isProcessing) {
       return (
          <View style={{ flex: 1, backgroundColor: THEME.bg }}>
@@ -364,7 +357,7 @@ export default function CheckoutScreen() {
                   <RefreshCw size={52} color={THEME.orange} strokeWidth={3} />
                </Animated.View>
                <Typography weight="black" className="text-3xl text-white text-center italic tracking-tighter uppercase font-black mb-6">VERIFYING PAYMENT...</Typography>
-               <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-white/40 text-center uppercase mb-16 leading-6">WAITING FOR NETWORK RECONCILIATION. ONCE PAYMENT IS COMPLETE, WE WILL AUTO-SYNC.</Typography>
+               <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-white/40 text-center uppercase mb-16 leading-6">WAITING FOR BANK CONFIRMATION AND NETWORK RECONCILIATION.</Typography>
 
                <Pressable 
                   onPress={triggerManualVerification} 
@@ -383,7 +376,6 @@ export default function CheckoutScreen() {
       );
    }
 
-   // --- VIEW: REVIEW & PAY ---
    return (
       <View style={{ flex: 1, backgroundColor: THEME.bg }}>
          <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
@@ -400,7 +392,6 @@ export default function CheckoutScreen() {
                </View>
 
                <View className="px-6 pt-12 pb-32">
-                  {/* Step Progress */}
                   <View className="flex-row items-center justify-center mb-16 space-x-10">
                      <View className="items-center">
                         <View style={{ backgroundColor: THEME.purple }} className="w-10 h-10 rounded-full items-center justify-center shadow-2xl"><Typography weight="black" className="text-xs text-white italic">01</Typography></View>
@@ -413,7 +404,6 @@ export default function CheckoutScreen() {
                      </View>
                   </View>
 
-                  {/* Summary Card */}
                   <View className="bg-white/5 border border-white/10 rounded-[40px] p-8 mb-12 shadow-2xl overflow-hidden relative">
                      <View style={{ backgroundColor: THEME.orange }} className="absolute top-0 left-0 w-full h-1 opacity-40" />
                      <View className="flex-row items-center space-x-5 mb-12">

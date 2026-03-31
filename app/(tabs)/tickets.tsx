@@ -99,11 +99,10 @@ const TicketPass = memo(({ ticket, orderDate }: { ticket: any, orderDate: string
 export default function YourTickets() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { user, tokens, isAuthenticated, logout } = useAppStore();
+  const { user, tokens, isAuthenticated, logout, orders, fetchOrders } = useAppStore();
   
   // LOGIC STATES
   const [activeTab, setActiveTab] = useState<'rides' | 'events'>('rides');
-  const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -118,30 +117,10 @@ export default function YourTickets() {
     }
   }, [isAuthenticated]);
 
-  const fetchOrders = async () => {
-    if (!tokens?.accessToken) return;
-    setLoading(true);
-    try {
-      const location = 'E4';
-      const response = await fetch(`https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/orders/${location}`, {
-        headers: { 'Authorization': `Bearer ${tokens.accessToken}` }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        const fetchedOrders = Array.isArray(data) ? data : (data.orders || []);
-        setOrders(fetchedOrders);
-      } else if (response.status === 401) {
-        logout();
-      } else {
-        setError("SYNC FAILED. PLEASE TRY AGAIN.");
-      }
-    } catch (err) {
-      setError("CONNECTION ISSUE. CHECK INTERNET.");
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+  const onRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchOrders();
+    setIsRefreshing(false);
   };
 
   const handleExpand = async (orderId: string) => {

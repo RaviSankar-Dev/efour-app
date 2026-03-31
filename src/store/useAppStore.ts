@@ -26,6 +26,7 @@ interface AppState {
   setTokens: (tokens: { accessToken: string; refreshToken: string } | null) => void;
   refreshTokens: () => Promise<boolean>;
   fetchMyTickets: () => Promise<void>;
+  fetchOrders: () => Promise<void>;
   fetchProfile: () => Promise<void>;
   fetchE4Profile: () => Promise<void>;
   updateProfile: (name: string, email: string) => Promise<boolean>;
@@ -43,8 +44,9 @@ interface AppState {
   isCartOpen: boolean;
   setCartOpen: (open: boolean) => void;
 
-  // TICKETS STATE
+  // TICKETS & ORDERS STATE
   tickets: Ticket[];
+  orders: any[];
   addTicket: (ticket: Omit<Ticket, 'id' | 'bookingDate' | 'isExpired'>) => void;
   checkExpirations: () => void;
 
@@ -308,6 +310,36 @@ export const useAppStore = create<AppState>()(
         }
       },
 
+      fetchOrders: async () => {
+        const { tokens, refreshTokens, logout } = useAppStore.getState();
+        if (!tokens?.accessToken) return;
+        try {
+          const res = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/orders/E4', {
+            headers: { 'Authorization': `Bearer ${tokens.accessToken}` }
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const fetchedOrders = Array.isArray(data) ? data : (data.orders || []);
+            set({ orders: fetchedOrders });
+          } else if (res.status === 401) {
+            const refreshed = await refreshTokens();
+            if (refreshed) {
+               const state = useAppStore.getState();
+               const retryRes = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/orders/E4', {
+                  headers: { 'Authorization': `Bearer ${state.tokens?.accessToken}` }
+               });
+               if (retryRes.ok) {
+                  const data = await retryRes.json();
+                  const retryOrders = Array.isArray(data) ? data : (data.orders || []);
+                  set({ orders: retryOrders });
+               }
+            }
+          }
+        } catch (e) {
+          console.error("FETCH ORDERS FAILED:", e);
+        }
+      },
+
       fetchMyTickets: async () => {
         const { tokens, refreshTokens, logout } = useAppStore.getState();
         if (!tokens?.accessToken) return;
@@ -326,7 +358,7 @@ export const useAppStore = create<AppState>()(
               });
               if (retryResponse.ok) {
                 const data = await retryResponse.json();
-                set({ tickets: data.tickets || data });
+                set({ tickets: Array.isArray(data) ? data : (data.tickets || []) });
                 return;
               }
             }
@@ -336,15 +368,16 @@ export const useAppStore = create<AppState>()(
 
           if (response.ok) {
             const data = await response.json();
-            set({ tickets: data.tickets || data });
+            set({ tickets: Array.isArray(data) ? data : (data.tickets || []) });
           }
         } catch (error) {
           console.error("FETCH TICKETS FAILED:", error);
         }
       },
 
-      // TICKETS IMPLEMENTATION
+      // TICKETS & ORDERS IMPLEMENTATION
       tickets: [],
+      orders: [],
       addTicket: (item) => set((state) => {
         const id = Math.random().toString(36).substring(7).toUpperCase();
         const bookingDate = Date.now();
