@@ -38,32 +38,36 @@ export default function AboutScreen() {
         </View>
 
         {/* VALUE CARDS */}
-        <View className="flex-row space-x-4 mb-16">
+        <View className="space-y-6 mb-16">
            {/* Vendors Card */}
-           <View className="flex-1 bg-indigo-500/5 p-6 rounded-[32px] border border-indigo-500/10">
-              <View className="w-12 h-12 items-center justify-center bg-indigo-500/10 rounded-2xl mb-6">
-                 <Store size={22} color="#6366f1" />
+           <View className="bg-[#0b0e14] p-8 rounded-[40px] border border-white/5">
+              <View className="flex-row items-center space-x-5 mb-6">
+                 <View className="w-12 h-12 items-center justify-center bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                    <Store size={22} color="#6366f1" />
+                 </View>
+                 <Typography weight="black" className="text-xl text-white italic uppercase">FOR VENDORS</Typography>
               </View>
-              <Typography weight="black" className="text-lg text-white italic mb-4 uppercase">FOR VENDORS</Typography>
-              <Typography weight="bold" className="text-[9px] text-white/40 leading-4 uppercase tracking-wider italic">
-                PROMOTE YOUR CULINARY BUSINESS DIRECTLY TO THOUSANDS. BENEFIT FROM AN ENHANCED E-EXPERIENCE WITH DIRECT CUSTOMER REVIEWS.
+              <Typography weight="bold" className="text-[11px] text-white/40 leading-6 uppercase tracking-wider italic">
+                PROMOTE YOUR CULINARY BUSINESS DIRECTLY TO THOUSANDS. BENEFIT FROM AN ENHANCED E-EXPERIENCE WITH DIRECT CUSTOMER REVIEWS AND ANALYTICS.
               </Typography>
            </View>
 
            {/* Users Card */}
-           <View className="flex-1 bg-orange-500/5 p-6 rounded-[32px] border border-orange-500/10">
-              <View className="w-12 h-12 items-center justify-center bg-orange-500/10 rounded-2xl mb-6">
-                 <Users size={22} color="#f97316" />
+           <View className="bg-[#0b0e14] p-8 rounded-[40px] border border-white/5">
+              <View className="flex-row items-center space-x-5 mb-6">
+                 <View className="w-12 h-12 items-center justify-center bg-orange-500/10 rounded-2xl border border-orange-500/20">
+                    <Users size={22} color="#f97316" />
+                 </View>
+                 <Typography weight="black" className="text-xl text-white italic uppercase">FOR USERS</Typography>
               </View>
-              <Typography weight="black" className="text-lg text-white italic mb-4 uppercase">FOR USERS</Typography>
-              <Typography weight="bold" className="text-[9px] text-white/40 leading-4 uppercase tracking-wider italic">
-                A WIDE RANGE OF SERVICES SUITED TO YOUR NEEDS—FROM DIVERSE CUISINES TO CUSTOMIZED ENTERTAINMENT PACKAGES.
+              <Typography weight="bold" className="text-[11px] text-white/40 leading-6 uppercase tracking-wider italic">
+                A WIDE RANGE OF SERVICES SUITED TO YOUR NEEDS—FROM DIVERSE CUISINES TO CUSTOMIZED ENTERTAINMENT PACKAGES AND SEAMLESS QR PAYMENTS.
               </Typography>
            </View>
         </View>
 
         {/* VISION SECTION */}
-        <View className="bg-white/5 rounded-[40px] p-8 mb-40 border border-white/5">
+        <View className="bg-white/5 rounded-[48px] p-10 mb-40 border border-white/5">
            <View className="flex-row items-center space-x-4 mb-10">
               <View className="w-10 h-10 items-center justify-center bg-indigo-500/10 rounded-xl border border-indigo-500/20">
                  <Target size={18} color="#6366f1" />
@@ -71,26 +75,30 @@ export default function AboutScreen() {
               <Typography weight="black" className="text-lg text-white italic uppercase">OUR VISION</Typography>
            </View>
 
-           <View className="bg-black/40 rounded-3xl p-6 border-l-4 border-indigo-500 mb-10">
-              <Typography weight="bold" className="text-xs text-white/80 leading-5 italic uppercase">
+           <View className="bg-black/60 rounded-[32px] p-8 border-l-4 border-indigo-500 mb-12 shadow-2xl">
+              <Typography weight="bold" className="text-sm text-white/80 leading-6 italic uppercase">
                 "WE DESIGNED AN AMPLE SPACE FOR ALL CUISINES AND PLAY ZONE ACTIVITIES TO SUIT ALL AGES AND PROMOTE LOCAL TALENT."
               </Typography>
            </View>
 
-           {/* FOUNDER BLOCK - REFINED PORTRAIT CROP */}
-           <View className="flex-row items-center space-x-8">
-              <View className="w-32 h-44 rounded-[40px] overflow-hidden border border-white/10 shadow-2xl bg-[#0b0e14]">
-                 <Image 
-                   source={require('../assets/images/founder_new.jpeg')} 
-                   style={{ width: '100%', height: '100%', transform: [{ translateY: 5 }] }}
-                   resizeMode="cover"
-                 />
+           {/* FOUNDER BLOCK - PREMIUM AVATAR STYLING */}
+           <View className="items-center">
+              <View className="w-36 h-36 rounded-full overflow-hidden border-2 border-indigo-500/30 shadow-2xl bg-[#0b0e14] mb-8 p-1">
+                 <View className="w-full h-full rounded-full overflow-hidden">
+                    <Image 
+                      source={require('../assets/images/founder_new.jpeg')} 
+                      style={{ width: '100%', height: '100%' }}
+                      resizeMode="cover"
+                    />
+                 </View>
               </View>
-              <View className="flex-1">
-                 <Typography weight="black" className="text-2xl text-white italic uppercase leading-none mb-6 tracking-tighter">JAYANARAYANA KURETI</Typography>
-                 <View className="flex-row items-center space-x-3">
-                    <View className="w-8 h-[2px] bg-indigo-500" />
-                    <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase italic">FOUNDER & CEO</Typography>
+              
+              <View className="items-center">
+                 <Typography weight="black" className="text-2xl text-white italic uppercase tracking-tighter text-center mb-3">JAYANARAYANA KURETI</Typography>
+                 <View className="flex-row items-center space-x-4">
+                    <View className="w-8 h-[1.5px] bg-indigo-500" />
+                    <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[5px] uppercase italic">FOUNDER & CEO</Typography>
+                    <View className="w-8 h-[1.5px] bg-indigo-500" />
                  </View>
               </View>
            </View>

@@ -40,110 +40,120 @@ export default function PrivacyScreen() {
         </View>
 
         {/* TOP INTRO CARD */}
-        <View className="bg-white/5 p-8 rounded-[40px] border border-white/10 mb-8">
-           <Typography weight="bold" className="text-sm text-white/40 italic leading-7 uppercase tracking-wider">
-             <Typography weight="black" className="text-white">EFOUR ELURU </Typography>
-             PROTECTS ALL YOUR INFORMATION AND DATA SHARED WITH US VIA THIS WEBSITE. POLICY STARTED ON 
-             <Typography weight="black" className="text-indigo-400"> MARCH 01, 2026.</Typography>
+        <View className="bg-white/5 p-10 rounded-[48px] border border-white/10 mb-10">
+           <Typography weight="bold" className="text-[11px] text-white/40 italic leading-7 uppercase tracking-wider">
+              <Typography weight="black" className="text-white">EFOUR ELURU </Typography>
+              PROTECTS ALL YOUR INFORMATION AND DATA SHARED WITH US VIA THIS WEBSITE. POLICY LAST UPDATED ON 
+              <Typography weight="black" className="text-indigo-400"> MARCH 01, 2026.</Typography>
            </Typography>
         </View>
 
-        {/* DATA & SECURITY GRID */}
-        <View className="flex-row space-x-4 mb-4">
-           <View className="flex-1">
-             <PolicyCard icon={UserCheck} title="YOUR DATA">
-               <View className="space-y-4">
-                 {['NAME & MOBILE', 'EMAIL & ADDRESS', 'SURVEY DATA'].map((item) => (
-                   <View key={item} className="flex-row items-center space-x-3">
-                     <View className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                     <Typography weight="bold" className="text-[10px] text-white/60 tracking-wider uppercase italic">{item}</Typography>
-                   </View>
-                 ))}
-               </View>
-             </PolicyCard>
-           </View>
-           <View className="flex-1">
-             <PolicyCard icon={ShieldCheck} title="SECURITY" color="#f97316">
-               <Typography weight="bold" className="text-[9px] text-white/40 leading-4 uppercase tracking-wider italic">
-                 WE USE SUITABLE PHYSICAL AND ELECTRONIC PROCEDURES TO SAFEGUARD YOUR INFO. WE WON'T SELL YOUR DATA UNLESS REQUIRED BY LAW.
-               </Typography>
-             </PolicyCard>
-           </View>
+        {/* DATA & SECURITY SECTION - VERTICAL STACK */}
+        <View className="space-y-8 mb-8">
+           <PolicyCard icon={UserCheck} title="YOUR DATA">
+             <View className="space-y-5">
+               {['NAME & MOBILE NUMBER', 'EMAIL & RESIDENTIAL ADDRESS', 'USER SURVEY FEEDBACK'].map((item) => (
+                 <View key={item} className="flex-row items-center space-x-4">
+                   <View className="w-2 h-2 rounded-full bg-indigo-500 shadow-premium" />
+                   <Typography weight="black" className="text-[10px] text-white/60 tracking-widest uppercase italic font-black">{item}</Typography>
+                 </View>
+               ))}
+             </View>
+           </PolicyCard>
+
+           <PolicyCard icon={ShieldCheck} title="SECURITY PROTOCOLS" color="#f97316">
+             <Typography weight="bold" className="text-[11px] text-white/40 leading-6 uppercase tracking-wider italic">
+               WE IMPLEMENT RIGOROUS PHYSICAL AND ELECTRONIC PROCEDURES TO SECURE YOUR SENSITIVE DATA. EFOUR NEVER SELLS OR LEASES YOUR PERSONAL INFORMATION TO THIRD PARTIES WITHOUT EXPLICIT CONSENT.
+             </Typography>
+           </PolicyCard>
+
+           {/* HOW WE USE DATA */}
+           <PolicyCard icon={Database} title="USE OF INFORMATION">
+              <View className="flex-row flex-wrap justify-between mt-4">
+                {[
+                  { n: '01', t: 'INTERNAL RECORDS' },
+                  { n: '02', t: 'SERVICE UPDATES' },
+                  { n: '03', t: 'PROMOTIONS' },
+                  { n: '04', t: 'MARKET ANALYSIS' }
+                ].map((item) => (
+                  <View key={item.n} className="w-[45%] mb-8">
+                    <Typography weight="black" className="text-indigo-400 italic text-2xl mb-2 font-black">{item.n}</Typography>
+                    <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase italic font-black">{item.t}</Typography>
+                  </View>
+                ))}
+              </View>
+           </PolicyCard>
+
+           <PolicyCard icon={Clock} title="DATA RETENTION" color="#f97316">
+             <Typography weight="bold" className="text-[11px] text-white/40 leading-6 uppercase tracking-wider italic">
+               WE STORE DATA ONLY AS LONG AS NECESSARY FOR THE PURPOSE IT WAS COLLECTED OR AS MANDATED BY REGULATORY LAWS.
+             </Typography>
+           </PolicyCard>
+
+           <PolicyCard icon={ThumbsUp} title="USER CONSENT">
+             <Typography weight="bold" className="text-[11px] text-white/40 leading-6 uppercase tracking-wider italic">
+               BY ACCESSING THE EFOUR ELURU PORTAL, YOU AGREE TO OUR PRIVACY TERMS. CONSENT CAN BE WITHDRAWN VIA THE PROFILE SETTINGS AT ANY TIME.
+             </Typography>
+           </PolicyCard>
         </View>
 
-        {/* HOW WE USE DATA */}
-        <PolicyCard icon={Database} title="HOW WE USE DATA">
-           <View className="flex-row flex-wrap justify-between mt-2">
-             {[
-               { n: '01', t: 'INTERNAL RECORDS' },
-               { n: '02', t: 'SERVICE UPDATES' },
-               { n: '03', t: 'PROMOTIONS' },
-               { n: '04', t: 'MARKET ANALYSIS' }
-             ].map((item) => (
-               <View key={item.n} className="w-[48%] mb-6">
-                 <Typography weight="black" className="text-indigo-400 italic text-xl mb-1">{item.n}</Typography>
-                 <Typography weight="black" className="text-[9px] text-white/30 tracking-[2px] uppercase italic">{item.t}</Typography>
-               </View>
-             ))}
+        {/* RIGHTS / COOKIES / SHARING - VERTICAL STACK */}
+        <View className="space-y-6 mb-12">
+           <View className="bg-white/5 p-8 rounded-[40px] border border-white/5 flex-row items-center space-x-6">
+              <View className="w-14 h-14 items-center justify-center bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                 <Fingerprint size={24} color="#6366f1" />
+              </View>
+              <View className="flex-1">
+                 <Typography weight="black" className="text-[12px] text-white italic uppercase mb-2 font-black">USER RIGHTS</Typography>
+                 <Typography weight="bold" className="text-[9px] text-white/20 uppercase italic leading-4">ACCESS, CORRECT, OR REQUEST PERMANENT DELETION OF DATA.</Typography>
+              </View>
            </View>
-        </PolicyCard>
-
-        {/* RETENTION & CONSENT GRID */}
-        <View className="flex-row space-x-4 mb-4">
-           <View className="flex-1">
-             <PolicyCard icon={Clock} title="DATA RETENTION" color="#f97316">
-               <Typography weight="bold" className="text-[9px] text-white/40 leading-4 uppercase tracking-wider italic">
-                 WE STORE DATA ONLY AS LONG AS NECESSARY FOR THE PURPOSE IT WAS COLLECTED OR AS REQUIRED BY REGULATORY POLICIES.
-               </Typography>
-             </PolicyCard>
+           <View className="bg-white/5 p-8 rounded-[40px] border border-white/5 flex-row items-center space-x-6">
+              <View className="w-14 h-14 items-center justify-center bg-orange-500/10 rounded-2xl border border-orange-500/20">
+                 <Cookie size={24} color="#f97316" />
+              </View>
+              <View className="flex-1">
+                 <Typography weight="black" className="text-[12px] text-white italic uppercase mb-2 font-black">COOKIES</Typography>
+                 <Typography weight="bold" className="text-[9px] text-white/20 uppercase italic leading-4">ENHANCING ANALYTICS. ACCEPT OR DECLINE VIA SESSION SETTINGS.</Typography>
+              </View>
            </View>
-           <View className="flex-1">
-             <PolicyCard icon={ThumbsUp} title="CONSENT">
-               <Typography weight="bold" className="text-[9px] text-white/40 leading-4 uppercase tracking-wider italic">
-                 BY USING EFOUR ELURU, YOU CONSENT TO OUR POLICY. YOU CAN WITHDRAW YOUR CONSENT AT ANY TIME.
-               </Typography>
-             </PolicyCard>
-           </View>
-        </View>
-
-        {/* RIGHTS / COOKIES / SHARING */}
-        <View className="flex-row space-x-3 mb-8">
-           <View className="flex-1 bg-white/5 p-5 rounded-[28px] border border-white/5">
-              <Fingerprint size={16} color="#6366f1" className="mb-4" />
-              <Typography weight="black" className="text-[10px] text-white italic uppercase mb-2">USER RIGHTS</Typography>
-              <Typography weight="bold" className="text-[7px] text-white/20 uppercase italic leading-3">YOU CAN ACCESS, CORRECT, OR REQUEST DELETION OF YOUR DATA.</Typography>
-           </View>
-           <View className="flex-1 bg-white/5 p-5 rounded-[28px] border border-white/5">
-              <Cookie size={16} color="#f97316" className="mb-4" />
-              <Typography weight="black" className="text-[10px] text-white italic uppercase mb-2">COOKIES</Typography>
-              <Typography weight="bold" className="text-[7px] text-white/20 uppercase italic leading-3">USED TO ENHANCE YOUR EXPERIENCE. ACCEPT OR DECLINE VIA SETTINGS.</Typography>
-           </View>
-           <View className="flex-1 bg-white/5 p-5 rounded-[28px] border border-white/5">
-              <Share2 size={16} color="#6366f1" className="mb-4" />
-              <Typography weight="black" className="text-[10px] text-white italic uppercase mb-2">DATA SHARING</Typography>
-              <Typography weight="bold" className="text-[7px] text-white/20 uppercase italic leading-3">SHARED WITH TRUSTED PROVIDERS ONLY. NO MARKETING WITHOUT CONSENT.</Typography>
+           <View className="bg-white/5 p-8 rounded-[40px] border border-white/5 flex-row items-center space-x-6">
+              <View className="w-14 h-14 items-center justify-center bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                 <Share2 size={24} color="#6366f1" />
+              </View>
+              <View className="flex-1">
+                 <Typography weight="black" className="text-[12px] text-white italic uppercase mb-2 font-black">NO LEAK POLICY</Typography>
+                 <Typography weight="bold" className="text-[9px] text-white/20 uppercase italic leading-4">SHARED WITH TRUSTED PROVIDERS ONLY. NO THIRD-PARTY MARKETING.</Typography>
+              </View>
            </View>
         </View>
 
         {/* IDENTITY FOOTER */}
-        <View className="bg-white/5 rounded-[40px] p-8 mb-40 border border-white/5 flex-row items-center justify-between">
-           <View className="flex-row items-center space-x-4">
-              <View className="w-12 h-12 items-center justify-center bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
-                 <ShieldAlert size={20} color="#6366f1" />
+        <View className="bg-[#0b0e14] rounded-[48px] p-10 mb-40 border border-white/10">
+           <View className="flex-row items-center space-x-5 mb-10">
+              <View className="w-14 h-14 items-center justify-center bg-indigo-500/10 rounded-2xl border border-indigo-500/20">
+                 <ShieldAlert size={24} color="#6366f1" />
               </View>
               <View>
-                <Typography weight="black" className="text-[8px] text-white/20 tracking-[3px] uppercase italic">IDENTITY</Typography>
-                <Typography weight="black" className="text-xl text-white italic uppercase">EFOUR ELURU HQ</Typography>
+                <Typography weight="black" className="text-[10px] text-white/20 tracking-[4px] uppercase italic font-black font-black">IDENTITY CONTROL</Typography>
+                <Typography weight="black" className="text-2xl text-white italic uppercase tracking-tighter font-black">EFOUR ELURU HQ</Typography>
               </View>
            </View>
-           <View className="space-y-3">
-              <View className="bg-black/60 px-4 py-2 rounded-xl flex-row items-center space-x-3">
-                 <Mail size={12} color="#6366f1" />
-                 <Typography weight="black" className="text-[8px] text-white tracking-widest italic lowercase">CEO@EFOUR-ELURU.COM</Typography>
+           
+           <View className="space-y-4">
+              <View className="bg-white/5 px-6 py-5 rounded-[24px] border border-white/5 flex-row items-center justify-between">
+                 <View className="flex-row items-center space-x-4">
+                    <Mail size={16} color="#6366f1" />
+                    <Typography weight="black" className="text-[10px] text-white/60 tracking-widest italic lowercase font-black">CEO@EFOUR-ELURU.COM</Typography>
+                 </View>
+                 <ShieldCheck size={14} color="#10b981" />
               </View>
-              <View className="bg-black/60 px-4 py-2 rounded-xl flex-row items-center space-x-3">
-                 <Phone size={12} color="#f97316" />
-                 <Typography weight="black" className="text-[8px] text-white tracking-widest uppercase italic">+91 70369 23456</Typography>
+              <View className="bg-white/5 px-6 py-5 rounded-[24px] border border-white/5 flex-row items-center justify-between">
+                 <View className="flex-row items-center space-x-4">
+                    <Phone size={16} color="#f97316" />
+                    <Typography weight="black" className="text-[10px] text-white/60 tracking-widest uppercase italic font-black">+91 70369 23456</Typography>
+                 </View>
+                 <Zap size={14} color="#f59e0b" fill="#f59e0b" />
               </View>
            </View>
         </View>
