@@ -142,7 +142,11 @@ const TabIcon = ({
 
 
 
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+  
   return (
     <Tabs
       screenOptions={{
@@ -155,53 +159,19 @@ export default function TabsLayout() {
         },
         tabBarStyle: {
           position: "absolute",
-          bottom: Platform.OS === 'ios' ? 34 : 24,
-          left: 20,
-          right: 20,
-          height: 72,
-          borderRadius: 36,
-          backgroundColor: Platform.OS === 'ios' ? 'rgba(12, 14, 22, 0.75)' : '#0c0e16',
-          borderTopWidth: 0,
-          borderWidth: 1.5,
-          borderColor: 'rgba(255, 255, 255, 0.08)',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: (Platform.OS === 'ios' ? 82 : 72) + insets.bottom,
+          backgroundColor: '#000000',
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(255, 255, 255, 0.05)',
           paddingHorizontal: 12,
-          elevation: 25,
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 15 },
-          shadowOpacity: 0.5,
-          shadowRadius: 25,
+          paddingBottom: insets.bottom,
+          elevation: 0,
+          shadowOpacity: 0,
         },
-        tabBarBackground: () => (
-          Platform.OS === 'ios' ? (
-            <BlurView 
-              intensity={80} 
-              tint="dark" 
-              style={{ 
-                position: 'absolute', 
-                top: 0, 
-                left: 0, 
-                right: 0, 
-                bottom: 0, 
-                borderRadius: 36,
-                overflow: 'hidden'
-              }} 
-            />
-          ) : (
-            <LinearGradient
-              colors={['rgba(12, 14, 22, 1)', 'rgba(30, 41, 59, 0.95)']}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                borderRadius: 36,
-                borderWidth: 1,
-                borderColor: 'rgba(255, 255, 255, 0.05)'
-              }}
-            />
-          )
-        ),
+        tabBarBackground: () => null,
       }}
     >
       <Tabs.Screen
