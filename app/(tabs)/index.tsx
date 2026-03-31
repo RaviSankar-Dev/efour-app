@@ -132,6 +132,7 @@ export default function HomeScreen() {
   // API DATA STATE
   const [rides, setRides] = React.useState<any[]>(RIDE_DATA);
   const [loadingRides, setLoadingRides] = React.useState(true);
+  const [searchQuery, setSearchQuery] = React.useState("");
 
   useEffect(() => {
     fetchRides();
@@ -268,20 +269,22 @@ export default function HomeScreen() {
 
         {/* SECTION 2: OUR RIDES */}
         <View id="our-rides" className="bg-[#000000] px-6 pt-4 pb-16 border-t border-white/5">
-          <View className="flex-row items-end justify-between mb-8">
-            <View className="flex-1">
-              <View className="flex-row items-center mb-4">
-                <View className="w-10 h-[1.5px] bg-indigo-500 mr-3" />
-                <Typography weight="black" className="text-[11px] text-indigo-400 font-black tracking-[4px] uppercase">ALL RIDES</Typography>
-              </View>
-              <Typography weight="black" className="text-6xl font-black italic text-white tracking-[-3px] mb-4 uppercase">OUR RIDES.</Typography>
-              <Typography weight="medium" className="text-gray-400 text-[12px] leading-[20px] max-w-[280px]">
-                HAVE FUN WITH YOUR FAMILY AND FRIENDS. WE HAVE RIDES FOR EVERYONE TO ENJOY.
-              </Typography>
+          <View className="mb-8">
+            <View className="flex-row items-center mb-4">
+              <View className="w-10 h-[1.5px] bg-indigo-500 mr-3" />
+              <Typography weight="black" className="text-[11px] text-indigo-400 font-black tracking-[4px] uppercase">ALL RIDES</Typography>
             </View>
-            <View className="bg-[#0d0f14] border border-white/10 rounded-2xl px-6 py-4 flex-row items-center space-x-4 min-w-[200px] shadow-2xl">
+            <Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[40px] leading-[44px] font-black italic text-white tracking-[-2px] mb-8 uppercase">OUR RIDES.</Typography>
+
+            <View className="w-full bg-[#0d0f14] border border-white/10 rounded-2xl px-6 py-4 flex-row items-center space-x-4 shadow-2xl">
               <Search size={16} color="rgba(255,255,255,0.5)" />
-              <TextInput placeholder="SEARCH RIDES..." placeholderTextColor="rgba(255,255,255,0.3)" className="text-[10px] text-white font-black uppercase tracking-widest flex-1 p-0 m-0" />
+              <TextInput 
+                value={searchQuery}
+                onChangeText={setSearchQuery}
+                placeholder="SEARCH RIDES..." 
+                placeholderTextColor="rgba(255,255,255,0.3)" 
+                className="text-[11px] text-white font-black uppercase tracking-widest flex-1 p-0 m-0" 
+              />
             </View>
           </View>
 
@@ -292,7 +295,12 @@ export default function HomeScreen() {
             </View>
           ) : (
             <View className="flex-row flex-wrap justify-between">
-              {rides.map((ride) => (
+              {rides.filter((ride) => {
+                const search = searchQuery.toLowerCase();
+                const name = (ride.name || ride.title || '').toLowerCase();
+                const desc = (ride.description || ride.desc || '').toLowerCase();
+                return name.includes(search) || desc.includes(search);
+              }).map((ride) => (
                 <RideCard
                   key={ride._id || ride.id}
                   id={ride._id || ride.id}

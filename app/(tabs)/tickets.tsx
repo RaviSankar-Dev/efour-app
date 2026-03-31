@@ -241,31 +241,7 @@ export default function YourTickets() {
                </View>
             </View>
 
-            {/* SEARCH & FILTER */}
-            <View className="px-6 mb-8 flex-row items-center space-x-4">
-               <View className="flex-1 bg-white/[0.03] border border-white/5 rounded-2xl h-14 px-5 flex-row items-center space-x-4">
-                  <Search size={16} color="rgba(255,255,255,0.2)" />
-                  <Typography weight="bold" style={{ fontSize: 10, letterSpacing: 2 }} className="text-white/20 uppercase font-black">SEARCH TRANSACTIONS...</Typography>
-               </View>
-            </View>
 
-            {/* TAB SWITCHER */}
-            <View className="px-6 mb-10">
-               <View className="bg-white/[0.03] p-1.5 rounded-[24px] border border-white/5 flex-row">
-                  <Pressable
-                     onPress={() => setActiveTab('rides')}
-                     className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'rides' ? 'bg-[#FFD700]' : ''}`}
-                  >
-                     <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'rides' ? 'text-black' : 'text-white/20'} uppercase italic font-black`}>RIDES</Typography>
-                  </Pressable>
-                  <Pressable
-                     onPress={() => setActiveTab('events')}
-                     className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'events' ? 'bg-[#FFD700]' : ''}`}
-                  >
-                     <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'events' ? 'text-black' : 'text-white/20'} uppercase italic font-black`}>EVENTS</Typography>
-                  </Pressable>
-               </View>
-            </View>
 
             {/* MAIN LIST */}
             <View className="px-6">

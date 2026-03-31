@@ -56,15 +56,17 @@ export const RideCard = ({ id, title, category, description, price, image, tag }
       {/* Content Section */}
       <View className="p-4 flex-col justify-between">
         <View>
-          <Typography 
-            weight="black" 
-            className="text-[17px] text-white leading-tight mb-1 uppercase italic" 
-            numberOfLines={2}
-            adjustsFontSizeToFit
-            minimumFontScale={0.8}
-          >
-            {title}
-          </Typography>
+          <View className="h-[46px] justify-center mb-1">
+            <Typography 
+              weight="black" 
+              className="text-[17px] text-white leading-[20px] uppercase italic" 
+              numberOfLines={2}
+              adjustsFontSizeToFit
+              minimumFontScale={0.8}
+            >
+              {title}
+            </Typography>
+          </View>
           <Typography weight="black" className="text-[10px] text-indigo-400 uppercase tracking-[2px] mb-3">
             {category}
           </Typography>

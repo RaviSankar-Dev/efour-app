@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "E4 Premium",
+    "name": "E4 @ELURU",
     "slug": "e4-app",
     "scheme": "efour",
     "version": "1.0.0",
@@ -18,18 +18,18 @@
     "android": {
       "package": "com.efour.eluru",
       "intentFilters": [
-         {
-            "action": "VIEW",
-            "data": [
-               {
-                  "scheme": "efour"
-               }
-            ],
-            "category": [
-               "BROWSABLE",
-               "DEFAULT"
-            ]
-         }
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "efour"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
       ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
