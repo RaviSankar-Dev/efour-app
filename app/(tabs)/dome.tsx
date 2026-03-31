@@ -54,7 +54,7 @@ export default function DomeScreen() {
     <View style={{ flex: 1, backgroundColor: '#000000' }}>
       <Navbar />
 
-      <ScrollView ref={scrollRef} bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 140 }}>
+      <ScrollView ref={scrollRef} bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
         {/* HERO SECTION */}
         <View style={{ height: 450 }} className="relative">
           <Image

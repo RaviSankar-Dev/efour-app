@@ -7,7 +7,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
   const router = useRouter();
 
   return (
-    <View className="bg-[#000000] pt-4 pb-12 px-6 border-t border-white/10">
+    <View className="bg-[#000000] pt-4 pb-4 px-6 border-t border-white/10">
       {/* BRAND & DESCRIPTION SECTION */}
       <View className="mb-6">
         <View className="mb-4">
@@ -89,27 +89,37 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
 
       {/* CONTACT INFO REFINED */}
       <View className="bg-white/5 rounded-[40px] p-8 space-y-12 mb-10 border border-white/10 shadow-premium">
-        <View className="flex-row items-center">
-          <View className="w-14 h-14 items-center justify-center bg-orange-500/10 rounded-[24px] border border-orange-500/20 shadow-2xl mr-6">
-            <MapPin size={24} stroke="#f97316" strokeWidth={2.5} />
+        <Pressable 
+          className="active:opacity-70"
+          onPress={() => Linking.openURL('https://maps.app.goo.gl/vt9Y6CR3inDZ6yuX9?g_st=aw')}
+        >
+          <View className="flex-row items-center">
+            <View className="w-14 h-14 items-center justify-center bg-orange-500/10 rounded-[24px] border border-orange-500/20 shadow-2xl mr-6">
+              <MapPin size={24} stroke="#f97316" strokeWidth={2.5} />
+            </View>
+            <View className="flex-1">
+              <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase mb-2 font-black">OUR LOCATION</Typography>
+              <Typography weight="bold" className="text-[13px] text-white/90 leading-[20px] tracking-[1.5px] uppercase font-bold">
+                OPP TO NEW RTC MAIN BUS STAND, NR PETA, ELURU
+              </Typography>
+            </View>
           </View>
-          <View className="flex-1">
-            <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase mb-2 font-black">OUR LOCATION</Typography>
-            <Typography weight="bold" className="text-[13px] text-white/90 leading-[20px] tracking-[1.5px] uppercase font-bold">
-              OPP TO RTC MAIN BUS STAND, NR PETA, ELURU
-            </Typography>
-          </View>
-        </View>
+        </Pressable>
 
-        <View className="flex-row items-center">
-          <View className="w-14 h-14 items-center justify-center bg-indigo-500/10 rounded-[24px] border border-indigo-500/20 shadow-2xl mr-6">
-            <Phone size={24} stroke="#6366f1" strokeWidth={2.5} />
+        <Pressable 
+          className="active:opacity-70"
+          onPress={() => Linking.openURL('tel:7036923456')}
+        >
+          <View className="flex-row items-center">
+            <View className="w-14 h-14 items-center justify-center bg-indigo-500/10 rounded-[24px] border border-indigo-500/20 shadow-2xl mr-6">
+              <Phone size={24} stroke="#6366f1" strokeWidth={2.5} />
+            </View>
+            <View className="flex-1">
+              <Typography weight="black" className="text-[10px] text-indigo-400/50 tracking-[3px] uppercase mb-2 font-black">24/7 HELPLINE</Typography>
+              <Typography weight="black" className="text-[24px] text-white tracking-[3px] uppercase font-black italic">70369 23456</Typography>
+            </View>
           </View>
-          <View className="flex-1">
-            <Typography weight="black" className="text-[10px] text-indigo-400/50 tracking-[3px] uppercase mb-2 font-black">24/7 HELPLINE</Typography>
-            <Typography weight="black" className="text-[24px] text-white tracking-[3px] uppercase font-black italic">70369 23456</Typography>
-          </View>
-        </View>
+        </Pressable>
       </View>
 
       <View className="items-center mb-6">
@@ -137,7 +147,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
       </View>
 
       <View className="h-[1px] w-full bg-white/5 mb-4" />
-      <View className="flex-row items-center justify-between px-2 pb-40">
+      <View className="flex-row items-center justify-between px-2 pb-2">
         <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">EFOUR ELURU @ 2026</Typography>
         <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">UNTIL 11:00 PM</Typography>
         <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">NR PETA, ELURU</Typography>

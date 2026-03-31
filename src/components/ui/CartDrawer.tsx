@@ -101,7 +101,7 @@ export default function CartDrawer() {
               <View className="px-6 py-10">
                  {cart.map((item, idx) => (
                     <Animated.View 
-                       key={item.id} 
+                       key={`${item.id}-${idx}`} 
                        entering={FadeInRight.delay(idx * 100)}
                        layout={Layout.springify()}
                        className="mb-6 relative bg-[#0F172A]/40 border border-white/5 rounded-[32px] p-5 shadow-2xl overflow-hidden"

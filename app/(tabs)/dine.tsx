@@ -46,9 +46,9 @@ export default function DineScreen() {
         }
       }
     } catch (error) {
-       console.error("FAILED TO FETCH DINE DATA:", error);
+      console.error("FAILED TO FETCH DINE DATA:", error);
     } finally {
-       setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -60,47 +60,47 @@ export default function DineScreen() {
 
       <ScrollView ref={scrollRef} bounces={false} showsVerticalScrollIndicator={false}>
         <View className="bg-[#020408] pt-40 pb-32 px-6">
-           {/* HEADER */}
-           <View className="mb-12 px-2">
-              <View className="flex-row items-center space-x-3 mb-6">
-                 <View className="w-10 h-[1.5px] bg-indigo-500 mr-2" />
-                 <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-400 uppercase font-black">OUR DINE</Typography>
+          {/* HEADER */}
+          <View className="mb-12 px-2">
+            <View className="flex-row items-center space-x-3 mb-6">
+              <View className="w-10 h-[1.5px] bg-indigo-500 mr-2" />
+              <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-400 uppercase font-black">OUR DINE</Typography>
+            </View>
+
+            <Typography weight="black" className="text-6xl italic text-white mb-8 tracking-[-3px] uppercase font-black">OUR{"\n"}DINE.</Typography>
+
+            <View className="flex-row items-center justify-between">
+              <Typography weight="medium" className="text-[13px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] max-w-[70%] font-medium">
+                BEST FOOD IN ELURU. CHOOSE YOUR FAVORITE DISH AND ENJOY.
+              </Typography>
+
+              <View className="w-[140px] bg-white/5 border border-white/10 rounded-2xl h-14 flex-row items-center px-4 shadow-2xl">
+                <Search size={16} color="rgba(255,255,255,0.3)" />
+                <Typography weight="black" className="text-[9px] text-white/30 tracking-[1.5px] uppercase ml-3 font-black">SEARCH...</Typography>
               </View>
+            </View>
+          </View>
 
-              <Typography weight="black" className="text-6xl italic text-white mb-8 tracking-[-3px] uppercase font-black">OUR{"\n"}DINE.</Typography>
-              
-              <View className="flex-row items-center justify-between">
-                 <Typography weight="medium" className="text-[13px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] max-w-[70%] font-medium">
-                    BEST FOOD IN ELURU. CHOOSE YOUR FAVORITE DISH AND ENJOY.
-                 </Typography>
-                 
-                 <View className="w-[140px] bg-white/5 border border-white/10 rounded-2xl h-14 flex-row items-center px-4 shadow-2xl">
-                    <Search size={16} color="rgba(255,255,255,0.3)" />
-                    <Typography weight="black" className="text-[9px] text-white/30 tracking-[1.5px] uppercase ml-3 font-black">SEARCH...</Typography>
-                 </View>
+          <View className="h-[1px] w-full bg-white/10 mb-12" />
+
+          {/* FILTER BADGE */}
+          <Pressable className="bg-indigo-600 px-10 py-5 rounded-2xl flex-row items-center self-start mb-16 shadow-2xl shadow-indigo-600/40 active:bg-indigo-700">
+            <Typography weight="black" className="text-[12px] text-white tracking-[3px] italic uppercase font-black">EXPLORE DINE</Typography>
+          </Pressable>
+
+          {/* DINE GRID */}
+          <View className="flex-col">
+            {loading ? (
+              <View className="py-20 items-center">
+                <ActivityIndicator color="#6366f1" size="large" />
+                <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-4 font-black">SYNCING KITCHEN CATALOG...</Typography>
               </View>
-           </View>
-
-           <View className="h-[1px] w-full bg-white/10 mb-12" />
-
-           {/* FILTER BADGE */}
-           <Pressable className="bg-indigo-600 px-10 py-5 rounded-2xl flex-row items-center self-start mb-16 shadow-2xl shadow-indigo-600/40 active:bg-indigo-700">
-              <Typography weight="black" className="text-[12px] text-white tracking-[3px] italic uppercase font-black">EXPLORE DINE</Typography>
-           </Pressable>
-
-           {/* DINE GRID */}
-           <View className="flex-col">
-              {loading ? (
-                <View className="py-20 items-center">
-                  <ActivityIndicator color="#6366f1" size="large" />
-                  <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-4 font-black">SYNCING KITCHEN CATALOG...</Typography>
-                </View>
-              ) : (
-                dineItems.map((item) => (
-                   <DineCard key={item.id} item={item} />
-                ))
-              )}
-           </View>
+            ) : (
+              dineItems.map((item) => (
+                <DineCard key={item.id} item={item} />
+              ))
+            )}
+          </View>
         </View>
 
         <Footer onBackToTop={() => scrollRef.current?.scrollTo({ y: 0, animated: true })} />

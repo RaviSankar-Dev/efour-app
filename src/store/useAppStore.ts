@@ -33,7 +33,7 @@ interface AppState {
   logout: () => Promise<void> | void;
   theme: 'light' | 'dark';
   toggleTheme: () => void;
-  
+
   // CART STATE
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, 'quantity'>) => void;
@@ -47,7 +47,7 @@ interface AppState {
   tickets: Ticket[];
   addTicket: (ticket: Omit<Ticket, 'id' | 'bookingDate' | 'isExpired'>) => void;
   checkExpirations: () => void;
-  
+
   // TOAST STATE
   toast: { message: string, visible: boolean } | null;
   showToast: (message: string) => void;
@@ -89,7 +89,7 @@ export const useAppStore = create<AppState>()(
       },
       theme: 'dark',
       toggleTheme: () => set((state) => ({ theme: state.theme === 'light' ? 'dark' : 'light' })),
-      
+
       // TOAST IMPLEMENTATION
       toast: null,
       showToast: (message) => set({ toast: { message, visible: true } }),
@@ -99,32 +99,32 @@ export const useAppStore = create<AppState>()(
       cart: [],
       isCartOpen: false,
       setCartOpen: (open) => set({ isCartOpen: open }),
-      
+
       addToCart: (item) => set((state) => {
         const existingItem = state.cart.find(i => i.id === item.id);
-        const newState = existingItem 
+        const newState = existingItem
           ? { cart: state.cart.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i) }
           : { cart: [...state.cart, { ...item, quantity: 1 }] };
-        
+
         return { ...newState, toast: { message: `${item.name.toUpperCase()} ADDED TO CART!`, visible: true } };
       }),
-      
+
       removeFromCart: (itemId) => set((state) => ({
         cart: state.cart.filter(i => i.id !== itemId)
       })),
-      
+
       updateQuantity: (itemId, delta) => set((state) => ({
         cart: state.cart.map(i => {
-           if (i.id === itemId) {
-              const newQty = Math.max(1, i.quantity + delta);
-              return { ...i, quantity: newQty };
-           }
-           return i;
+          if (i.id === itemId) {
+            const newQty = Math.max(1, i.quantity + delta);
+            return { ...i, quantity: newQty };
+          }
+          return i;
         })
       })),
-      
+
       clearCart: () => set({ cart: [] }),
-      
+
       fetchProfile: async () => {
         const { tokens, refreshTokens, logout, setUser } = useAppStore.getState();
         if (!tokens?.accessToken) return;
@@ -133,19 +133,19 @@ export const useAppStore = create<AppState>()(
           const response = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
             headers: { 'Authorization': `Bearer ${tokens.accessToken}` }
           });
-          
+
           if (response.status === 401) {
             const refreshed = await refreshTokens();
             if (refreshed) {
-               const { tokens: newTokens } = useAppStore.getState();
-               const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
-                 headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
-               });
-               if (retryResponse.ok) {
-                 const data = await retryResponse.json();
-                 setUser(data.user || data);
-                 return;
-               }
+              const { tokens: newTokens } = useAppStore.getState();
+              const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
+                headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
+              });
+              if (retryResponse.ok) {
+                const data = await retryResponse.json();
+                setUser(data.user || data);
+                return;
+              }
             }
             logout();
             return;
@@ -167,7 +167,7 @@ export const useAppStore = create<AppState>()(
         try {
           const response = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
             method: 'PUT',
-            headers: { 
+            headers: {
               'Authorization': `Bearer ${tokens.accessToken}`,
               'Content-Type': 'application/json'
             },
@@ -177,20 +177,20 @@ export const useAppStore = create<AppState>()(
           if (response.status === 401) {
             const refreshed = await refreshTokens();
             if (refreshed) {
-               const { tokens: newTokens } = useAppStore.getState();
-               const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
-                 method: 'PUT',
-                 headers: { 
-                   'Authorization': `Bearer ${newTokens?.accessToken}`,
-                   'Content-Type': 'application/json'
-                 },
-                 body: JSON.stringify({ name, email })
-               });
-               if (retryResponse.ok) {
-                 const data = await retryResponse.json();
-                 setUser(data.user || data);
-                 return true;
-               }
+              const { tokens: newTokens } = useAppStore.getState();
+              const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
+                method: 'PUT',
+                headers: {
+                  'Authorization': `Bearer ${newTokens?.accessToken}`,
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email })
+              });
+              if (retryResponse.ok) {
+                const data = await retryResponse.json();
+                setUser(data.user || data);
+                return true;
+              }
             }
             logout();
             return false;
@@ -216,19 +216,19 @@ export const useAppStore = create<AppState>()(
           const response = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile/e4', {
             headers: { 'Authorization': `Bearer ${tokens.accessToken}` }
           });
-          
+
           if (response.status === 401) {
             const refreshed = await refreshTokens();
             if (refreshed) {
-               const { tokens: newTokens } = useAppStore.getState();
-               const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile/e4', {
-                 headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
-               });
-               if (retryResponse.ok) {
-                 const data = await retryResponse.json();
-                 setUser(data.user || data);
-                 return;
-               }
+              const { tokens: newTokens } = useAppStore.getState();
+              const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile/e4', {
+                headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
+              });
+              if (retryResponse.ok) {
+                const data = await retryResponse.json();
+                setUser(data.user || data);
+                return;
+              }
             }
             logout();
             return;
@@ -256,15 +256,15 @@ export const useAppStore = create<AppState>()(
           if (response.status === 401) {
             const refreshed = await refreshTokens();
             if (refreshed) {
-               const { tokens: newTokens } = useAppStore.getState();
-               const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
-                 method: 'DELETE',
-                 headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
-               });
-               if (retryResponse.ok) {
-                 await logout();
-                 return true;
-               }
+              const { tokens: newTokens } = useAppStore.getState();
+              const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/profile', {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
+              });
+              if (retryResponse.ok) {
+                await logout();
+                return true;
+              }
             }
             logout();
             return false;
@@ -294,9 +294,9 @@ export const useAppStore = create<AppState>()(
 
           const data = await response.json();
           if (response.ok && data.accessToken) {
-            setTokens({ 
-              accessToken: data.accessToken, 
-              refreshToken: data.refreshToken || tokens.refreshToken 
+            setTokens({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken || tokens.refreshToken
             });
             return true;
           } else {
@@ -316,19 +316,19 @@ export const useAppStore = create<AppState>()(
           const response = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/tickets/my-tickets', {
             headers: { 'Authorization': `Bearer ${tokens.accessToken}` }
           });
-          
+
           if (response.status === 401) {
             const refreshed = await refreshTokens();
             if (refreshed) {
-               const { tokens: newTokens } = useAppStore.getState();
-               const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/tickets/my-tickets', {
-                 headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
-               });
-               if (retryResponse.ok) {
-                 const data = await retryResponse.json();
-                 set({ tickets: data.tickets || data });
-                 return;
-               }
+              const { tokens: newTokens } = useAppStore.getState();
+              const retryResponse = await fetch('https://xzanzkz0wl.execute-api.ap-south-1.amazonaws.com/api/tickets/my-tickets', {
+                headers: { 'Authorization': `Bearer ${newTokens?.accessToken}` }
+              });
+              if (retryResponse.ok) {
+                const data = await retryResponse.json();
+                set({ tickets: data.tickets || data });
+                return;
+              }
             }
             logout();
             return;
@@ -349,11 +349,11 @@ export const useAppStore = create<AppState>()(
         const id = Math.random().toString(36).substring(7).toUpperCase();
         const bookingDate = Date.now();
         const newTicket: Ticket = {
-           ...item,
-           id,
-           bookingDate,
-           isExpired: false,
-           qrData: `TKT-${id}-${bookingDate}`
+          ...item,
+          id,
+          bookingDate,
+          isExpired: false,
+          qrData: `TKT-${id}-${bookingDate}`
         };
         return { tickets: [newTicket, ...state.tickets] };
       }),
@@ -362,8 +362,8 @@ export const useAppStore = create<AppState>()(
         const ONE_DAY = 24 * 60 * 60 * 1000;
         return {
           tickets: state.tickets.map(t => ({
-             ...t,
-             isExpired: now - t.bookingDate > ONE_DAY
+            ...t,
+            isExpired: now - t.bookingDate > ONE_DAY
           }))
         };
       }),

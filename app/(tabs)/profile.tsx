@@ -115,11 +115,11 @@ export default function ProfileScreen() {
                // COMPREHENSIVE TOKEN EXTRACTION FOR ALL POTENTIAL BACKEND FORMATS
                const accessToken = data.accessToken || data.token || data.access_token || data.data?.accessToken || data.data?.token;
                const refreshToken = data.refreshToken || data.refresh_token || data.data?.refreshToken;
-               
+
                if (accessToken) {
-                  setTokens({ 
-                     accessToken: accessToken, 
-                     refreshToken: refreshToken || '' 
+                  setTokens({
+                     accessToken: accessToken,
+                     refreshToken: refreshToken || ''
                   });
                } else if (data.tokens) {
                   setTokens(data.tokens);
@@ -159,7 +159,7 @@ export default function ProfileScreen() {
    if (isAuthenticated && user) {
       return (
          <View style={{ flex: 1, backgroundColor: "#020408" }}>
-            <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
                <View className="px-6 pt-40 pb-20">
 
                   {/* BRANDED HEADER ROW */}
@@ -312,7 +312,7 @@ export default function ProfileScreen() {
 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
                <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false} className="px-6">
-                  <View className="pt-4 pb-80">
+                  <View className="pt-4 pb-10">
                      {/* BRANDING HEADER - CENTERED FOCUS */}
                      <View className="items-center mb-16">
                         <View className="bg-yellow-500/10 border border-yellow-500/20 px-6 py-3 rounded-2xl mb-10 shadow-2xl shadow-yellow-500/20">

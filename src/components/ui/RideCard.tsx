@@ -23,13 +23,13 @@ export const RideCard = ({ id, title, category, description, price, image, tag }
   const router = useRouter();
 
   const handleAdd = () => {
-    addToCart({ id, name: title, price: parseFloat(price), image });
+    addToCart({ id: `RIDE-${id}`, name: title, price: parseFloat(price), image });
   };
 
   const handleBook = () => {
     if (!isAuthenticated) return router.push('/profile');
     // Add to cart first if not already there, then go to checkout
-    addToCart({ id, name: title, price: parseFloat(price), image });
+    addToCart({ id: `RIDE-${id}`, name: title, price: parseFloat(price), image });
     router.push('/checkout');
   };
 

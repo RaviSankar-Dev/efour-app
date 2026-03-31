@@ -36,7 +36,7 @@ export const Navbar = () => {
         <Pressable onPress={() => router.push("/")}>
            <Image 
              source={require('../../../assets/images/E4_LOGO_NEW.jpeg')} 
-             style={{ width: 135, height: 90 }} 
+             style={{ width: 155, height: 104, marginLeft: -10 }} 
              resizeMode="contain" 
            />
         </Pressable>

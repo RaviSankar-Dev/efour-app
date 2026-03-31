@@ -28,7 +28,7 @@ export const DineCard = ({ item }: { item: DineProps }) => {
 
   const handleAddItem = (dish: DineMenuItem) => {
     addToCart({
-      id: dish.id,
+      id: `DINE-${dish.id}`,
       name: dish.name,
       price: dish.price,
       image: item.image // Use restaurant image as fallback

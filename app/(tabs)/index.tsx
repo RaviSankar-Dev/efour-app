@@ -219,7 +219,7 @@ export default function HomeScreen() {
   return (
     <View style={{ flex: 1, backgroundColor: "#000000" }}>
       <Navbar />
-      <ScrollView ref={scrollRef} style={{ flex: 1 }} className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 140 }}>
+      <ScrollView ref={scrollRef} style={{ flex: 1 }} className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 80 }}>
         {/* SECTION 1: HERO */}
         <View style={{ height: height * 0.88, width }}>
           <View style={StyleSheet.absoluteFill}>
@@ -236,14 +236,14 @@ export default function HomeScreen() {
             </Animated.View>
 
             <View className="items-center">
-              <Animated.View style={eatStyle}><Typography weight="black" className="text-8xl italic font-black text-white leading-[85px] tracking-[-4px] text-center">EAT.</Typography></Animated.View>
-              <Animated.View style={enjoyStyle}><Typography weight="black" className="text-8xl italic font-black text-white leading-[85px] tracking-[-4px] text-center">ENJOY.</Typography></Animated.View>
-              <Animated.View style={[entertainStyle, { height: 100, width: width - 64 }]}>
-                <MaskedView style={{ flex: 1 }} maskElement={<Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[100px] italic font-black leading-[100px] tracking-[-4px] text-center">ENTERTAIN.</Typography>}>
+              <Animated.View style={eatStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">EAT.</Typography></Animated.View>
+              <Animated.View style={enjoyStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">ENJOY.</Typography></Animated.View>
+              <Animated.View style={[entertainStyle, { height: 72, width: width - 64 }]}>
+                <MaskedView style={{ flex: 1 }} maskElement={<Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[72px] italic font-black leading-[72px] tracking-[-4px] text-center">ENTERTAIN.</Typography>}>
                   <LinearGradient colors={['#ff8533', '#8a2be2']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }} />
                 </MaskedView>
               </Animated.View>
-              <Animated.View style={eluruStyle}><Typography weight="black" className="text-8xl italic font-black text-white leading-[85px] tracking-[-4px] text-center">ELURU.</Typography></Animated.View>
+              <Animated.View style={eluruStyle}><Typography weight="black" className="text-7xl italic font-black text-white leading-[70px] tracking-[-4px] text-center">ELURU.</Typography></Animated.View>
             </View>
 
             <View className="mt-auto mb-4 items-center w-full">
