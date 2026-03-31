@@ -254,15 +254,15 @@ export default function YourTickets() {
            <View className="bg-white/[0.03] p-1.5 rounded-[24px] border border-white/5 flex-row">
               <Pressable 
                 onPress={() => setActiveTab('rides')}
-                className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'rides' ? 'bg-[#6C5CE7]' : ''}`}
+                className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'rides' ? 'bg-[#FFD700]' : ''}`}
               >
-                 <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'rides' ? 'text-white' : 'text-white/20'} uppercase italic font-black`}>RIDES</Typography>
+                 <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'rides' ? 'text-black' : 'text-white/20'} uppercase italic font-black`}>RIDES</Typography>
               </Pressable>
               <Pressable 
                 onPress={() => setActiveTab('events')}
-                className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'events' ? 'bg-[#6C5CE7]' : ''}`}
+                className={`flex-1 py-4 rounded-2xl items-center justify-center ${activeTab === 'events' ? 'bg-[#FFD700]' : ''}`}
               >
-                 <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'events' ? 'text-white' : 'text-white/20'} uppercase italic font-black`}>EVENTS</Typography>
+                 <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${activeTab === 'events' ? 'text-black' : 'text-white/20'} uppercase italic font-black`}>EVENTS</Typography>
               </Pressable>
            </View>
         </View>
@@ -356,10 +356,10 @@ export default function YourTickets() {
                        <View className="space-y-4 mt-10">
                           <Pressable 
                             onPress={() => handleExpand(order._id)}
-                            className={`h-16 rounded-3xl flex-row items-center justify-center space-x-3 active:scale-95 shadow-xl ${isExpanded ? 'bg-white/5 border border-white/10' : 'bg-[#6C5CE7] shadow-purple-900/40'}`}
+                            className={`h-16 rounded-3xl flex-row items-center justify-center space-x-3 active:scale-95 shadow-xl ${isExpanded ? 'bg-white/5 border border-white/10' : 'bg-[#FFD700] shadow-[#FFD700]/40'}`}
                           >
-                             <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className="text-white uppercase italic font-black">{isExpanded ? 'HIDE PASSES' : 'VIEW PASSES'}</Typography>
-                             {!isExpanded && <ChevronRight size={16} color="white" />}
+                             <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${isExpanded ? 'text-white' : 'text-black'} uppercase italic font-black`}>{isExpanded ? 'HIDE PASSES' : 'VIEW PASSES'}</Typography>
+                             {!isExpanded && <ChevronRight size={16} color="black" />}
                              {isExpanded && <ChevronDown size={16} color="white" />}
                           </Pressable>
 

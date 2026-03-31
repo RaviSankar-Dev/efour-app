@@ -44,9 +44,9 @@ const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: an
           borderWidth: 1,
         },
         variant === "primary" ? {
-          backgroundColor: '#6366f1',
-          borderColor: '#818cf8',
-          shadowColor: '#6366f1',
+          backgroundColor: '#FFD700',
+          borderColor: '#EAB308',
+          shadowColor: '#FFD700',
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.3,
           shadowRadius: 8,
@@ -57,13 +57,13 @@ const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: an
         animatedStyle
       ]}
     >
-      <Icon size={20} stroke="white" strokeWidth={2.4} />
+      <Icon size={20} stroke={variant === "primary" ? "black" : "white"} strokeWidth={2.4} />
       {badgeCount > 0 && (
         <View style={{
           position: 'absolute',
           top: -2,
           right: -2,
-          backgroundColor: '#6366f1',
+          backgroundColor: '#FFD700',
           minWidth: 18,
           height: 18,
           borderRadius: 9,
@@ -72,7 +72,7 @@ const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: an
           borderWidth: 2,
           borderColor: '#000',
         }}>
-          <Typography weight="black" style={{ fontSize: 9, lineHeight: 12 }}>{badgeCount}</Typography>
+          <Typography weight="black" style={{ fontSize: 9, lineHeight: 12, color: 'black' }}>{badgeCount}</Typography>
         </View>
       )}
     </AnimatedPressable>
