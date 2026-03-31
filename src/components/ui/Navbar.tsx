@@ -92,36 +92,51 @@ export const Navbar = () => {
         top: 0,
         left: 0,
         right: 0,
-        paddingTop: insets.top + 4,
-        paddingHorizontal: 20,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        backgroundColor: '#000000',
+        paddingTop: insets.top,
         zIndex: 100,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(255, 255, 255, 0.05)',
       }}
     >
-      {/* BRAND - LEFT */}
-      <Pressable onPress={() => router.push("/")} style={{ transform: [{ translateX: -10 }] }}>
-        <Image 
-          source={require('../../../assets/images/E4_LOGO_NEW.jpeg')} 
-          style={{ width: 140, height: 90 }} 
-          resizeMode="contain" 
-        />
-      </Pressable>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 20,
+          paddingVertical: 8,
+        }}
+      >
+        {/* BRAND - LEFT */}
+        <Pressable 
+          onPress={() => router.push("/")} 
+          style={{ 
+            flexDirection: 'row', 
+            alignItems: 'center',
+          }}
+        >
+          <Image 
+            source={require('../../../assets/images/E4_LOGO_NEW.jpeg')} 
+            style={{ width: 85, height: 50 }} 
+            resizeMode="contain" 
+          />
+        </Pressable>
 
-      {/* ACTION GROUP - RIGHT */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-        <NavbarButton 
-          icon={ShoppingCart} 
-          onPress={() => setCartOpen(true)} 
-          badgeCount={cart.length} 
-        />
-        
-        <NavbarButton 
-          icon={User} 
-          onPress={() => router.push("/profile")} 
-          variant={isAuthenticated ? "primary" : "glass"}
-        />
+        {/* ACTION GROUP - RIGHT */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+          <NavbarButton 
+            icon={ShoppingCart} 
+            onPress={() => setCartOpen(true)} 
+            badgeCount={cart.length} 
+          />
+          
+          <NavbarButton 
+            icon={User} 
+            onPress={() => router.push("/profile")} 
+            variant={isAuthenticated ? "primary" : "glass"}
+          />
+        </View>
       </View>
     </View>
   );

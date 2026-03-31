@@ -34,7 +34,14 @@ export default function ProfileScreen() {
                onPress: async () => {
                   setLoading(true);
                   const success = await deleteAccount();
-                  if (!success) {
+                  if (success) {
+                     // RESET ALL LOGIN RELATED STATES FOR A CLEAN REDIRECT
+                     setStep(0);
+                     setPhone("");
+                     setOtp("");
+                     setLoading(false);
+                     setError(null);
+                  } else {
                      setError("FAILED TO DELETE ACCOUNT AT THIS TIME.");
                      setLoading(false);
                   }
@@ -52,8 +59,8 @@ export default function ProfileScreen() {
 
    // EDIT PROFILE STATES
    const [isEditing, setIsEditing] = useState(false);
-   const [editedName, setEditedName] = useState("RAVI SANKAR");
-   const [editedEmail, setEditedEmail] = useState("SANKARHEARTKANDRA@GMAIL.COM");
+   const [editedName, setEditedName] = useState("");
+   const [editedEmail, setEditedEmail] = useState("");
 
    const handleSendOTP = async () => {
       const cleanPhone = phone.replace(/[^0-9]/g, '');
@@ -173,108 +180,92 @@ export default function ProfileScreen() {
                         showsVerticalScrollIndicator={false} 
                         contentContainerStyle={{ paddingBottom: 140 }}
                     >
-                        <View className="px-8 pt-40 pb-10">
+                        <View className="px-8 pt-32 pb-10">
 
-                            {/* BRANDED HEADER ROW */}
-                            <View className="flex-row items-center justify-between mb-16">
-                                <View className="flex-row items-center flex-1 mr-6">
-                                    <View className="w-20 h-20 rounded-full bg-[#0b0e14] border border-white/10 items-center justify-center shadow-premium mr-6">
-                                        <Typography weight="black" className="text-3xl text-white italic font-black">R</Typography>
-                                        <View className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-indigo-600 border-4 border-[#020408] items-center justify-center">
-                                            <ShieldCheck size={10} color="white" />
-                                        </View>
-                                    </View>
-                                    <View className="flex-1">
-                                        <View className="flex-row items-center mb-2">
-                                            <Typography weight="black" className="text-[32px] text-white italic tracking-tighter uppercase font-black">{user?.name?.split(' ')[0]}</Typography>
-                                            <View className="w-2 h-2 rounded-full bg-indigo-500 ml-2 mt-4 shadow-sm shadow-indigo-500/50" />
-                                        </View>
-                                        <View className="flex-row items-center">
-                                            <View className="bg-white/5 border border-white/10 px-4 py-1.5 rounded-lg">
-                                                <Typography weight="bold" className="text-[8px] text-white/40 tracking-[2px] uppercase font-bold">VERIFIED</Typography>
-                                            </View>
-                                        </View>
-                                    </View>
-                                </View>
-
-                                <Pressable
-                                    onPress={() => isEditing ? handleSaveProfile() : setIsEditing(true)}
-                                    className={`${isEditing ? 'bg-indigo-600' : 'bg-white/5 border border-white/10'} px-6 h-14 rounded-2xl flex-row items-center shadow-2xl active:bg-indigo-700`}
-                                    style={{ gap: 8 }}
-                                >
-                                    {isEditing ? <Check size={14} stroke="white" strokeWidth={3} /> : <Edit2 size={12} stroke="white" strokeWidth={2.5} />}
-                                    <Typography weight="black" className="text-[10px] text-white tracking-[2px] uppercase italic font-black">
-                                        {isEditing ? "SAVE" : "EDIT"}
-                                    </Typography>
-                                </Pressable>
-                            </View>
-
-                            <View className="h-[1px] w-full bg-white/10 mb-8" />
-
-                            {/* SECTION 1: ACCOUNT INFO */}
+                            {/* SECTION 1: ACCOUNT INFO - CONSOLIDATED HEADER */}
                             <View className="mb-10">
-                                <View className="flex-row items-center space-x-4 mb-6 ml-1">
-                                    <View className="w-10 h-10 rounded-full bg-indigo-500/10 items-center justify-center border border-indigo-500/20">
-                                        <Shield size={16} stroke="#6366f1" />
+                                <View className="flex-row items-center justify-between mb-8 ml-1">
+                                    <View className="flex-row items-center space-x-4">
+                                        <View className="w-10 h-10 rounded-full bg-indigo-500/10 items-center justify-center border border-indigo-500/20">
+                                            <Shield size={16} stroke="#6366f1" />
+                                        </View>
+                                        <Typography weight="black" className="text-[12px] text-white/60 italic tracking-[3px] uppercase font-black">ACCOUNT PROFILE</Typography>
                                     </View>
-                                    <Typography weight="black" className="text-[12px] text-white/60 italic tracking-[3px] uppercase font-black">ACCOUNT PROFILE</Typography>
+
+                                    <Pressable
+                                        onPress={() => {
+                                            if (isEditing) {
+                                                handleSaveProfile();
+                                            } else {
+                                                setEditedName(user?.name || "");
+                                                setEditedEmail(user?.email || "");
+                                                setIsEditing(true);
+                                            }
+                                        }}
+                                        className={`${isEditing ? 'bg-indigo-600' : 'bg-white/5 border border-white/10'} px-5 h-11 rounded-xl flex-row items-center shadow-2xl active:bg-indigo-700`}
+                                        style={{ gap: 8 }}
+                                    >
+                                        {isEditing ? <Check size={14} stroke="white" strokeWidth={3} /> : <Edit2 size={12} stroke="white" strokeWidth={2.5} />}
+                                        <Typography weight="black" className="text-[9px] text-white tracking-[2px] uppercase italic font-black">
+                                            {isEditing ? "SAVE" : "EDIT"}
+                                        </Typography>
+                                    </Pressable>
                                 </View>
 
                                 <View className="bg-[#0b0e14] border border-white/10 rounded-[32px] p-8 shadow-premium">
-                                    <View className="gap-2">
+                                    <View className="gap-6">
                                         {/* NAME FIELD */}
-                                        <View className="flex-row items-center space-x-12 py-2">
-                                            <View className="w-12 h-12 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <UserIcon size={20} stroke="#6366f1" strokeWidth={2.5} />
+                                        <View className="flex-row items-center" style={{ gap: 20 }}>
+                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
+                                                <UserIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
-                                                <Typography weight="black" className="text-[9px] text-indigo-500 tracking-[2px] uppercase mb-1 font-black">FULL NAME</Typography>
+                                                <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">FULL NAME</Typography>
                                                 {isEditing ? (
                                                     <TextInput
                                                         value={editedName}
                                                         onChangeText={setEditedName}
-                                                        className="text-white text-[16px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
+                                                        className="text-white text-[18px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
                                                     />
                                                 ) : (
-                                                    <Typography weight="black" className="text-[18px] text-white italic tracking-tighter uppercase font-black">{user?.name}</Typography>
+                                                    <Typography weight="black" className="text-[20px] text-white italic tracking-tighter uppercase font-black">{user?.name}</Typography>
                                                 )}
                                             </View>
                                         </View>
-
                                         <View className="h-[1px] w-full bg-white/5" />
 
                                         {/* EMAIL FIELD */}
-                                        <View className="flex-row items-center space-x-12 py-2">
-                                            <View className="w-12 h-12 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <MailIcon size={20} stroke="#6366f1" strokeWidth={2.5} />
+                                        <View className="flex-row items-center" style={{ gap: 20 }}>
+                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
+                                                <MailIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
-                                                <Typography weight="black" className="text-[9px] text-indigo-500 tracking-[2px] uppercase mb-1 font-black">EMAIL ADDRESS</Typography>
+                                                <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">EMAIL ADDRESS</Typography>
                                                 {isEditing ? (
                                                     <TextInput
                                                         value={editedEmail}
                                                         onChangeText={setEditedEmail}
+                                                        autoCapitalize="none"
                                                         className="text-white text-[14px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
                                                     />
                                                 ) : (
                                                     <View className="flex-row items-center justify-between">
-                                                        <Typography weight="black" className="text-[14px] text-white/80 italic tracking-tighter uppercase font-black">{user?.email}</Typography>
-                                                        <View className="w-4 h-4 bg-green-500/10 rounded-full items-center justify-center border border-green-500/20"><Check size={8} color="#22c55e" /></View>
+                                                        <Typography weight="black" className="text-[14px] text-white/80 italic tracking-tighter uppercase font-black" numberOfLines={1}>{user?.email}</Typography>
+                                                        <View className="w-4 h-4 bg-green-500/10 rounded-full items-center justify-center border border-green-500/20 ml-2"><Check size={8} color="#22c55e" /></View>
                                                     </View>
                                                 )}
                                             </View>
                                         </View>
-
                                         <View className="h-[1px] w-full bg-white/5" />
 
                                         {/* PHONE FIELD */}
-                                        <View className="flex-row items-center space-x-12 py-2">
-                                            <View className="w-12 h-12 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <PhoneIcon size={20} stroke="#6366f1" strokeWidth={2.5} />
+                                        <View className="flex-row items-center" style={{ gap: 20 }}>
+                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
+                                                <PhoneIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
-                                                <Typography weight="black" className="text-[9px] text-indigo-500 tracking-[2px] uppercase mb-1 font-black">MOBILE NUMBER</Typography>
-                                                <Typography weight="black" className="text-[18px] text-white italic tracking-[1px] uppercase font-black">+91 {user?.mobile || '93466 08305'}</Typography>
+                                                <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">MOBILE NUMBER</Typography>
+                                                <Typography weight="black" className="text-[18px] text-white italic tracking-[1px] uppercase font-black">+91 {user?.mobile || '9293929292'}</Typography>
                                             </View>
                                         </View>
                                     </View>
@@ -290,19 +281,19 @@ export default function ProfileScreen() {
                                     <Typography weight="black" className="text-[12px] text-white/60 italic tracking-[3px] uppercase font-black">REWARDS SYSTEM</Typography>
                                 </View>
 
-                                <View className="bg-[#0b0e14] border border-white/11 rounded-[32px] p-10 items-center shadow-premium">
+                                <View className="bg-[#0b0e14] border border-white/10 rounded-[32px] p-10 items-center shadow-premium">
                                     <Typography weight="black" className="text-[10px] text-yellow-500/60 tracking-[4px] uppercase mb-8 italic font-black">AVAILABLE POINTS</Typography>
-                                    <View className="flex-row items-baseline mb-10">
-                                        <Typography weight="black" className="text-[72px] text-white italic leading-none font-black">0</Typography>
-                                        <Typography weight="black" className="text-[16px] text-white/20 italic ml-4 uppercase font-black">PTS</Typography>
+                                    <View className="flex-row items-baseline mb-12">
+                                        <Typography weight="black" className="text-[82px] text-white italic leading-none font-black">0</Typography>
+                                        <Typography weight="black" className="text-[18px] text-white/30 italic ml-4 uppercase font-black">PTS</Typography>
                                     </View>
 
-                                    <View className="bg-white/5 border border-white/5 rounded-2xl p-5 w-full flex-row items-center space-x-5 shadow-2xl">
-                                        <View className="w-12 h-12 items-center justify-center bg-yellow-500/10 rounded-xl border border-yellow-500/20">
-                                            <Zap size={20} stroke="#f59e0b" fill="#f59e0b" />
+                                    <View className="bg-white/5 border border-white/10 rounded-[28px] p-6 w-full flex-row items-center" style={{ gap: 20 }}>
+                                        <View className="w-14 h-14 items-center justify-center bg-yellow-500/10 rounded-2xl border border-yellow-500/20 shadow-2xl">
+                                            <Zap size={24} stroke="#f59e0b" fill="#f59e0b" />
                                         </View>
                                         <View className="flex-1">
-                                            <Typography weight="medium" className="text-[10px] text-gray-400 uppercase italic leading-[18px] tracking-[0.5px] font-medium">REDEEM <Typography className="text-yellow-500 font-black">500 POINTS</Typography> FOR A <Typography className="text-indigo-500 font-black">FREE PASS</Typography></Typography>
+                                            <Typography weight="medium" className="text-[12px] text-gray-400 uppercase italic leading-[20px] tracking-[1px] font-medium">REDEEM <Typography weight="black" className="text-yellow-500 font-black">500 POINTS</Typography> FOR A <Typography weight="black" className="text-indigo-500 font-black">FREE EXCLUSIVE PASS</Typography></Typography>
                                         </View>
                                     </View>
                                 </View>
