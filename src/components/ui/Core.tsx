@@ -1,4 +1,5 @@
 import { View, Text, ViewProps, TextProps } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -12,9 +13,15 @@ interface ContainerProps extends ViewProps {
 }
 
 export function Container({ className, safeHeader = true, children, ...props }: ContainerProps) {
+  const insets = useSafeAreaInsets();
+  
   return (
     <View 
-      className={cn("flex-1 bg-background px-4", safeHeader && "pt-16", className)} 
+      style={{
+        paddingTop: safeHeader ? Math.max(insets.top, 16) : 0,
+        paddingBottom: Math.max(insets.bottom, 16),
+      }}
+      className={cn("flex-1 bg-white dark:bg-background px-4", className)} 
       {...props}
     >
       {children}
@@ -78,7 +85,7 @@ export function Typography({
       className={cn(
         variants[variant], 
         fontSize && fontSizes[fontSize],
-        "text-white", 
+        "text-slate-900 dark:text-white", 
         className
       )} 
       {...props}

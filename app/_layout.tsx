@@ -105,7 +105,7 @@ function RootContent({ loaded, error }: { loaded: boolean; error: any }) {
         </Stack>
         <CartDrawer />
         <Toast />
-        <StatusBar style="light" />
+        <StatusBar style="auto" />
 
         {/* CUSTOM ANIMATED SPLASH SCREEN OVERLAY */}
         {!isSplashDone && (

@@ -34,13 +34,10 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 // --- THEME ---
-const THEME = {
+const THEME_COLORS = {
    purple: '#6C5CE7',
    orange: '#FF7A00',
    emerald: '#10b981',
-   bg: '#000000',
-   card: 'rgba(255,255,255,0.03)',
-   border: 'rgba(255,255,255,0.08)',
 };
 
 // --- HELPER COMPONENTS ---
@@ -52,10 +49,10 @@ const TicketPass = memo(({ ticket, orderDate }: { ticket: any, orderDate: string
    return (
       <Animated.View
          entering={FadeInRight}
-         className="bg-[#0f111a] rounded-[32px] border border-white/5 mb-4 p-5 flex-row items-center shadow-2xl"
+         className="bg-slate-50 dark:bg-[#0f111a] rounded-[32px] border border-slate-200 dark:border-white/5 mb-4 p-5 flex-row items-center shadow-sm dark:shadow-2xl"
       >
          {/* QR Section */}
-         <View className="w-24 h-24 bg-white rounded-2xl p-2 items-center justify-center relative overflow-hidden">
+         <View className="w-24 h-24 bg-white rounded-2xl p-2 items-center justify-center relative overflow-hidden shadow-sm">
             <Image
                source={{ uri: `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrCode)}&margin=1` }}
                className={`w-full h-full ${isExpired ? 'opacity-10 grayscale' : ''}`}
@@ -72,25 +69,25 @@ const TicketPass = memo(({ ticket, orderDate }: { ticket: any, orderDate: string
          {/* Details Section */}
          <View className="flex-1 ml-4 justify-between h-24 py-1">
             <View>
-               <Typography weight="black" className="text-white text-xs uppercase tracking-tight">{ticket.name || 'ENTRY PASS'}</Typography>
-               <Typography weight="black" style={{ fontSize: 7, letterSpacing: 2 }} className="text-white/30 uppercase mt-1">EFOUR GATEWAY</Typography>
+               <Typography weight="black" className="text-slate-900 dark:text-white text-xs uppercase tracking-tight">{ticket.name || 'ENTRY PASS'}</Typography>
+               <Typography weight="black" style={{ fontSize: 7, letterSpacing: 2 }} className="text-slate-400 dark:text-white/30 uppercase mt-1">EFOUR GATEWAY</Typography>
             </View>
 
             <View className="flex-row items-center space-x-3">
                <View className="flex-row items-center space-x-1.5">
-                  <Clock size={8} color={THEME.purple} />
-                  <Typography weight="bold" style={{ fontSize: 7 }} className="text-white/60">VALID 24H</Typography>
+                  <Clock size={8} color={THEME_COLORS.purple} />
+                  <Typography weight="bold" style={{ fontSize: 7 }} className="text-slate-500 dark:text-white/60">VALID 24H</Typography>
                </View>
-               <View className="w-1 h-1 rounded-full bg-white/10" />
+               <View className="w-1 h-1 rounded-full bg-slate-200 dark:bg-white/10" />
                <View className="flex-row items-center space-x-1.5">
-                  <ShieldCheck size={8} color={THEME.emerald} />
-                  <Typography weight="bold" style={{ fontSize: 7 }} className="text-white/60">VERIFIED</Typography>
+                  <ShieldCheck size={8} color={THEME_COLORS.emerald} />
+                  <Typography weight="bold" style={{ fontSize: 7 }} className="text-slate-500 dark:text-white/60">VERIFIED</Typography>
                </View>
             </View>
          </View>
 
-         <View className="opacity-10">
-            <ChevronRight size={16} color="white" />
+         <View className="opacity-10 dark:opacity-20">
+            <ChevronRight size={16} className="text-slate-900 dark:text-white" />
          </View>
       </Animated.View>
    );
@@ -202,15 +199,15 @@ export default function YourTickets() {
 
    if (!isAuthenticated) {
       return (
-         <View style={{ flex: 1, backgroundColor: THEME.bg, justifyContent: 'center', alignItems: 'center', padding: 40 }}>
-            <View className="w-24 h-24 bg-white/5 rounded-[32px] items-center justify-center mb-10 border border-white/10">
-               <TicketIcon size={42} color={THEME.purple} />
+         <View className="flex-1 bg-white dark:bg-black justify-center items-center padding-10">
+            <View className="w-24 h-24 bg-slate-100 dark:bg-white/5 rounded-[32px] items-center justify-center mb-10 border border-slate-200 dark:border-white/10 shadow-sm">
+               <TicketIcon size={42} color={THEME_COLORS.purple} />
             </View>
-            <Typography weight="black" className="text-3xl text-white text-center mb-4 uppercase italic">ACCESS DENIED</Typography>
-            <Typography weight="bold" style={{ fontSize: 9, letterSpacing: 3 }} className="text-white/30 text-center uppercase mb-12">PLEASE LOGIN TO VIEW YOUR PASSES</Typography>
+            <Typography weight="black" className="text-3xl text-slate-900 dark:text-white text-center mb-4 uppercase italic">ACCESS DENIED</Typography>
+            <Typography weight="bold" style={{ fontSize: 9, letterSpacing: 3 }} className="text-slate-400 dark:text-white/30 text-center uppercase mb-12">PLEASE LOGIN TO VIEW YOUR PASSES</Typography>
             <Pressable
                onPress={() => router.push('/profile')}
-               className="bg-[#6C5CE7] w-full h-16 rounded-[24px] items-center justify-center active:scale-95 shadow-2xl shadow-purple-900/40"
+               className="bg-[#6C5CE7] w-11/12 h-16 rounded-[24px] items-center justify-center active:bg-[#5b4bc4] shadow-2xl shadow-purple-900/20"
             >
                <Typography weight="black" style={{ fontSize: 11, letterSpacing: 4 }} className="text-white uppercase font-black">LOG IN NOW</Typography>
             </Pressable>
@@ -219,25 +216,25 @@ export default function YourTickets() {
    }
 
    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: THEME.bg }}>
+      <View className="flex-1 bg-white dark:bg-[#000000]">
          <ScrollView
             className="flex-1"
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 100 }}
+            contentContainerStyle={{ paddingBottom: 100 + insets.bottom, paddingTop: insets.top }}
             refreshControl={
-               <RefreshControl refreshing={isRefreshing} onRefresh={() => { setIsRefreshing(true); fetchOrders(); }} tintColor={THEME.purple} />
+               <RefreshControl refreshing={isRefreshing} onRefresh={() => { setIsRefreshing(true); fetchOrders(); }} tintColor={THEME_COLORS.purple} />
             }
          >
             {/* HEADER */}
             <View className="px-8 pt-10 pb-6">
                <View className="flex-row items-center space-x-3 mb-2 opacity-50">
                   <View className="w-10 h-[1.5px] bg-indigo-500" />
-                  <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-indigo-400 uppercase">INTERNAL HUB</Typography>
+                  <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-indigo-600 dark:text-indigo-400 uppercase">INTERNAL HUB</Typography>
                </View>
-               <Typography weight="black" className="text-5xl text-white uppercase italic tracking-tighter leading-[1]">YOUR{"\n"}PASSES.</Typography>
+               <Typography weight="black" className="text-5xl text-slate-900 dark:text-white uppercase italic tracking-tighter leading-[1]">YOUR{"\n"}PASSES.</Typography>
                <View className="flex-row items-center space-x-3 mt-4 opacity-20">
-                  <ShieldCheck size={12} color="white" />
-                  <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 2 }} className="text-white uppercase">END-TO-END ENCRYPTED GATEWAY</Typography>
+                  <ShieldCheck size={12} className="text-slate-900 dark:text-white" />
+                  <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 2 }} className="text-slate-900 dark:text-white uppercase">END-TO-END ENCRYPTED GATEWAY</Typography>
                </View>
             </View>
 
@@ -247,13 +244,13 @@ export default function YourTickets() {
             <View className="px-6">
                {loading && !isRefreshing ? (
                   <View className="py-20 items-center justify-center">
-                     <ActivityIndicator color={THEME.purple} size="large" />
-                     <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-6 font-black">PARSING TRANSACTION LOGS...</Typography>
+                     <ActivityIndicator color={THEME_COLORS.purple} size="large" />
+                     <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[4px] uppercase mt-6 font-black">PARSING TRANSACTION LOGS...</Typography>
                   </View>
                ) : error ? (
                   <View className="py-20 items-center justify-center">
                      <X size={28} color="#ef4444" />
-                     <Typography weight="black" className="text-xl text-white/50 text-center uppercase tracking-tighter mt-4">FETCH PROTOCOL FAILED</Typography>
+                     <Typography weight="black" className="text-xl text-slate-900 dark:text-white/50 text-center uppercase tracking-tighter mt-4">FETCH PROTOCOL FAILED</Typography>
                      <Typography weight="bold" className="text-[9px] text-red-500/50 uppercase mt-2">{error}</Typography>
                      <Pressable onPress={onRefresh} className="mt-10 px-8 py-4 bg-red-500/10 rounded-full border border-red-500/20">
                         <Typography weight="black" className="text-[10px] text-red-500 tracking-[3px] uppercase italic">RETRY CONNECTION</Typography>
@@ -261,12 +258,12 @@ export default function YourTickets() {
                   </View>
                ) : activeOrders.length === 0 ? (
                   <View className="py-20 items-center justify-center">
-                     <View className="w-20 h-20 bg-white/5 rounded-full items-center justify-center mb-8 border border-white/5 opacity-40">
-                        <TicketIcon size={28} color="white" />
+                     <View className="w-20 h-20 bg-slate-100 dark:bg-white/5 rounded-full items-center justify-center mb-8 border border-slate-200 dark:border-white/5 opacity-40">
+                        <TicketIcon size={28} className="text-slate-900 dark:text-white" />
                      </View>
-                     <Typography weight="black" className="text-xl text-white/20 text-center uppercase tracking-tighter">NO VALID PASSES FOUND</Typography>
-                     <Pressable onPress={() => router.push('/')} className="mt-10 px-8 py-4 bg-white/5 rounded-full border border-white/10">
-                        <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[3px] uppercase italic">EXPLORE EXPERIENCES</Typography>
+                     <Typography weight="black" className="text-xl text-slate-400 dark:text-white/20 text-center uppercase tracking-tighter">NO VALID PASSES FOUND</Typography>
+                     <Pressable onPress={() => router.push('/')} className="mt-10 px-8 py-4 bg-slate-100 dark:bg-white/5 rounded-full border border-slate-200 dark:border-white/10">
+                        <Typography weight="black" className="text-[10px] text-indigo-600 dark:text-indigo-400 tracking-[3px] uppercase italic">EXPLORE EXPERIENCES</Typography>
                      </Pressable>
                   </View>
                ) : (
@@ -279,21 +276,21 @@ export default function YourTickets() {
                         <Animated.View
                            key={order._id}
                            layout={Layout.springify()}
-                           className="bg-[#0b0e14] rounded-[40px] border border-white/5 mb-6 overflow-hidden shadow-2xl"
+                           className="bg-slate-50 dark:bg-[#0b0e14] rounded-[40px] border border-slate-200 dark:border-white/5 mb-6 overflow-hidden shadow-sm dark:shadow-2xl"
                         >
                            {/* Header */}
-                           <View className="p-6 border-b border-white/5 flex-row justify-between items-start">
+                           <View className="p-6 border-b border-slate-200 dark:border-white/5 flex-row justify-between items-start">
                               <View className="flex-row items-center space-x-4">
-                                 <View className="w-12 h-12 bg-white/5 rounded-2xl items-center justify-center border border-white/10">
-                                    <TicketIcon size={18} color={THEME.purple} />
+                                 <View className="w-12 h-12 bg-white dark:bg-white/5 rounded-2xl items-center justify-center border border-slate-200 dark:border-white/10">
+                                    <TicketIcon size={18} color={THEME_COLORS.purple} />
                                  </View>
                                  <View>
-                                    <Typography weight="black" className="text-white text-base">EFOUR</Typography>
-                                    <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 1 }} className="text-white/30 uppercase mt-0.5">VIJAYAWADA TERMINAL</Typography>
+                                    <Typography weight="black" className="text-slate-900 dark:text-white text-base">EFOUR</Typography>
+                                    <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 1 }} className="text-slate-400 dark:text-white/30 uppercase mt-0.5">ELURU TERMINAL</Typography>
                                  </View>
                               </View>
                               <View className="flex-row items-center space-x-2 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-                                 <ShieldCheck size={10} color={THEME.emerald} />
+                                 <ShieldCheck size={10} color={THEME_COLORS.emerald} />
                                  <Typography weight="black" style={{ fontSize: 7, letterSpacing: 1 }} className="text-emerald-500 uppercase">PAID</Typography>
                               </View>
                            </View>
@@ -305,26 +302,26 @@ export default function YourTickets() {
                                     if (item.id === 'tax-gst' || item.name.includes('GST')) return null;
                                     return (
                                        <View key={i} className="flex-row items-center justify-between">
-                                          <Typography weight="black" className="text-white/60 text-xs uppercase italic"><Typography weight="black" style={{ color: THEME.purple }}>{item.quantity}X</Typography> {item.name}</Typography>
-                                          <Typography weight="black" className="text-white text-xs">₹{item.price * item.quantity}</Typography>
+                                          <Typography weight="black" className="text-slate-600 dark:text-white/60 text-xs uppercase italic"><Typography weight="black" style={{ color: THEME_COLORS.purple }}>{item.quantity}X</Typography> {item.name}</Typography>
+                                          <Typography weight="black" className="text-slate-900 dark:text-white text-xs">₹{item.price * item.quantity}</Typography>
                                        </View>
                                     );
                                  })}
                               </View>
 
-                              <View className="flex-row items-center justify-between pt-6 border-t border-white/5">
+                              <View className="flex-row items-center justify-between pt-6 border-t border-slate-200 dark:border-white/5">
                                  <View className="flex-row items-center space-x-5 opacity-40">
                                     <View className="flex-row items-center space-x-2">
-                                       <Calendar size={12} color="white" />
-                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-white uppercase">{date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</Typography>
+                                       <Calendar size={12} className="text-slate-900 dark:text-white" />
+                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-slate-900 dark:text-white uppercase">{date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}</Typography>
                                     </View>
                                     <View className="flex-row items-center space-x-2">
-                                       <Clock size={12} color="white" />
-                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-white uppercase">{date.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true })}</Typography>
+                                       <Clock size={12} className="text-slate-900 dark:text-white" />
+                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-slate-900 dark:text-white uppercase">{date.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit', hour12: true })}</Typography>
                                     </View>
                                  </View>
-                                 <View className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl">
-                                    <Typography weight="black" className="text-white text-lg font-black">₹{amount}</Typography>
+                                 <View className="bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10 px-4 py-2 rounded-xl">
+                                    <Typography weight="black" className="text-slate-900 dark:text-white text-lg font-black">₹{amount}</Typography>
                                  </View>
                               </View>
 
@@ -332,29 +329,29 @@ export default function YourTickets() {
                               <View className="space-y-4 mt-10">
                                  <Pressable
                                     onPress={() => handleExpand(order._id)}
-                                    className={`h-16 rounded-3xl flex-row items-center justify-center space-x-3 active:scale-95 shadow-xl ${isExpanded ? 'bg-white/5 border border-white/10' : 'bg-[#FFD700] shadow-[#FFD700]/40'}`}
+                                    className={`h-16 rounded-3xl flex-row items-center justify-center space-x-3 active:opacity-70 shadow-lg ${isExpanded ? 'bg-slate-200 dark:bg-white/5 border border-slate-300 dark:border-white/10' : 'bg-[#FFD700] shadow-[#FFD700]/20'}`}
                                  >
-                                    <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${isExpanded ? 'text-white' : 'text-black'} uppercase italic font-black`}>{isExpanded ? 'HIDE PASSES' : 'VIEW PASSES'}</Typography>
+                                    <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className={`${isExpanded ? 'text-slate-900 dark:text-white' : 'text-black'} uppercase italic font-black`}>{isExpanded ? 'HIDE PASSES' : 'VIEW PASSES'}</Typography>
                                     {!isExpanded && <ChevronRight size={16} color="black" />}
-                                    {isExpanded && <ChevronDown size={16} color="white" />}
+                                    {isExpanded && <ChevronDown size={16} className="text-slate-900 dark:text-white" />}
                                  </Pressable>
 
                                  <Pressable
                                     onPress={() => setSelectedOrderForInvoice(order)}
-                                    className="bg-white/5 h-16 rounded-3xl items-center justify-center border border-white/10 active:bg-white/10"
+                                    className="bg-slate-100 dark:bg-white/5 h-16 rounded-3xl items-center justify-center border border-slate-200 dark:border-white/10 active:opacity-70"
                                  >
-                                    <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className="text-white/40 uppercase italic">VIEW INVOICE</Typography>
+                                    <Typography weight="black" style={{ fontSize: 10, letterSpacing: 4 }} className="text-slate-400 dark:text-white/40 uppercase italic">VIEW INVOICE</Typography>
                                  </Pressable>
                               </View>
                            </View>
 
                            {/* EXPANDED SECTION */}
                            {isExpanded && (
-                              <View className="bg-white/[0.02] border-t border-dashed border-white/10 p-6">
+                              <View className="bg-slate-100/50 dark:bg-white/[0.02] border-t border-dashed border-slate-200 dark:border-white/10 p-6">
                                  {ticketsLoadingFor === order._id ? (
                                     <View className="py-8 items-center space-x-3 flex-row justify-center">
-                                       <ActivityIndicator color={THEME.purple} size="small" />
-                                       <Typography weight="black" style={{ fontSize: 9, letterSpacing: 2 }} className="text-white/40 uppercase">SYNCING PASSES...</Typography>
+                                       <ActivityIndicator color={THEME_COLORS.purple} size="small" />
+                                       <Typography weight="black" style={{ fontSize: 9, letterSpacing: 2 }} className="text-slate-400 dark:text-white/40 uppercase">SYNCING PASSES...</Typography>
                                     </View>
                                  ) : (
                                     <View>
@@ -374,49 +371,48 @@ export default function YourTickets() {
 
          {/* --- INVOICE MODAL --- */}
          <Modal visible={!!selectedOrderForInvoice} transparent animationType="slide">
-            <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.95)' }}>
-               <BlurView intensity={100} tint="dark" style={StyleSheet.absoluteFill} />
+            <View className="flex-1 bg-white dark:bg-black/95">
                <SafeAreaView className="flex-1">
-                  <View className="p-8 border-b border-white/5 flex-row justify-between items-center">
+                  <View className="p-8 border-b border-slate-200 dark:border-white/5 flex-row justify-between items-center">
                      <View>
-                        <Typography weight="black" className="text-white text-3xl uppercase tracking-tighter">DIGITAL <Typography weight="black" className="text-indigo-400">INVOICE</Typography></Typography>
-                        <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 4 }} className="text-white/30 uppercase mt-2">REF: {selectedOrderForInvoice?._id?.slice(-16)}</Typography>
+                        <Typography weight="black" className="text-slate-900 dark:text-white text-3xl uppercase tracking-tighter">DIGITAL <Typography weight="black" className="text-indigo-600 dark:text-indigo-400">INVOICE</Typography></Typography>
+                        <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 4 }} className="text-slate-400 dark:text-white/30 uppercase mt-2">REF: {selectedOrderForInvoice?._id?.slice(-16)}</Typography>
                      </View>
-                     <Pressable onPress={() => setSelectedOrderForInvoice(null)} className="w-14 h-14 bg-white/5 rounded-2xl border border-white/10 items-center justify-center">
-                        <X size={24} color="#fff" />
+                     <Pressable onPress={() => setSelectedOrderForInvoice(null)} className="w-14 h-14 bg-slate-100 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 items-center justify-center active:opacity-70">
+                        <X size={24} className="text-slate-900 dark:text-white" />
                      </Pressable>
                   </View>
 
                   <ScrollView className="flex-1 px-8 pt-8" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
                      {/* Entity Header */}
                      <View className="mb-10 items-center">
-                        <View className="w-20 h-20 bg-white rounded-3xl p-4 mb-4 border border-white/20 items-center justify-center">
+                        <View className="w-20 h-20 bg-slate-50 dark:bg-white rounded-3xl p-4 mb-4 border border-slate-200 dark:border-white/20 items-center justify-center shadow-sm">
                            <Image source={require('../../assets/images/E4_LOGO_NEW.jpeg')} style={{ width: 44, height: 44 }} resizeMode="contain" />
                         </View>
-                        <Typography weight="black" className="text-2xl text-white italic tracking-tighter uppercase mb-2">EFOUR ADVENTURE PARK</Typography>
-                        <Typography weight="bold" className="text-[9px] text-white/40 text-center leading-relaxed max-w-[280px]">
+                        <Typography weight="black" className="text-2xl text-slate-900 dark:text-white italic tracking-tighter uppercase mb-2 text-center">EFOUR ADVENTURE PARK</Typography>
+                        <Typography weight="bold" className="text-[9px] text-slate-500 dark:text-white/40 text-center leading-relaxed max-w-[280px]">
                            ELURU BYPASS ROAD, NEAR RTC DEPOT, ELURU,{"\n"}ANDHRA PRADESH - 534001{"\n"}HELPLINE: +91 70369 23456
                         </Typography>
                      </View>
 
                      {/* Meta Grid */}
                      <View className="flex-row flex-wrap gap-4 mb-10">
-                        <View className="flex-1 bg-white/5 p-4 rounded-2xl border border-white/5 min-w-[140px]">
-                           <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 2 }} className="text-white/30 uppercase mb-2">TRANSACTION DATE</Typography>
-                           <Typography weight="black" className="text-white text-xs">{selectedOrderForInvoice && new Date(selectedOrderForInvoice.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</Typography>
+                        <View className="flex-1 bg-slate-50 dark:bg-white/5 p-4 rounded-2xl border border-slate-200 dark:border-white/5 min-w-[140px] shadow-sm">
+                           <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 2 }} className="text-slate-400 dark:text-white/30 uppercase mb-2">TRANSACTION DATE</Typography>
+                           <Typography weight="black" className="text-slate-900 dark:text-white text-xs">{selectedOrderForInvoice && new Date(selectedOrderForInvoice.createdAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}</Typography>
                         </View>
-                        <View className="flex-1 bg-white/5 p-4 rounded-2xl border border-white/5 min-w-[140px]">
-                           <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 2 }} className="text-white/30 uppercase mb-2">PAYMENT STATUS</Typography>
+                        <View className="flex-1 bg-slate-50 dark:bg-white/5 p-4 rounded-2xl border border-slate-200 dark:border-white/5 min-w-[140px] shadow-sm">
+                           <Typography weight="bold" style={{ fontSize: 7, letterSpacing: 2 }} className="text-slate-400 dark:text-white/30 uppercase mb-2">PAYMENT STATUS</Typography>
                            <View className="flex-row items-center space-x-2">
-                              <ShieldCheck size={10} color={THEME.emerald} />
-                              <Typography weight="black" className="text-emerald-500 text-xs">PAID & VERIFIED</Typography>
+                              <ShieldCheck size={10} color={THEME_COLORS.emerald} />
+                              <Typography weight="black" className="text-emerald-600 dark:text-emerald-500 text-xs">PAID & VERIFIED</Typography>
                            </View>
                         </View>
                      </View>
 
                      {/* Items List */}
-                     <View className="bg-white/5 rounded-[32px] border border-white/5 p-8 mb-10">
-                        <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-white/40 uppercase mb-8">BOOKING BREAKDOWN</Typography>
+                     <View className="bg-slate-50 dark:bg-white/5 rounded-[32px] border border-slate-200 dark:border-white/5 p-8 mb-10 shadow-sm">
+                        <Typography weight="black" style={{ fontSize: 9, letterSpacing: 4 }} className="text-slate-400 dark:text-white/40 uppercase mb-8">BOOKING BREAKDOWN</Typography>
 
                         <View className="space-y-6">
                            {(() => {
@@ -433,22 +429,22 @@ export default function YourTickets() {
                                     {rideItems.map((item: any, i: number) => (
                                        <View key={i} className="flex-row justify-between items-start">
                                           <View className="flex-1 mr-4">
-                                             <Typography weight="black" className="text-white text-sm uppercase tracking-tight leading-tight">{item.name}</Typography>
-                                             <Typography weight="bold" style={{ fontSize: 8 }} className="text-white/30 mt-1 uppercase">QTY: {item.quantity} × ₹{item.price}</Typography>
+                                             <Typography weight="black" className="text-slate-900 dark:text-white text-sm uppercase tracking-tight leading-tight">{item.name}</Typography>
+                                             <Typography weight="bold" style={{ fontSize: 8 }} className="text-slate-500 dark:text-white/30 mt-1 uppercase">QTY: {item.quantity} × ₹{item.price}</Typography>
                                           </View>
-                                          <Typography weight="black" className="text-white text-sm">₹{item.price * item.quantity}</Typography>
+                                          <Typography weight="black" className="text-slate-900 dark:text-white text-sm">₹{item.price * item.quantity}</Typography>
                                        </View>
                                     ))}
 
-                                    <View className="h-[1px] bg-white/10 my-8" />
+                                    <View className="h-[1px] bg-slate-200 dark:bg-white/10 my-8" />
 
                                     <View className="flex-row justify-between items-center opacity-40 mb-4">
-                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-white uppercase">SUB-TOTAL</Typography>
-                                       <Typography weight="bold" className="text-white">₹{subTotal}</Typography>
+                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-slate-900 dark:text-white uppercase">SUB-TOTAL</Typography>
+                                       <Typography weight="bold" className="text-slate-900 dark:text-white">₹{subTotal}</Typography>
                                     </View>
                                     <View className="flex-row justify-between items-center opacity-40 mb-8">
-                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-white uppercase">GOV TAXES (GST 9%)</Typography>
-                                       <Typography weight="bold" className="text-white">₹{taxTotal}</Typography>
+                                       <Typography weight="bold" style={{ fontSize: 9 }} className="text-slate-900 dark:text-white uppercase">GOV TAXES (GST 9%)</Typography>
+                                       <Typography weight="bold" className="text-slate-900 dark:text-white">₹{taxTotal}</Typography>
                                     </View>
 
                                     <View className="flex-row justify-between items-center bg-[#6C5CE7] -mx-8 px-8 py-5">
@@ -462,22 +458,22 @@ export default function YourTickets() {
                      </View>
 
                      <View className="items-center py-10 opacity-20">
-                        <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 2 }} className="text-white/40 text-center uppercase">THIS IS A COMPUTER GENERATED SECURE RECEIPT. NO SIGNATURE REQUIRED.</Typography>
+                        <Typography weight="bold" style={{ fontSize: 8, letterSpacing: 2 }} className="text-slate-900 dark:text-white/40 text-center uppercase">THIS IS A COMPUTER GENERATED SECURE RECEIPT. NO SIGNATURE REQUIRED.</Typography>
                      </View>
                   </ScrollView>
 
-                  <View className="p-8 border-t border-white/5">
+                  <View className="p-8 border-t border-slate-200 dark:border-white/5">
                      <Pressable
                         onPress={() => setSelectedOrderForInvoice(null)}
-                        className="bg-white/5 h-18 rounded-3xl items-center justify-center border border-white/10 active:bg-white/10"
+                        className="bg-slate-100 dark:bg-white/5 h-18 rounded-3xl items-center justify-center border border-slate-200 dark:border-white/10 active:opacity-70 shadow-sm"
                      >
-                        <Typography weight="black" style={{ fontSize: 11, letterSpacing: 6 }} className="text-white uppercase font-black">CLOSE PROTOCOL</Typography>
+                        <Typography weight="black" style={{ fontSize: 11, letterSpacing: 6 }} className="text-slate-900 dark:text-white uppercase font-black">CLOSE PROTOCOL</Typography>
                      </Pressable>
                   </View>
                </SafeAreaView>
             </View>
          </Modal>
-      </SafeAreaView>
+      </View>
    );
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, Pressable, Dimensions, StyleSheet, Platform, ScrollView, TextInput, Image, ActivityIndicator } from "react-native";
+import { View, Pressable, useWindowDimensions, StyleSheet, Platform, ScrollView, TextInput, Image, ActivityIndicator } from "react-native";
 import { Typography, Container } from "../../src/components/ui/Core";
 import { LinearGradient } from "expo-linear-gradient";
 import { Globe, ArrowRight, ArrowDown, ArrowUp, Search, ShoppingBag } from "lucide-react-native";
@@ -9,6 +9,7 @@ import Svg, { Path, Rect, Circle } from 'react-native-svg';
 import { RideCard } from "../../src/components/ui/RideCard";
 import { Footer } from "../../src/components/ui/Footer";
 import { Navbar } from "../../src/components/ui/Navbar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -20,8 +21,6 @@ import Animated, {
   interpolate,
   withSequence,
 } from "react-native-reanimated";
-
-const { width, height } = Dimensions.get("window");
 
 // --- MOCK DATA FOR RIDES ---
 const RIDE_DATA = [
@@ -68,10 +67,10 @@ const AnimatedOrb = ({ color, size, initialPos, delay = 0 }: any) => {
 // SECTION 3: OUR VISION
 const OurVisionSection = ({ onBookRide }: { onBookRide?: () => void }) => {
   return (
-    <View className="bg-[#000000] px-6 pt-4 pb-16 overflow-hidden">
+    <View className="bg-white dark:bg-[#000000] px-6 pt-4 pb-16 overflow-hidden">
       {/* BACKGROUND TEXT OVERLAY */}
       <View className="absolute top-0 right-[-100px] opacity-[0.03]">
-        <Typography style={{ fontSize: 350, transform: [{ rotate: '90deg' }] }} className="font-black text-white uppercase italic">
+        <Typography style={{ fontSize: 350, transform: [{ rotate: '90deg' }] }} className="font-black text-slate-900 dark:text-white uppercase italic">
           FOUR
         </Typography>
       </View>
@@ -81,10 +80,10 @@ const OurVisionSection = ({ onBookRide }: { onBookRide?: () => void }) => {
       <View className="flex-col items-start px-2">
         {/* LEFT CONTENT */}
         <View className="mb-12">
-          <Typography weight="black" className="text-6xl font-black italic text-white tracking-[-3px] mb-6 uppercase leading-tight">
+          <Typography weight="black" className="text-6xl font-black italic text-slate-900 dark:text-white tracking-[-3px] mb-6 uppercase leading-tight">
             OUR{"\n"}VISION.
           </Typography>
-          <Typography className="text-gray-400 text-sm font-medium uppercase leading-relaxed mb-8 tracking-wide max-w-[280px]">
+          <Typography className="text-slate-500 dark:text-gray-400 text-sm font-medium uppercase leading-relaxed mb-8 tracking-wide max-w-[280px]">
             WE ARE BUILDING THE BEST PLACE IN ELURU FOR GREAT FOOD AND FUN RIDES FOR FAMILIES.
           </Typography>
 
@@ -100,19 +99,19 @@ const OurVisionSection = ({ onBookRide }: { onBookRide?: () => void }) => {
         {/* RIGHT IMAGERY */}
         <View className="relative w-full h-[400px]">
           {/* Main Large Image */}
-          <View className="w-full h-[85%] rounded-[32px] overflow-hidden border border-white/10 shadow-2xl">
+          <View className="w-full h-[85%] rounded-[32px] overflow-hidden border border-slate-200 dark:border-white/10 shadow-2xl">
             <Image
-              source={require('../../assets/images/vision_park.png')}
+              source={require('../../assets/images/vision_park.jpeg')}
               className="w-full h-full"
               resizeMode="cover"
             />
           </View>
 
           {/* Overlapping Small Image */}
-          <View className="absolute -bottom-6 right-6 w-[60%] h-[45%] rounded-[24px] overflow-hidden border-8 border-[#020408] shadow-2xl">
-            <View className="flex-1 border border-white/20 rounded-[16px] overflow-hidden">
+          <View className="absolute -bottom-6 right-6 w-[60%] h-[45%] rounded-[24px] overflow-hidden border-8 border-white dark:border-[#020408] shadow-2xl">
+            <View className="flex-1 border border-slate-200 dark:border-white/20 rounded-[16px] overflow-hidden">
               <Image
-                source={require('../../assets/images/vision_park.png')}
+                source={require('../../assets/images/vision_park.jpeg')}
                 className="w-full h-full"
                 resizeMode="cover"
               />
@@ -128,6 +127,8 @@ export default function HomeScreen() {
   const router = useRouter();
   const { scroll } = useLocalSearchParams<{ scroll: string }>();
   const scrollRef = React.useRef<ScrollView>(null);
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   // API DATA STATE
   const [rides, setRides] = React.useState<any[]>(RIDE_DATA);
@@ -213,24 +214,24 @@ export default function HomeScreen() {
   }));
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#000000" }}>
+    <View className="flex-1 bg-white dark:bg-black">
       <ScrollView 
         ref={scrollRef} 
         style={{ flex: 1 }} 
         className="flex-1" 
         showsVerticalScrollIndicator={false} 
-        contentContainerStyle={{ paddingBottom: 160 }}
+        contentContainerStyle={{ paddingBottom: 160 + insets.bottom }}
       >
         {/* SECTION 1: HERO */}
-        <View style={{ height: height * 0.70, width }}>
+        <View style={{ height: Math.max(height * 0.70, 600), width }}>
           <View style={StyleSheet.absoluteFill}>
-            <View style={[StyleSheet.absoluteFill, { backgroundColor: '#000000' }]} />
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: '#020408' }]} />
             <AnimatedOrb color="#e65100" size={width * 0.9} initialPos={{ x: -width * 0.35, y: height * 0.05 }} delay={0} />
             <AnimatedOrb color="#0d47a1" size={width * 1.0} initialPos={{ x: width * 0.05, y: height * 0.15 }} delay={500} />
             <AnimatedOrb color="#283593" size={width * 0.8} initialPos={{ x: width * 0.1, y: height * 0.45 }} delay={1000} />
-            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)', '#000000']} style={StyleSheet.absoluteFill} />
+            <LinearGradient colors={['transparent', 'rgba(2,4,8,0.8)', '#020408']} style={StyleSheet.absoluteFill} />
           </View>
-          <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 180, alignItems: 'center' }}>
+          <View style={{ flex: 1, paddingHorizontal: 32, paddingTop: 100 + insets.top, alignItems: 'center' }}>
             <Animated.View className="flex-row items-center bg-white/5 self-center px-5 py-2.5 rounded-full border border-white/10 mb-4" style={badgeStyle}>
               <View className="w-2 h-2 rounded-full bg-[#52caff] mr-3" />
               <Typography weight="black" className="text-[11px] text-gray-100 font-black tracking-[3px] uppercase italic">ELURU'S PREMIER HUB</Typography>
@@ -268,22 +269,22 @@ export default function HomeScreen() {
         </View>
 
         {/* SECTION 2: OUR RIDES */}
-        <View id="our-rides" className="bg-[#000000] px-6 pt-4 pb-16 border-t border-white/5">
+        <View id="our-rides" className="bg-white dark:bg-[#000000] px-6 pt-4 pb-16 border-t border-slate-100 dark:border-white/5">
           <View className="mb-8">
             <View className="flex-row items-center mb-4">
               <View className="w-10 h-[1.5px] bg-indigo-500 mr-3" />
               <Typography weight="black" className="text-[11px] text-indigo-400 font-black tracking-[4px] uppercase">ALL RIDES</Typography>
             </View>
-            <Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[40px] leading-[44px] font-black italic text-white tracking-[-2px] mb-8 uppercase">OUR RIDES.</Typography>
+            <Typography weight="black" numberOfLines={1} adjustsFontSizeToFit className="text-[40px] leading-[44px] font-black italic text-slate-900 dark:text-white tracking-[-2px] mb-8 uppercase">OUR RIDES.</Typography>
 
-            <View className="w-full bg-[#0d0f14] border border-white/10 rounded-2xl px-6 py-4 flex-row items-center space-x-4 shadow-2xl">
-              <Search size={16} color="rgba(255,255,255,0.5)" />
+            <View className="w-full bg-slate-50 dark:bg-[#0d0f14] border border-slate-200 dark:border-white/10 rounded-2xl px-6 py-4 flex-row items-center space-x-4 shadow-sm dark:shadow-2xl">
+              <Search size={16} className="text-slate-400 dark:text-white/30" />
               <TextInput 
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="SEARCH RIDES..." 
-                placeholderTextColor="rgba(255,255,255,0.3)" 
-                className="text-[11px] text-white font-black uppercase tracking-widest flex-1 p-0 m-0" 
+                placeholderTextColor="rgba(100,116,139,0.5)" 
+                className="text-[11px] text-slate-900 dark:text-white font-black uppercase tracking-widest flex-1 p-0 m-0" 
               />
             </View>
           </View>
@@ -291,7 +292,7 @@ export default function HomeScreen() {
           {loadingRides ? (
             <View className="py-20 items-center">
               <ActivityIndicator color="#6366f1" size="large" />
-              <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-4 font-black">LOADING LIVE CATALOG...</Typography>
+              <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[4px] uppercase mt-4 font-black">LOADING LIVE CATALOG...</Typography>
             </View>
           ) : (
             <View className="flex-row flex-wrap justify-between">

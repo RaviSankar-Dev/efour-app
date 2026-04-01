@@ -38,7 +38,9 @@ const SelectionModal = ({ visible, onClose, options, onSelect, title }: any) => 
 );
 
 export default function DomeBookingScreen() {
+   const insets = useSafeAreaInsets();
    const router = useRouter();
+   const { width, height } = useWindowDimensions();
    const { addToCart, setCartOpen } = useAppStore();
    const [formData, setFormData] = useState({
       name: '',
@@ -103,7 +105,7 @@ export default function DomeBookingScreen() {
    ];
 
    return (
-      <View style={{ flex: 1, backgroundColor: '#020408' }}>
+      <View className="flex-1 bg-white dark:bg-[#020408]">
          <Navbar />
 
          <SelectionModal
@@ -127,37 +129,37 @@ export default function DomeBookingScreen() {
             style={{ flex: 1 }}
          >
             <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
-               <View className="pt-40 pb-20 px-8">
+               <View className="px-8 pb-20" style={{ paddingTop: insets.top + 100 }}>
                   {/* BACK BUTTON */}
                   <Pressable onPress={() => router.back()} className="flex-row items-center space-x-2 mb-10 opacity-60">
-                     <ChevronLeft size={16} color="white" />
-                     <Typography weight="black" className="text-[10px] text-white tracking-[3px] uppercase font-black">GO BACK</Typography>
+                     <ChevronLeft size={16} className="text-slate-900 dark:text-white" />
+                     <Typography weight="black" className="text-[10px] text-slate-900 dark:text-white tracking-[3px] uppercase font-black">GO BACK</Typography>
                   </Pressable>
 
                   {/* HEADER */}
                   <View className="mb-14">
                      <View className="flex-row items-center mb-6">
                         <View className="w-10 h-[2px] bg-indigo-500 mr-4" />
-                        <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-400 uppercase font-black">RESERVATION GATEWAY</Typography>
+                        <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-600 dark:text-indigo-400 uppercase font-black">RESERVATION GATEWAY</Typography>
                      </View>
-                     <Typography weight="black" className="text-6xl text-white italic font-black uppercase leading-none">RESERVE{"\n"}DOME.</Typography>
+                     <Typography weight="black" className="text-6xl text-slate-900 dark:text-white italic font-black uppercase leading-none">RESERVE{"\n"}DOME.</Typography>
                   </View>
 
                   {/* FORM CARD */}
-                  <View className="bg-[#0b0e14] border border-white/10 rounded-[48px] p-10 shadow-premium mb-12">
+                  <View className="bg-slate-50 dark:bg-[#0b0e14] border border-slate-200 dark:border-white/10 rounded-[48px] p-10 shadow-sm dark:shadow-premium mb-12">
                      <View className="gap-12">
                         {/* FULL NAME */}
                         <View>
                            <View className="flex-row items-center mb-5">
-                              <View className="w-8 h-8 items-center justify-center bg-white/5 rounded-xl mr-4 border border-white/10">
+                              <View className="w-8 h-8 items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl mr-4 border border-slate-200 dark:border-white/10">
                                  <User size={14} color="#6366f1" />
                               </View>
-                              <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase font-black">FULL NAME</Typography>
+                              <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[3px] uppercase font-black">FULL NAME</Typography>
                            </View>
                            <TextInput
                               placeholder="ENTER YOUR NAME..."
-                              placeholderTextColor="rgba(255,255,255,0.15)"
-                              className="bg-white/5 border border-white/10 h-16 rounded-2xl px-6 text-white font-bold uppercase tracking-widest text-[13px] active:border-indigo-500/50"
+                              placeholderTextColor={Platform.OS === 'ios' ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.15)'}
+                              className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 h-16 rounded-2xl px-6 text-slate-900 dark:text-white font-bold uppercase tracking-widest text-[13px] active:border-indigo-500/50"
                               value={formData.name}
                               onChangeText={(t) => setFormData({ ...formData, name: t })}
                            />
@@ -167,18 +169,18 @@ export default function DomeBookingScreen() {
                         <View>
                            <View className="flex-row items-center mb-5">
                               <Pressable onPress={() => setDateModal(true)} className="flex-row items-center">
-                                 <View className="w-8 h-8 items-center justify-center bg-white/5 rounded-xl mr-4 border border-white/10">
+                                 <View className="w-8 h-8 items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl mr-4 border border-slate-200 dark:border-white/10">
                                     <Calendar size={14} color="#6366f1" />
                                  </View>
-                                 <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase font-black">SELECT DATE</Typography>
+                                 <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[3px] uppercase font-black">SELECT DATE</Typography>
                               </Pressable>
                            </View>
                            <Pressable
                               onPress={() => setDateModal(true)}
-                              className="bg-white/5 border border-white/10 h-16 rounded-2xl px-6 flex-row items-center justify-between"
+                              className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 h-16 rounded-2xl px-6 flex-row items-center justify-between shadow-sm"
                            >
-                              <Typography weight="black" className="text-white text-[13px] font-black tracking-widest uppercase italic">{DATES.find(d => d.val === formData.date)?.label || formData.date}</Typography>
-                              <ChevronDown size={14} color="rgba(255,255,255,0.3)" />
+                              <Typography weight="black" className="text-slate-900 dark:text-white text-[13px] font-black tracking-widest uppercase italic">{DATES.find(d => d.val === formData.date)?.label || formData.date}</Typography>
+                              <ChevronDown size={14} className="text-slate-400 dark:text-white/30" />
                            </Pressable>
                         </View>
 
@@ -186,57 +188,57 @@ export default function DomeBookingScreen() {
                         <View>
                            <View className="flex-row items-center mb-5">
                               <Pressable onPress={() => setTimeModal(true)} className="flex-row items-center">
-                                 <View className="w-8 h-8 items-center justify-center bg-white/5 rounded-xl mr-4 border border-white/10">
+                                 <View className="w-8 h-8 items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl mr-4 border border-slate-200 dark:border-white/10">
                                     <Clock size={14} color="#6366f1" />
                                  </View>
-                                 <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase font-black">PREMIUM SLOTS</Typography>
+                                 <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[3px] uppercase font-black">PREMIUM SLOTS</Typography>
                               </Pressable>
                            </View>
 
                            <Pressable
                               onPress={() => setTimeModal(true)}
-                              className="bg-white/5 border border-white/10 h-16 rounded-2xl px-6 flex-row items-center justify-between"
+                              className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 h-16 rounded-2xl px-6 flex-row items-center justify-between shadow-sm"
                            >
-                              <Typography weight="black" className="text-white text-[13px] font-black tracking-widest uppercase italic">{formData.time || 'CHOOSE TIMING'}</Typography>
-                              <ChevronDown size={14} color="rgba(255,255,255,0.3)" />
+                              <Typography weight="black" className="text-slate-900 dark:text-white text-[13px] font-black tracking-widest uppercase italic">{formData.time || 'CHOOSE TIMING'}</Typography>
+                              <ChevronDown size={14} className="text-slate-400 dark:text-white/30" />
                            </Pressable>
                         </View>
 
                         {/* NUMBER OF PEOPLE */}
                         <View>
                            <View className="flex-row items-center mb-5">
-                              <View className="w-8 h-8 items-center justify-center bg-white/5 rounded-xl mr-4 border border-white/10">
+                              <View className="w-8 h-8 items-center justify-center bg-slate-100 dark:bg-white/5 rounded-xl mr-4 border border-slate-200 dark:border-white/10">
                                  <Users size={14} color="#6366f1" />
                               </View>
-                              <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase font-black">GUESTS (4-6)</Typography>
+                              <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[3px] uppercase font-black">GUESTS (4-6)</Typography>
                            </View>
                            <View className="flex-row gap-4">
                               {['4', '5', '6'].map((n) => (
                                  <Pressable
                                     key={n}
                                     onPress={() => setFormData({ ...formData, guests: n })}
-                                    className={`flex-1 h-16 rounded-2xl items-center justify-center border-2 ${formData.guests === n ? 'bg-indigo-600 border-indigo-400' : 'bg-white/5 border-white/5'}`}
+                                    className={`flex-1 h-16 rounded-2xl items-center justify-center border-2 ${formData.guests === n ? 'bg-indigo-600 border-indigo-400' : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/5'}`}
                                  >
-                                    <Typography weight="black" className={`text-xl font-black italic ${formData.guests === n ? 'text-white' : 'text-white/30'}`}>{n}</Typography>
+                                    <Typography weight="black" className={`text-xl font-black italic ${formData.guests === n ? 'text-white' : 'text-slate-400 dark:text-white/30'}`}>{n}</Typography>
                                  </Pressable>
                               ))}
                            </View>
                         </View>
                      </View>
 
-                     <View className="h-[1px] w-full bg-white/10 my-12" />
+                     <View className="h-[1px] w-full bg-slate-200 dark:bg-white/10 my-12" />
 
                      <View className="flex-row items-center justify-between mb-12">
-                        <Typography weight="black" className="text-[11px] text-white/40 tracking-[4px] uppercase font-black">TOTAL HR RATE</Typography>
+                        <Typography weight="black" className="text-[11px] text-slate-500 dark:text-white/40 tracking-[4px] uppercase font-black">TOTAL HR RATE</Typography>
                         <View className="flex-row items-center">
-                           <Typography weight="black" className="text-5xl text-white italic font-black tracking-tighter">₹500</Typography>
-                           <Typography weight="black" className="text-[12px] text-indigo-400 italic font-black ml-2 uppercase tracking-[2px]">/ HOUR</Typography>
+                           <Typography weight="black" className="text-5xl text-slate-900 dark:text-white italic font-black tracking-tighter">₹500</Typography>
+                           <Typography weight="black" className="text-[12px] text-indigo-600 dark:text-indigo-400 italic font-black ml-2 uppercase tracking-[2px]">/ HOUR</Typography>
                         </View>
                      </View>
 
                      <Pressable
                         onPress={handleProceed}
-                        className="bg-indigo-600 h-20 rounded-[32px] flex-row items-center justify-center gap-5 shadow-2xl shadow-indigo-600/40 active:bg-indigo-700 active:scale-[0.98]"
+                        className="bg-indigo-600 h-20 rounded-[32px] flex-row items-center justify-center gap-5 shadow-lg active:bg-indigo-700 active:opacity-90"
                      >
                         <Typography weight="black" className="text-[14px] text-white tracking-[5px] uppercase font-black italic">PROCEED TO PAY</Typography>
                         <ArrowRight size={22} stroke="white" strokeWidth={4} />

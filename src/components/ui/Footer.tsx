@@ -7,7 +7,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
   const router = useRouter();
 
   return (
-    <View className="bg-[#000000] pt-4 pb-4 px-6 border-t border-white/10">
+    <View className="bg-white dark:bg-[#000000] pt-4 pb-4 px-6 border-t border-slate-200 dark:border-white/10">
       {/* BRAND & DESCRIPTION SECTION */}
       <View className="mb-6">
         <View className="mb-4">
@@ -19,7 +19,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
            />
         </View>
 
-        <Typography weight="medium" className="text-[12px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] max-w-[90%] mb-8 font-medium">
+        <Typography weight="medium" className="text-[12px] text-slate-500 dark:text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] max-w-[90%] mb-8 font-medium">
           REDEFINING ENTERTAINMENT THROUGH WORLD-CLASS EXPERIENCES, PREMIUM DINING, AND HEART-POUNDING ATTRACTIONS.
         </Typography>
 
@@ -40,13 +40,13 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
         </View>
       </View>
 
-      <View className="h-[1px] w-full bg-white/5 mb-8" />
+      <View className="h-[1px] w-full bg-slate-200 dark:bg-white/5 mb-8" />
 
       {/* NAVIGATION MATRIX */}
       <View className="flex-row justify-between mb-12">
         <View style={{ flex: 1 }}>
           <View className="mb-6">
-            <Typography weight="black" className="text-[11px] text-indigo-400 tracking-[3px] uppercase font-black">QUICK LINKS</Typography>
+            <Typography weight="black" className="text-[11px] text-indigo-500 dark:text-indigo-400 tracking-[3px] uppercase font-black">QUICK LINKS</Typography>
             <View className="w-10 h-1 bg-indigo-500/40 rounded-full mt-2" />
           </View>
           <View className="space-y-4">
@@ -60,7 +60,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
                  }}
                  className="py-1"
                >
-                 <Typography weight="bold" className="text-[13px] text-white/60 tracking-[2px] uppercase font-bold">{link}</Typography>
+                 <Typography weight="bold" className="text-[13px] text-slate-600 dark:text-white/60 tracking-[2px] uppercase font-bold">{link}</Typography>
                </Pressable>
             ))}
           </View>
@@ -68,7 +68,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
 
         <View style={{ flex: 1 }}>
           <View className="mb-6">
-            <Typography weight="black" className="text-[11px] text-indigo-400 tracking-[3px] uppercase font-black">INFORMATION</Typography>
+            <Typography weight="black" className="text-[11px] text-indigo-500 dark:text-indigo-400 tracking-[3px] uppercase font-black">INFORMATION</Typography>
             <View className="w-10 h-1 bg-indigo-500/40 rounded-full mt-2" />
           </View>
           <View className="space-y-4">
@@ -80,7 +80,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
               }}
                 className="py-1"
               >
-                <Typography weight="bold" className="text-[13px] text-white/60 tracking-[2px] uppercase font-bold">{link}</Typography>
+                <Typography weight="bold" className="text-[13px] text-slate-600 dark:text-white/60 tracking-[2px] uppercase font-bold">{link}</Typography>
               </Pressable>
             ))}
           </View>
@@ -88,7 +88,7 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
       </View>
 
       {/* CONTACT INFO REFINED */}
-      <View className="bg-white/5 rounded-[40px] p-8 space-y-12 mb-10 border border-white/10 shadow-premium">
+      <View className="bg-slate-50 dark:bg-white/5 rounded-[40px] p-8 space-y-12 mb-10 border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-premium">
         <Pressable 
           className="active:opacity-70"
           onPress={() => Linking.openURL('https://maps.app.goo.gl/vt9Y6CR3inDZ6yuX9?g_st=aw')}
@@ -98,8 +98,8 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
               <MapPin size={24} stroke="#f97316" strokeWidth={2.5} />
             </View>
             <View className="flex-1">
-              <Typography weight="black" className="text-[10px] text-white/30 tracking-[3px] uppercase mb-2 font-black">OUR LOCATION</Typography>
-              <Typography weight="bold" className="text-[13px] text-white/90 leading-[20px] tracking-[1.5px] uppercase font-bold">
+              <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[3px] uppercase mb-2 font-black">OUR LOCATION</Typography>
+              <Typography weight="bold" className="text-[13px] text-slate-800 dark:text-white/90 leading-[20px] tracking-[1.5px] uppercase font-bold">
                 OPP TO NEW RTC MAIN BUS STAND, NR PETA, ELURU
               </Typography>
             </View>
@@ -115,23 +115,23 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
               <Phone size={24} stroke="#6366f1" strokeWidth={2.5} />
             </View>
             <View className="flex-1">
-              <Typography weight="black" className="text-[10px] text-indigo-400/50 tracking-[3px] uppercase mb-2 font-black">24/7 HELPLINE</Typography>
-              <Typography weight="black" className="text-[24px] text-white tracking-[3px] uppercase font-black italic">70369 23456</Typography>
+              <Typography weight="black" className="text-[10px] text-indigo-500 dark:text-indigo-400/50 tracking-[3px] uppercase mb-2 font-black">24/7 HELPLINE</Typography>
+              <Typography weight="black" className="text-[24px] text-slate-900 dark:text-white tracking-[3px] uppercase font-black italic">70369 23456</Typography>
             </View>
           </View>
         </Pressable>
       </View>
 
       <View className="items-center mb-6">
-        <Typography weight="bold" className="text-[8px] text-white/20 text-center leading-[14px] tracking-[2px] uppercase font-bold">
+        <Typography weight="bold" className="text-[8px] text-slate-400 dark:text-white/20 text-center leading-[14px] tracking-[2px] uppercase font-bold">
           © 2026 EFOUR ELURU. ALL RIGHTS RESERVED BY{"\n"}
-          <Typography weight="black" className="text-white/40 text-[9px] font-black"> JAYANARAYANA KURETI</Typography>
+          <Typography weight="black" className="text-slate-500 dark:text-white/40 text-[9px] font-black"> JAYANARAYANA KURETI</Typography>
         </Typography>
       </View>
 
       <View id="footer-branding-row" className="flex-row items-center justify-between mb-4" style={{ overflow: 'visible' }}>
-        <View className="bg-white/5 border border-white/10 px-3 h-10 rounded-full flex-row items-center space-x-2 shadow-2xl">
-          <Typography weight="black" className="text-[7.5px] text-white/30 tracking-[1.5px] uppercase font-black">STACKVIL TECHNOLOGIES</Typography>
+        <View className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 px-3 h-10 rounded-full flex-row items-center space-x-2 shadow-sm dark:shadow-2xl">
+          <Typography weight="black" className="text-[7.5px] text-slate-400 dark:text-white/30 tracking-[1.5px] uppercase font-black">STACKVIL TECHNOLOGIES</Typography>
           <Zap size={14} stroke="#6366f1" fill="#6366f1" />
         </View>
 
@@ -139,18 +139,18 @@ export const Footer = ({ onBackToTop }: { onBackToTop?: () => void }) => {
            onPress={() => onBackToTop?.()}
            className="flex-row items-center space-x-3 bg-yellow-400/10 px-4 h-11 rounded-full border border-yellow-400/30 active:bg-yellow-400/20 shadow-2xl"
         >
-          <Typography weight="black" className="text-[7.5px] text-yellow-400 tracking-[1.5px] uppercase font-black">BACK TO TOP</Typography>
+          <Typography weight="black" className="text-[7.5px] text-yellow-600 dark:text-yellow-400 tracking-[1.5px] uppercase font-black">BACK TO TOP</Typography>
           <View className="w-8 h-8 items-center justify-center bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/40">
             <ArrowUp size={14} stroke="black" strokeWidth={4} />
           </View>
         </Pressable>
       </View>
 
-      <View className="h-[1px] w-full bg-white/5 mb-4" />
+      <View className="h-[1px] w-full bg-slate-200 dark:bg-white/5 mb-4" />
       <View className="flex-row items-center justify-between px-2 pb-2">
-        <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">EFOUR ELURU @ 2026</Typography>
-        <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">UNTIL 11:00 PM</Typography>
-        <Typography weight="black" className="text-[9px] text-white/10 tracking-[1.5px] uppercase font-black">NR PETA, ELURU</Typography>
+        <Typography weight="black" className="text-[9px] text-slate-300 dark:text-white/10 tracking-[1.5px] uppercase font-black">EFOUR ELURU @ 2026</Typography>
+        <Typography weight="black" className="text-[9px] text-slate-300 dark:text-white/10 tracking-[1.5px] uppercase font-black">UNTIL 11:00 PM</Typography>
+        <Typography weight="black" className="text-[9px] text-slate-300 dark:text-white/10 tracking-[1.5px] uppercase font-black">NR PETA, ELURU</Typography>
       </View>
     </View>
   );

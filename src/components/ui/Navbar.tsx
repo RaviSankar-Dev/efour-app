@@ -50,14 +50,18 @@ const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: an
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.3,
           shadowRadius: 8,
-        } : {
-          backgroundColor: 'rgba(255, 255, 255, 0.05)',
-          borderColor: 'rgba(255, 255, 255, 0.1)',
-        },
+        } : {},
         animatedStyle
       ]}
+      className={variant === "glass" ? "bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10" : ""}
     >
-      <Icon size={20} stroke={variant === "primary" ? "black" : "white"} strokeWidth={2.4} />
+      <View className="items-center justify-center">
+        <Icon 
+          size={20} 
+          className={variant === "primary" ? "text-black" : "text-slate-600 dark:text-white"} 
+          strokeWidth={2.4} 
+        />
+      </View>
       {badgeCount > 0 && (
         <View style={{
           position: 'absolute',
@@ -70,9 +74,10 @@ const NavbarButton = ({ icon: Icon, onPress, badgeCount, variant = "glass" }: an
           alignItems: 'center',
           justifyContent: 'center',
           borderWidth: 2,
-          borderColor: '#000',
-        }}>
-          <Typography weight="black" style={{ fontSize: 9, lineHeight: 12, color: 'black' }}>{badgeCount}</Typography>
+        }}
+        className="border-white dark:border-black"
+        >
+          <Typography weight="black" style={{ fontSize: 9, lineHeight: 12 }} className="text-black">{badgeCount}</Typography>
         </View>
       )}
     </AnimatedPressable>
@@ -92,12 +97,11 @@ export const Navbar = () => {
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: '#000000',
         paddingTop: insets.top,
         zIndex: 100,
         borderBottomWidth: 1,
-        borderBottomColor: 'rgba(255, 255, 255, 0.05)',
       }}
+      className="bg-white/80 dark:bg-black/80 border-slate-200 dark:border-white/5 backdrop-blur-xl"
     >
       <View
         style={{

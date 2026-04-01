@@ -14,6 +14,7 @@ const { width, height } = Dimensions.get("window");
 export default function ProfileScreen() {
    const insets = useSafeAreaInsets();
    const router = useRouter();
+   const { width, height } = useWindowDimensions();
    const { isAuthenticated, user, setUser, logout, fetchProfile, updateProfile, deleteAccount } = useAppStore();
 
    useEffect(() => {
@@ -167,7 +168,7 @@ export default function ProfileScreen() {
     // AUTHENTICATED DASHBOARD
     if (isAuthenticated && user) {
         return (
-            <View style={{ flex: 1, backgroundColor: '#020408' }}>
+            <View className="flex-1 bg-white dark:bg-[#020408]">
                 {/* FIXED HEADER */}
                 <Navbar />
 
@@ -178,7 +179,7 @@ export default function ProfileScreen() {
                     <ScrollView 
                         bounces={false} 
                         showsVerticalScrollIndicator={false} 
-                        contentContainerStyle={{ paddingBottom: 140 }}
+                        contentContainerStyle={{ paddingBottom: 140 + insets.bottom }}
                     >
                         <View className="px-8 pt-32 pb-10">
 
@@ -189,7 +190,7 @@ export default function ProfileScreen() {
                                         <View className="w-10 h-10 rounded-full bg-indigo-500/10 items-center justify-center border border-indigo-500/20">
                                             <Shield size={16} stroke="#6366f1" />
                                         </View>
-                                        <Typography weight="black" className="text-[12px] text-white/60 italic tracking-[3px] uppercase font-black">ACCOUNT PROFILE</Typography>
+                                        <Typography weight="black" className="text-[12px] text-slate-500 dark:text-white/60 italic tracking-[3px] uppercase font-black">ACCOUNT PROFILE</Typography>
                                     </View>
 
                                     <Pressable
@@ -202,22 +203,22 @@ export default function ProfileScreen() {
                                                 setIsEditing(true);
                                             }
                                         }}
-                                        className={`${isEditing ? 'bg-indigo-600' : 'bg-white/5 border border-white/10'} px-5 h-11 rounded-xl flex-row items-center shadow-2xl active:bg-indigo-700`}
+                                        className={`${isEditing ? 'bg-indigo-600' : 'bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10'} px-5 h-11 rounded-xl flex-row items-center shadow-lg dark:shadow-2xl active:opacity-70`}
                                         style={{ gap: 8 }}
                                     >
-                                        {isEditing ? <Check size={14} stroke="white" strokeWidth={3} /> : <Edit2 size={12} stroke="white" strokeWidth={2.5} />}
-                                        <Typography weight="black" className="text-[9px] text-white tracking-[2px] uppercase italic font-black">
+                                        {isEditing ? <Check size={14} color="white" strokeWidth={3} /> : <Edit2 size={12} className="text-slate-900 dark:text-white" strokeWidth={2.5} />}
+                                        <Typography weight="black" className={`text-[9px] ${isEditing ? 'text-white' : 'text-slate-900 dark:text-white'} tracking-[2px] uppercase italic font-black`}>
                                             {isEditing ? "SAVE" : "EDIT"}
                                         </Typography>
                                     </Pressable>
                                 </View>
 
-                                <View className="bg-[#0b0e14] border border-white/10 rounded-[32px] p-8 shadow-premium">
+                                <View className="bg-slate-50 dark:bg-[#0b0e14] border border-slate-200 dark:border-white/10 rounded-[32px] p-8 shadow-sm dark:shadow-premium">
                                     <View className="gap-6">
                                         {/* NAME FIELD */}
                                         <View className="flex-row items-center" style={{ gap: 20 }}>
-                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <UserIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
+                                            <View className="w-14 h-14 items-center justify-center bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-2xl">
+                                                <UserIcon size={22} className="text-[#6366f1]" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
                                                 <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">FULL NAME</Typography>
@@ -225,19 +226,19 @@ export default function ProfileScreen() {
                                                     <TextInput
                                                         value={editedName}
                                                         onChangeText={setEditedName}
-                                                        className="text-white text-[18px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
+                                                        className="text-slate-900 dark:text-white text-[18px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
                                                     />
                                                 ) : (
-                                                    <Typography weight="black" className="text-[20px] text-white italic tracking-tighter uppercase font-black">{user?.name}</Typography>
+                                                    <Typography weight="black" className="text-[20px] text-slate-900 dark:text-white italic tracking-tighter uppercase font-black">{user?.name}</Typography>
                                                 )}
                                             </View>
                                         </View>
-                                        <View className="h-[1px] w-full bg-white/5" />
+                                        <View className="h-[1px] w-full bg-slate-200 dark:bg-white/5" />
 
                                         {/* EMAIL FIELD */}
                                         <View className="flex-row items-center" style={{ gap: 20 }}>
-                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <MailIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
+                                            <View className="w-14 h-14 items-center justify-center bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-2xl">
+                                                <MailIcon size={22} className="text-[#6366f1]" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
                                                 <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">EMAIL ADDRESS</Typography>
@@ -246,26 +247,26 @@ export default function ProfileScreen() {
                                                         value={editedEmail}
                                                         onChangeText={setEditedEmail}
                                                         autoCapitalize="none"
-                                                        className="text-white text-[14px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
+                                                        className="text-slate-900 dark:text-white text-[14px] font-black italic tracking-tight uppercase border-b border-indigo-500/30 pb-1"
                                                     />
                                                 ) : (
                                                     <View className="flex-row items-center justify-between">
-                                                        <Typography weight="black" className="text-[14px] text-white/80 italic tracking-tighter uppercase font-black" numberOfLines={1}>{user?.email}</Typography>
+                                                        <Typography weight="black" className="text-[14px] text-slate-700 dark:text-white/80 italic tracking-tighter uppercase font-black" numberOfLines={1}>{user?.email}</Typography>
                                                         <View className="w-4 h-4 bg-green-500/10 rounded-full items-center justify-center border border-green-500/20 ml-2"><Check size={8} color="#22c55e" /></View>
                                                     </View>
                                                 )}
                                             </View>
                                         </View>
-                                        <View className="h-[1px] w-full bg-white/5" />
+                                        <View className="h-[1px] w-full bg-slate-200 dark:bg-white/5" />
 
                                         {/* PHONE FIELD */}
                                         <View className="flex-row items-center" style={{ gap: 20 }}>
-                                            <View className="w-14 h-14 items-center justify-center bg-white/5 rounded-2xl border border-white/10 shadow-2xl">
-                                                <PhoneIcon size={22} stroke="#6366f1" strokeWidth={2.5} />
+                                            <View className="w-14 h-14 items-center justify-center bg-white dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/10 shadow-sm dark:shadow-2xl">
+                                                <PhoneIcon size={22} className="text-[#6366f1]" strokeWidth={2.5} />
                                             </View>
                                             <View className="flex-1">
                                                 <Typography weight="black" className="text-[10px] text-indigo-500 tracking-[3px] uppercase mb-1 font-black">MOBILE NUMBER</Typography>
-                                                <Typography weight="black" className="text-[18px] text-white italic tracking-[1px] uppercase font-black">+91 {user?.mobile || '9293929292'}</Typography>
+                                                <Typography weight="black" className="text-[18px] text-slate-900 dark:text-white italic tracking-[1px] uppercase font-black">+91 {user?.mobile || '9293929292'}</Typography>
                                             </View>
                                         </View>
                                     </View>
@@ -278,22 +279,22 @@ export default function ProfileScreen() {
                                     <View className="w-10 h-10 rounded-full bg-yellow-500/10 items-center justify-center border border-yellow-500/20">
                                         <Zap size={14} stroke="#f59e0b" fill="#f59e0b" />
                                     </View>
-                                    <Typography weight="black" className="text-[12px] text-white/60 italic tracking-[3px] uppercase font-black">REWARDS SYSTEM</Typography>
+                                    <Typography weight="black" className="text-[12px] text-slate-500 dark:text-white/60 italic tracking-[3px] uppercase font-black">REWARDS SYSTEM</Typography>
                                 </View>
 
-                                <View className="bg-[#0b0e14] border border-white/10 rounded-[32px] p-10 items-center shadow-premium">
-                                    <Typography weight="black" className="text-[10px] text-yellow-500/60 tracking-[4px] uppercase mb-8 italic font-black">AVAILABLE POINTS</Typography>
+                                <View className="bg-slate-50 dark:bg-[#0b0e14] border border-slate-200 dark:border-white/10 rounded-[32px] p-10 items-center shadow-sm dark:shadow-premium">
+                                    <Typography weight="black" className="text-[10px] text-yellow-600 dark:text-yellow-500/60 tracking-[4px] uppercase mb-8 italic font-black">AVAILABLE POINTS</Typography>
                                     <View className="flex-row items-baseline mb-12">
-                                        <Typography weight="black" className="text-[82px] text-white italic leading-none font-black">0</Typography>
-                                        <Typography weight="black" className="text-[18px] text-white/30 italic ml-4 uppercase font-black">PTS</Typography>
+                                        <Typography weight="black" className="text-[82px] text-slate-900 dark:text-white italic leading-none font-black">0</Typography>
+                                        <Typography weight="black" className="text-[18px] text-slate-400 dark:text-white/30 italic ml-4 uppercase font-black">PTS</Typography>
                                     </View>
 
-                                    <View className="bg-white/5 border border-white/10 rounded-[28px] p-6 w-full flex-row items-center" style={{ gap: 20 }}>
-                                        <View className="w-14 h-14 items-center justify-center bg-yellow-500/10 rounded-2xl border border-yellow-500/20 shadow-2xl">
+                                    <View className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-[28px] p-6 w-full flex-row items-center" style={{ gap: 20 }}>
+                                        <View className="w-14 h-14 items-center justify-center bg-yellow-500/10 rounded-2xl border border-yellow-500/20 shadow-sm dark:shadow-2xl">
                                             <Zap size={24} stroke="#f59e0b" fill="#f59e0b" />
                                         </View>
                                         <View className="flex-1">
-                                            <Typography weight="medium" className="text-[12px] text-gray-400 uppercase italic leading-[20px] tracking-[1px] font-medium">REDEEM <Typography weight="black" className="text-yellow-500 font-black">500 POINTS</Typography> FOR A <Typography weight="black" className="text-indigo-500 font-black">FREE EXCLUSIVE PASS</Typography></Typography>
+                                            <Typography weight="medium" className="text-[12px] text-slate-500 dark:text-gray-400 uppercase italic leading-[20px] tracking-[1px] font-medium">REDEEM <Typography weight="black" className="text-yellow-600 dark:text-yellow-500 font-black">500 POINTS</Typography> FOR A <Typography weight="black" className="text-indigo-600 dark:text-indigo-500 font-black">FREE EXCLUSIVE PASS</Typography></Typography>
                                         </View>
                                     </View>
                                 </View>
@@ -308,10 +309,10 @@ export default function ProfileScreen() {
                                        setPhone("");
                                        setOtp("");
                                    }} 
-                                   className="bg-white/5 border border-white/10 h-16 rounded-[24px] flex-row items-center justify-center space-x-4 shadow-2xl active:bg-white/10"
+                                   className="bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 h-16 rounded-[24px] flex-row items-center justify-center space-x-4 shadow-sm dark:shadow-2xl active:opacity-70"
                                 >
                                     <LogOut size={18} stroke="#ef4444" strokeWidth={2.5} />
-                                    <Typography weight="black" className="text-[12px] text-white tracking-[3px] uppercase font-black italic">LOG OUT DASHBOARD</Typography>
+                                    <Typography weight="black" className="text-[12px] text-slate-900 dark:text-white tracking-[3px] uppercase font-black italic">LOG OUT DASHBOARD</Typography>
                                 </Pressable>
 
                                 <Pressable onPress={handleDeleteAccount} className="h-12 items-center justify-center active:opacity-60">
@@ -327,7 +328,7 @@ export default function ProfileScreen() {
 
    // LOGIN SCREEN
    return (
-      <View style={{ flex: 1, backgroundColor: "#020408" }}>
+      <View className="flex-1 bg-white dark:bg-[#020408]">
          <ImageBackground
             source={{ uri: 'https://images.unsplash.com/photo-1518173946687-a4c8a9ba332f?q=80&w=1974&auto=format&fit=crop' }}
             className="flex-1"
@@ -335,7 +336,7 @@ export default function ProfileScreen() {
             <LinearGradient colors={['rgba(2,4,8,0.4)', 'rgba(2,4,8,0.7)', '#020408']} className="absolute inset-0" />
 
             <View style={{ paddingTop: insets.top + 24 }} className="px-6 flex-row items-center">
-               <Pressable onPress={() => router.push("/")} className="bg-white/5 border border-white/10 px-5 py-3 rounded-2xl flex-row items-center shadow-2xl active:bg-white/10">
+               <Pressable onPress={() => router.push("/")} className="bg-white/10 border border-white/20 px-5 py-3 rounded-2xl flex-row items-center shadow-2xl active:bg-white/20">
                   <ArrowLeft size={16} stroke="white" strokeWidth={3} className="mr-3" />
                   <Typography weight="black" className="text-[10px] text-white tracking-[3px] uppercase font-black italic">EXIT</Typography>
                </Pressable>
@@ -349,15 +350,15 @@ export default function ProfileScreen() {
                         <View className="w-48 h-48 mb-6 items-center justify-center">
                            <Image source={require('../../assets/images/E4_LOGO_NEW.jpeg')} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
                         </View>
-                        <Typography weight="medium" className="text-[11px] text-gray-400 leading-[20px] text-center italic uppercase tracking-[2px] font-medium px-10">
+                        <Typography weight="medium" className="text-[11px] text-slate-300 dark:text-gray-400 leading-[20px] text-center italic uppercase tracking-[2px] font-medium px-10">
                            PREMIUM ENTERTAINMENT PORTAL.{"\n"}LOGIN TO CONTINUE YOUR EXPERIENCE.
                         </Typography>
                      </View>
 
                      {/* LOGIN UNIT - GLASSMORPHIC CARD */}
-                     <View className="bg-black/60 border border-white/10 p-6 rounded-[32px] shadow-premium backdrop-blur-3xl mx-2">
+                     <View className="bg-white/10 dark:bg-black/60 border border-white/20 dark:border-white/10 p-6 rounded-[32px] shadow-sm dark:shadow-premium backdrop-blur-3xl mx-2">
                         <View className="items-center mb-6">
-                           <View className="w-14 h-14 items-center justify-center bg-white/5 border border-white/10 rounded-2xl mb-4 shadow-2xl shadow-indigo-500/10">
+                           <View className="w-14 h-14 items-center justify-center bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 rounded-2xl mb-4 shadow-2xl shadow-indigo-500/10">
                               <Key size={22} color="#6366f1" strokeWidth={2.5} />
                            </View>
                            <Typography weight="black" className="text-4xl leading-[40px] italic text-white mb-2 tracking-tighter uppercase text-center font-black">{step === 0 ? "LOGIN" : "VERIFY"}</Typography>

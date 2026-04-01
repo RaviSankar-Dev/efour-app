@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import { View, ScrollView, Dimensions, TextInput, Pressable, Image, ActivityIndicator } from "react-native";
+import { View, ScrollView, useWindowDimensions, TextInput, Pressable, Image, ActivityIndicator } from "react-native";
 import { Typography } from "../../src/components/ui/Core";
 import { Navbar } from "../../src/components/ui/Navbar";
 import { Footer } from "../../src/components/ui/Footer";
 import { DineCard, DineProps } from "../../src/components/ui/DineCard";
 import { Search, MapPin, Clock } from "lucide-react-native";
-
-const { width, height } = Dimensions.get("window");
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const DINE_DATA: DineProps[] = [
   { id: '1', title: 'WOW! MOMO PLATTER', description: 'WOW! MOMO PLATTER', image: 'https://images.unsplash.com/photo-1534422298391-e4f8c170db76?q=80&w=2070&auto=format&fit=crop' },
@@ -19,6 +18,8 @@ export default function DineScreen() {
   const [dineItems, setDineItems] = React.useState<DineProps[]>(DINE_DATA);
   const [loading, setLoading] = React.useState(true);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const { width, height } = useWindowDimensions();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     fetchDineData();
@@ -61,40 +62,40 @@ export default function DineScreen() {
   const scrollRef = React.useRef<ScrollView>(null);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#020408' }}>
+    <View className="flex-1 bg-white dark:bg-[#020408]">
       <ScrollView 
         ref={scrollRef} 
         bounces={false} 
         showsVerticalScrollIndicator={false} 
-        contentContainerStyle={{ paddingTop: 0, paddingBottom: 160 }}
+        contentContainerStyle={{ paddingTop: 0, paddingBottom: 160 + insets.bottom }}
       >
-        <View className="bg-[#020408] pt-40 pb-16 px-6">
+        <View className="bg-white dark:bg-[#020408] pt-40 pb-16 px-6">
           {/* HEADER */}
           <View className="mb-12 px-2">
-            <View className="flex-row items-center space-x-3 mb-6">
+            <View className="flex-row items-center mb-6">
               <View className="w-10 h-[1.5px] bg-indigo-500 mr-2" />
-              <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-400 uppercase font-black">OUR DINE</Typography>
+              <Typography weight="black" className="text-[11px] tracking-[4px] text-indigo-500 dark:text-indigo-400 uppercase font-black">OUR DINE</Typography>
             </View>
 
-            <Typography weight="black" className="text-6xl italic text-white mb-8 tracking-[-3px] uppercase font-black">OUR{"\n"}DINE.</Typography>
+            <Typography weight="black" className="text-6xl italic text-slate-900 dark:text-white mb-8 tracking-[-3px] uppercase font-black">OUR{"\n"}DINE.</Typography>
 
-            <Typography weight="medium" className="text-[13px] text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] font-medium mb-8">
+            <Typography weight="medium" className="text-[13px] text-slate-500 dark:text-gray-400 leading-[22px] italic uppercase tracking-[1.5px] font-medium mb-8">
               BEST FOOD IN ELURU. CHOOSE YOUR FAVORITE DISH AND ENJOY.
             </Typography>
 
-            <View className="w-full bg-[#0d0f14] border border-white/10 rounded-2xl px-6 py-4 flex-row items-center shadow-2xl">
-              <Search size={16} color="rgba(255,255,255,0.5)" />
+            <View className="w-full bg-slate-50 dark:bg-[#0d0f14] border border-slate-200 dark:border-white/10 rounded-2xl px-6 py-4 flex-row items-center shadow-sm dark:shadow-2xl">
+              <Search size={16} className="text-slate-400 dark:text-white/30" />
               <TextInput 
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholder="SEARCH RESTAURANTS..." 
-                placeholderTextColor="rgba(255,255,255,0.3)" 
-                className="text-[10px] text-white font-black uppercase tracking-widest flex-1 p-0 m-0 ml-4" 
+                placeholderTextColor="rgba(100,116,139,0.5)" 
+                className="text-[10px] text-slate-900 dark:text-white font-black uppercase tracking-widest flex-1 p-0 m-0 ml-4" 
               />
             </View>
           </View>
 
-          <View className="h-[1px] w-full bg-white/10 mb-12" />
+          <View className="h-[1px] w-full bg-slate-200 dark:bg-white/10 mb-12" />
 
           {/* FILTER BADGE */}
           <Pressable className="bg-yellow-400 px-10 py-5 rounded-2xl flex-row items-center self-start mb-16 shadow-2xl shadow-yellow-400/40 active:bg-yellow-500">
@@ -106,7 +107,7 @@ export default function DineScreen() {
             {loading ? (
               <View className="py-20 items-center">
                 <ActivityIndicator color="#6366f1" size="large" />
-                <Typography weight="black" className="text-[10px] text-white/30 tracking-[4px] uppercase mt-4 font-black">SYNCING KITCHEN CATALOG...</Typography>
+                <Typography weight="black" className="text-[10px] text-slate-400 dark:text-white/30 tracking-[4px] uppercase mt-4 font-black">SYNCING KITCHEN CATALOG...</Typography>
               </View>
             ) : (
               dineItems.filter((item) => {

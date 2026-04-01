@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { View, Image, Pressable, Modal, ScrollView, Dimensions } from "react-native";
+import { View, Image, Pressable, Modal, ScrollView, useWindowDimensions } from "react-native";
 import { Typography } from "./Core";
 import { X, Plus, ChevronRight, ShoppingBag } from "lucide-react-native";
 import { useAppStore } from "../../store/useAppStore";
-
-const { height, width } = Dimensions.get('window');
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export interface DineMenuItem {
   id: string;
@@ -25,6 +24,8 @@ export interface DineProps {
 export const DineCard = ({ item }: { item: DineProps }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { addToCart, setCartOpen } = useAppStore();
+  const insets = useSafeAreaInsets();
+  const { width, height } = useWindowDimensions();
 
   const handleAddItem = (dish: DineMenuItem) => {
     addToCart({
@@ -37,7 +38,7 @@ export const DineCard = ({ item }: { item: DineProps }) => {
   };
 
   return (
-    <View className="bg-[#0b0e14] rounded-premium overflow-hidden border border-white/10 mb-8 shadow-premium">
+    <View className="bg-slate-50 dark:bg-[#0b0e14] rounded-premium overflow-hidden border border-slate-200 dark:border-white/10 mb-8 shadow-sm dark:shadow-premium">
       <View className="relative h-72 w-full px-4 pt-4">
         <View className="w-full h-full rounded-2xl overflow-hidden shadow-2xl">
            <Image 
@@ -51,19 +52,19 @@ export const DineCard = ({ item }: { item: DineProps }) => {
       <View className="px-6 pt-6 pb-8">
         <View className="flex-row items-center justify-between mb-4">
            <View className="flex-1">
-              <Typography weight="black" className="text-[26px] text-white uppercase tracking-tighter italic leading-none font-black">{item.title}</Typography>
+              <Typography weight="black" className="text-[26px] text-slate-900 dark:text-white uppercase tracking-tighter italic leading-none font-black">{item.title}</Typography>
               <View className="h-[2px] w-8 bg-indigo-500 mt-2 mb-2 rounded-full" />
            </View>
         </View>
         
-        <Typography weight="medium" className="text-[11px] text-gray-400 tracking-[1.5px] uppercase leading-[18px] mb-8 font-medium">{item.description}</Typography>
+        <Typography weight="medium" className="text-[11px] text-slate-500 dark:text-gray-400 tracking-[1.5px] uppercase leading-[18px] mb-8 font-medium">{item.description}</Typography>
 
         <Pressable 
            onPress={() => setModalVisible(true)}
-           className="bg-indigo-600/10 border border-indigo-600/30 h-16 rounded-2xl flex-row items-center justify-center space-x-4 shadow-2xl active:bg-indigo-600/20"
+           className="bg-indigo-600/10 border border-indigo-600/20 dark:border-indigo-600/30 h-16 rounded-2xl flex-row items-center justify-center space-x-4 shadow-sm dark:shadow-2xl active:opacity-70"
         >
-           <Typography weight="black" className="text-[12px] text-indigo-400 tracking-[3px] uppercase italic font-black">EXPLORE FULL MENU</Typography>
-           <ChevronRight size={16} color="#818cf8" strokeWidth={3} />
+           <Typography weight="black" className="text-[12px] text-indigo-600 dark:text-indigo-400 tracking-[3px] uppercase italic font-black">EXPLORE FULL MENU</Typography>
+           <ChevronRight size={16} color="#4f46e5" className="dark:text-[#818cf8]" strokeWidth={3} />
         </Pressable>
       </View>
 
@@ -73,28 +74,28 @@ export const DineCard = ({ item }: { item: DineProps }) => {
          visible={modalVisible}
          onRequestClose={() => setModalVisible(false)}
       >
-         <View className="flex-1 bg-black/95">
-            <View style={{ paddingTop: 60 }} className="px-8 pb-10 flex-1">
+         <View className="flex-1 bg-white dark:bg-black">
+            <View style={{ paddingTop: Math.max(insets.top, 20) }} className="px-8 pb-10 flex-1">
                <View className="flex-row items-start justify-between mb-10">
                   <View className="flex-1 pr-4">
-                     <Typography weight="black" className="text-[10px] text-indigo-400 tracking-[4px] uppercase font-black">RESTAURANT MENU</Typography>
-                     <Typography weight="black" className="text-4xl text-white italic tracking-tighter uppercase font-black">{item.title}</Typography>
+                     <Typography weight="black" className="text-[10px] text-indigo-500 dark:text-indigo-400 tracking-[4px] uppercase font-black">RESTAURANT MENU</Typography>
+                     <Typography weight="black" className="text-4xl text-slate-900 dark:text-white italic tracking-tighter uppercase font-black">{item.title}</Typography>
                   </View>
                   <Pressable 
                      onPress={() => setModalVisible(false)}
-                     className="w-12 h-12 bg-white/5 border border-white/10 rounded-2xl items-center justify-center active:bg-white/10"
+                     className="w-12 h-12 bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl items-center justify-center active:opacity-70"
                   >
-                     <X size={20} color="white" />
+                     <X size={20} className="text-slate-900 dark:text-white" />
                   </Pressable>
                </View>
 
                <ScrollView showsVerticalScrollIndicator={false}>
                   {(item.menu || []).map((dish) => (
-                     <View key={dish.id} className="bg-white/5 border border-white/10 rounded-premium p-6 mb-6 flex-row items-center justify-between shadow-premium">
+                     <View key={dish.id} className="bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-premium p-6 mb-6 flex-row items-center justify-between shadow-sm dark:shadow-premium">
                         <View className="flex-1 mr-4">
-                           <Typography weight="black" className="text-[18px] text-white italic tracking-tight uppercase font-black mb-1">{dish.name}</Typography>
-                           <Typography weight="medium" className="text-[10px] text-gray-400 tracking-[1px] mb-4 font-medium">{dish.desc}</Typography>
-                           <Typography weight="black" className="text-[20px] text-white italic font-black">₹{dish.price}</Typography>
+                           <Typography weight="black" className="text-[18px] text-slate-900 dark:text-white italic tracking-tight uppercase font-black mb-1">{dish.name}</Typography>
+                           <Typography weight="medium" className="text-[10px] text-slate-500 dark:text-gray-400 tracking-[1px] mb-4 font-medium">{dish.desc}</Typography>
+                           <Typography weight="black" className="text-[20px] text-slate-900 dark:text-white italic font-black">₹{dish.price}</Typography>
                         </View>
                         
                         <Pressable 
@@ -107,17 +108,19 @@ export const DineCard = ({ item }: { item: DineProps }) => {
                   ))}
                </ScrollView>
 
+               <View style={{ paddingBottom: insets.bottom }}>
                 <Pressable 
-                   onPress={() => {
-                      setModalVisible(false);
-                      setCartOpen(true);
-                   }}
-                   className="bg-[#FFD700] h-20 rounded-[28px] flex-row items-center justify-center mt-auto shadow-2xl shadow-[#FFD700]/40 active:bg-yellow-500"
-                   style={{ gap: 12 }}
-                >
-                   <Typography weight="black" className="text-[14px] text-black tracking-[5px] uppercase font-black italic">VIEW CART</Typography>
-                   <ShoppingBag size={20} color="black" />
+                    onPress={() => {
+                        setModalVisible(false);
+                        setCartOpen(true);
+                    }}
+                    className="bg-[#FFD700] h-20 rounded-[28px] flex-row items-center justify-center mt-6 shadow-2xl shadow-[#FFD700]/40 active:bg-yellow-500"
+                    style={{ gap: 12 }}
+                  >
+                    <Typography weight="black" className="text-[14px] text-black tracking-[5px] uppercase font-black italic">VIEW CART</Typography>
+                    <ShoppingBag size={20} color="black" />
                 </Pressable>
+               </View>
             </View>
          </View>
       </Modal>
