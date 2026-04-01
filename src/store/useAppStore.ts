@@ -164,7 +164,7 @@ export const useAppStore = create<AppState>()(
       },
 
       updateProfile: async (name: string, email: string) => {
-        const { tokens, refreshTokens, logout, setUser } = useAppStore.getState();
+        const { tokens, refreshTokens, logout, setUser, user } = useAppStore.getState();
         if (!tokens?.accessToken) return false;
 
         try {
@@ -191,7 +191,9 @@ export const useAppStore = create<AppState>()(
               });
               if (retryResponse.ok) {
                 const data = await retryResponse.json();
-                setUser(data.user || data);
+                // MERGE WITH EXISTING USER DATA TO AVOID DATA LOSS AND ENSURE EMAIL IS UPDATED
+                const updatedUser = { ...(user || {}), ...(data.user || data), name, email } as User;
+                setUser(updatedUser);
                 return true;
               }
             }
@@ -201,7 +203,9 @@ export const useAppStore = create<AppState>()(
 
           if (response.ok) {
             const data = await response.json();
-            setUser(data.user || data);
+            // MERGE WITH EXISTING USER DATA TO AVOID DATA LOSS AND ENSURE EMAIL IS UPDATED
+            const updatedUser = { ...(user || {}), ...(data.user || data), name, email } as User;
+            setUser(updatedUser);
             return true;
           }
           return false;

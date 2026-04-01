@@ -301,7 +301,15 @@ export default function ProfileScreen() {
 
                             {/* BOTTOM ACTIONS */}
                             <View className="mt-4 space-y-4">
-                                <Pressable onPress={() => logout()} className="bg-white/5 border border-white/10 h-16 rounded-[24px] flex-row items-center justify-center space-x-4 shadow-2xl active:bg-white/10">
+                                <Pressable 
+                                   onPress={() => {
+                                       logout();
+                                       setStep(0);
+                                       setPhone("");
+                                       setOtp("");
+                                   }} 
+                                   className="bg-white/5 border border-white/10 h-16 rounded-[24px] flex-row items-center justify-center space-x-4 shadow-2xl active:bg-white/10"
+                                >
                                     <LogOut size={18} stroke="#ef4444" strokeWidth={2.5} />
                                     <Typography weight="black" className="text-[12px] text-white tracking-[3px] uppercase font-black italic">LOG OUT DASHBOARD</Typography>
                                 </Pressable>
@@ -390,6 +398,19 @@ export default function ProfileScreen() {
                                     }}
                                  />
                               </View>
+                           )}
+
+                           {step === 1 && (
+                              <Pressable 
+                                 onPress={() => {
+                                    setStep(0);
+                                    setOtp("");
+                                    setError(null);
+                                 }}
+                                 className="mt-[-15px] mb-5 items-center active:opacity-50"
+                              >
+                                 <Typography weight="black" className="text-[10px] text-indigo-400/80 tracking-[3px] uppercase font-black italic underline">CHANGE MOBILE NUMBER</Typography>
+                              </Pressable>
                            )}
 
                            <Pressable
