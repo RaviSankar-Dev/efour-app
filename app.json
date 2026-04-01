@@ -44,6 +44,13 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "7748edda-d363-45e7-b253-309fe59ac86e"
+      }
+    },
+    "owner": "kick_143"
   }
 }
